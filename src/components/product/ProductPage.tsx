@@ -34,10 +34,10 @@ const handleDecrement=()=>{
     }
     }
     const cartContext = useContext(CartContext);
-    const { addProduct } = cartContext;
+    
     const handleAddToCart = () => {
         const newProduct = { id: '123', name: 'Product', price: 100 }; // Example product
-        addProduct(newProduct);
+        cartContext?.addProduct(newProduct);
         console.log('Product added:', cartContext?.products);
         setIsInCart(false);
       };
