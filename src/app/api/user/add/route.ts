@@ -13,12 +13,12 @@ export async function POST(request: NextRequest) {
         const body = await request.json();
 
         // Extract data from the body
-        const { email,password } = body;
+        const { name,email,password } = body;
 
         // Insert the data into your database
         const [result] = await connection.execute(
-            'INSERT INTO uom.users (email,password) VALUES (?, ?)', 
-            [email,password]
+            'INSERT INTO uom.users (name,email,password) VALUES (?,?, ?)', 
+            [name,email,password]
         );
 
         // Close the database connection

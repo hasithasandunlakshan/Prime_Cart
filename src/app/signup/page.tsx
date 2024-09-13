@@ -1,4 +1,4 @@
-import { Registation } from '@/components/Registation'
+import { Registation } from '@/components/user/Registation'
 import React from 'react'
 
 export default function page() {
