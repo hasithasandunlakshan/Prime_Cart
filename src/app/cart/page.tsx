@@ -2,13 +2,14 @@
 import ViewCart from '@/components/cart/ViewCart'
 import { CartContext } from '@/hooks/useCart'
 import { Key } from 'lucide-react';
+import { useRouter } from 'next/navigation';
 import React, { useContext } from 'react'
 
 export default function page() {
 
 
     const cartContext = useContext(CartContext);
-
+const router=useRouter();
  
 
   return (
@@ -45,7 +46,7 @@ export default function page() {
                 <span>$210.00</span>
             </div>
 
-            <button type="button" className="w-full py-3 text-white transition-colors bg-blue-500 rounded-md hover:bg-blue-600">Proceed to Checkout</button>
+            <button onClick={()=>router.push("/cart/checkout")} type="button" className="w-full py-3 text-white transition-colors bg-blue-500 rounded-md hover:bg-blue-600">Proceed to Checkout</button>
         </div>
     </div>
 </div>
