@@ -17,17 +17,13 @@ interface ViewCartProps {
 
 export default function ViewCart({ product }: ViewCartProps) {
   const cartcontext = useContext(CartContext);
-<<<<<<< HEAD
- 
+
 
   const handleRemoveCart = () => {
     cartcontext?.removeProduct(product.id);
-=======
-  const { removeProduct } = cartcontext;
 
-  const handleRemoveCart = () => {
-    removeProduct(product.id); // Use the actual product ID for removal
->>>>>>> dab5e7dbb6f9956d4b6b5e3ef47c7fb66452a1d0
+
+
   };
 
   return (
