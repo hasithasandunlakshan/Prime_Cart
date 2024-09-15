@@ -4,27 +4,28 @@ import { useRouter } from 'next/navigation';
 import React from 'react'
 interface Product {
     id: number; // Unique identifier for the product
-    name: string; // Product name
+    title: string; // Product name
     description: string; // Product description
     price: number; // Price of the product
-    category: string; // Main category of the product
-    subcategory: string; // Subcategory of the product
+    // category: string; // Main category of the product
+    // subcategory: string; // Subcategory of the product
     image: string; // URL of the product image
     rating: number; // Product rating (out of 5)
-    comments: string[]; // Array of user comments or reviews
+    // comments: string[]; // Array of user comments or reviews
+    
   }
   
   export default function ProductCard({ product }: { product: Product }) {
     const router=useRouter();
   return (
-    <div onClick={()=>router.push(`/products/${product.id}`)} className="relative flex flex-col w-full max-w-xs m-10 overflow-hidden bg-white border border-gray-100 rounded-lg shadow-md">
+    <div onClick={()=>router.push(`/products/${product.id}`)} className="relative flex flex-col w-full max-w-xs m-10 overflow-hidden bg-white border border-gray-100 rounded-lg shadow-md cursor-pointer">
   <div className="relative flex mx-3 mt-3 overflow-hidden h-60 rounded-xl" >
     <img className="object-cover" src={product.image} alt="product image" />
     <span className="absolute top-0 left-0 px-2 m-2 text-sm font-medium text-center text-white bg-black rounded-full">39% OFF</span>
   </div>
   <div className="px-5 pb-5 mt-4">
     <div >
-      <h5 className="text-xl tracking-tight text-slate-900">{product.name}</h5>
+      <h5 className="text-xl tracking-tight text-slate-900">{product.title}</h5>
     </div>
     <div className="flex items-center justify-between mt-2 mb-5">
       <p>
