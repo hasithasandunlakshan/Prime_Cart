@@ -57,27 +57,28 @@ export default function Nav() {
 
 <DropdownMenu   >
           <DropdownMenuTrigger asChild>
-<Avatar className="bg-black">H</Avatar>
+<Avatar className="text-black bg-white">H</Avatar>
 
 
           </DropdownMenuTrigger>
           <DropdownMenuContent>
-            <DropdownMenuLabel>My Account</DropdownMenuLabel>
+            <DropdownMenuLabel >My Account</DropdownMenuLabel>
             <DropdownMenuSeparator />
-            <DropdownMenuItem>Profile</DropdownMenuItem>
-            <DropdownMenuItem>History</DropdownMenuItem>
-            <DropdownMenuItem>settings</DropdownMenuItem>
-            <DropdownMenuItem>
+            <DropdownMenuItem className='cursor-pointer'>Profile</DropdownMenuItem>
+            <DropdownMenuItem className='cursor-pointer'>History</DropdownMenuItem>
+            <DropdownMenuItem className='cursor-pointer'>settings</DropdownMenuItem>
+           
             <Link href={"/api/auth/signout"}>
+            <DropdownMenuItem className='cursor-pointer'>
             <h1 className="flex items-center gap-2 ">
             <LogOut size={10}/>  Logout
             </h1>
-        
+            </DropdownMenuItem>
          
           </Link>
 
-            </DropdownMenuItem>
-            <DropdownMenuItem ><h1 className="text-red-700 "> Delete account </h1>  </DropdownMenuItem>
+          
+            <DropdownMenuItem  className='cursor-pointer' ><h1 className="text-red-700 "> Delete account </h1>  </DropdownMenuItem>
           </DropdownMenuContent>
         </DropdownMenu>
 

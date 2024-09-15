@@ -1,7 +1,7 @@
 'use client'
 import React from 'react'
 import Login from '../user/Login'
-import { products } from '@/categories/Products'
+import { products } from '@/sample/Products'
 import { Registation } from '../user/Registation'
 import ProductCard from '../product/productCard'
 import { useSession } from 'next-auth/react'

@@ -1,4 +1,5 @@
-import { Categories } from "../../categories/Categories" 
+import Link from "next/link"
+import { Categories } from "../../sample/Categories" 
 import {
     Menubar,
     MenubarCheckboxItem,
@@ -17,11 +18,11 @@ import {
   
   export default function MenubarDemo() {
     return (
-      <div className="w-full bg-black">
-   <Menubar  className="">
+      <div className="w-full bg-black ">
+   <Menubar  className="bg-black">
         <MenubarMenu>
           <MenubarTrigger>All Categories</MenubarTrigger>
-          <MenubarContent className="bg-white">
+          <MenubarContent className="">
 
             {/* <MenubarItem>
              
@@ -30,8 +31,10 @@ import {
             <MenubarSeparator /> */}
             {Categories.map((Categories,key)=>(
    <MenubarSub>
+    <Link href={`/category/${Categories?.name}`}>
    <MenubarSubTrigger>{Categories?.name}</MenubarSubTrigger>
-   <MenubarSubContent className="bg-white">
+   </Link>
+   <MenubarSubContent className="">
    {/* <MenubarSub>
    <MenubarSubTrigger>Share</MenubarSubTrigger>
    <MenubarSubContent>
@@ -43,11 +46,12 @@ import {
  {Categories?.subcategories.map((subcat,key)=>(
 
   // <MenubarItem>{subcat?.name}</MenubarItem>
- 
+ <Link href={`/category/${Categories?.name}/${subcat?.name}`}>
+
 
   <MenubarItem >{subcat?.name}</MenubarItem>
 
- 
+  </Link>
 
   
 
