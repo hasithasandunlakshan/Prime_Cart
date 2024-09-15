@@ -30,7 +30,7 @@ import {
           
             <MenubarSeparator /> */}
             {Categories.map((Categories,key)=>(
-   <MenubarSub>
+   <MenubarSub key={key+1}>
     <Link href={`/category/${Categories?.name}`}>
    <MenubarSubTrigger>{Categories?.name}</MenubarSubTrigger>
    </Link>
@@ -46,7 +46,7 @@ import {
  {Categories?.subcategories.map((subcat,key)=>(
 
   // <MenubarItem>{subcat?.name}</MenubarItem>
- <Link href={`/category/${Categories?.name}/${subcat?.name}`}>
+ <Link href={`/category/${Categories?.name}/${subcat?.name}`} key={key+10}>
 
 
   <MenubarItem >{subcat?.name}</MenubarItem>
