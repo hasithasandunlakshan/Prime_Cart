@@ -31,7 +31,7 @@ import {  DropdownMenu,
 export default function Nav() {
   const {data:session}=useSession();
   return (
-    <div className="flex flex-col items-center justify-center w-[full] text-white bg-black rounded-2xl roun min-h-16">
+    <div className="flex flex-col items-center justify-center w-[full] text-white bg-black  min-h-16">
        <NavigationMenu className="">
          <NavigationMenuList  className="flex gap-5">
            <NavigationMenuItem>

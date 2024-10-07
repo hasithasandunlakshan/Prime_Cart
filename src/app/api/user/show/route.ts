@@ -7,7 +7,7 @@ export async function GET(request:Request){
     try{
         const connection=await mysql.createConnection(connectionparams);
         let query='';
-        query='select * from uom.users';
+        query='select * from defaultdb.UserCred';
         let values:any[]=[]
         const [result]=await connection.execute(query,values);
         connection.end();

@@ -7,9 +7,10 @@ export async function GET(request:NextRequest,{params}:{params:{searchid:string}
     
     try{
         const connection=await mysql.createConnection(connectionparams);
+        
       
-        const query = 'SELECT * FROM uom.Categories WHERE name like  ?';
-        const values = [`%${params.searchid}%`];
+        const query = 'SELECT name FROM uom.Categories WHERE name like  ? UNION all SELECT name FROM uom.Subcategories WHERE name like ? ';
+        const values = [`%${params.searchid}%`,`%${params.searchid}%`];
 
         const [result]=await connection.execute(query,values);
         if(result){

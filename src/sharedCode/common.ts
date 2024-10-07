@@ -1,41 +1,17 @@
 export interface IDBSettings {
-    host: string
-  
-    port: number
-  
-    user: string
-  
-    password: string
-  
-    database: string
-  }
-  
-  export const GetDBSettings = (): IDBSettings => {
-    const env = process.env.NODE_ENV
-  
-    if (env == 'development')
-      return {
-        host: process.env.host_dev!, //'58.84.143.251',
-  
-        port: parseInt(process.env.port_dev!),
-  
-        user: process.env.user_dev!,
-  
-        password: process.env.password_dev!,
-  
-        database: process.env.database_dev!,
-      }
-    else
-      return {
-        host: process.env.host!, //'58.84.143.251',
-  
-        port: parseInt(process.env.port!),
-  
-        user: process.env.user!,
-  
-        password: process.env.password!,
-  
-        database: process.env.database!,
-      }
-  }
-  
+  host: string;
+  port: number;
+  user: string;
+  password: string;
+  database: string;
+}
+
+export const GetDBSettings = (): IDBSettings => {
+  return {
+    host: process.env.DB_HOST || '',
+    port: parseInt(process.env.DB_PORT || '3306', 10), // Convert string to number
+    user: process.env.DB_USER || '',
+    password: process.env.DB_PASSWORD || '',
+    database: process.env.DB_DATABASE || '',
+  };
+};
