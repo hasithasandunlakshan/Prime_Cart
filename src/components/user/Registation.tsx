@@ -36,11 +36,14 @@ password:z.string().min(4, {
 
 
 ),
-name: z.string().min(2, {
+firstName: z.string().min(2, {
+  message: "Username must be at least 2 characters.",
+},
+),
+lastName: z.string().min(2, {
   message: "Username must be at least 2 characters.",
 },
 )
-
 })
 
 export function Registation() {
@@ -56,7 +59,7 @@ const router =useRouter();
 
 
     try{
-        const response =await fetch('/api/add',{
+        const response =await fetch('/api/user/add',{
             method:'POST',
             headers: {
                 'Content-Type': 'application/json',
@@ -113,10 +116,26 @@ const router =useRouter();
       <form onSubmit={form.handleSubmit(onSubmit)} className="flex flex-col items-center justify-center p-10 space-y-6 bg-gray-100 max-w-72">
       <FormField
           control={form.control}
-          name="name"
+          name="firstName"
           render={({ field }) => (
             <FormItem>
-              <FormLabel>Username</FormLabel>
+              <FormLabel>Firstname</FormLabel>
+              <FormControl>
+                <Input placeholder="" {...field} />
+              </FormControl>
+              <FormDescription>
+               
+              </FormDescription>
+              <FormMessage />
+            </FormItem>
+          )}
+        />
+          <FormField
+          control={form.control}
+          name="lastName"
+          render={({ field }) => (
+            <FormItem>
+              <FormLabel>Lastname</FormLabel>
               <FormControl>
                 <Input placeholder="" {...field} />
               </FormControl>
@@ -132,7 +151,7 @@ const router =useRouter();
           name="email"
           render={({ field }) => (
             <FormItem>
-              <FormLabel>Username</FormLabel>
+              <FormLabel>Email</FormLabel>
               <FormControl>
                 <Input placeholder="" {...field} />
               </FormControl>
@@ -160,22 +179,7 @@ const router =useRouter();
             </FormItem>
           )}
         />
-           <FormField
-          control={form.control}
-          name="password"
-          render={({ field }) => (
-            <FormItem>
-              <FormLabel>Re-enter password</FormLabel>
-              <FormControl>
-                <Input placeholder="" {...field} />
-              </FormControl>
-              {/* <FormDescription>
-                This is your public display name.
-              </FormDescription> */}
-              <FormMessage />
-            </FormItem>
-          )}
-        />
+     
         <Button type="submit">Register</Button>
       </form>
     </Form>

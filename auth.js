@@ -22,7 +22,7 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
                 const connection=await mysql.createConnection(connectionparams);
              
                 const [rows] = await connection.execute(
-                    'SELECT * FROM uom.users WHERE email = ? AND password = ?',
+                    'SELECT * FROM defaultdb.UserCred WHERE email = ? AND password = ?',
                     [credentials.email, credentials.password]
                   );
                 connection.end();

@@ -31,7 +31,7 @@ export default function ViewCart({ product }: ViewCartProps) {
     <div className="flex gap-4 bg-white px-4 py-6 rounded-md shadow-[0_2px_12px_-3px_rgba(6,81,237,0.3)]">
       <div className="flex gap-4">
         <div className="w-28 h-28 max-sm:w-24 max-sm:h-24 shrink-0">
-          <img src={product.image} className="object-contain w-full h-full" alt={product.name} />
+          <img src={product.image||"https://fakestoreapi.com/img/81fPKd-2AYL._AC_SL1500_.jpg"} className="object-contain w-full h-full" alt={product.name} />
         </div>
 
         <div className="flex flex-col gap-4">

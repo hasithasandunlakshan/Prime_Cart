@@ -57,15 +57,18 @@ export default function Login() {
   }
 
   return (
-<div className="flex flex-col items-center justify-center min-h-screen align-middle">
+<div className="flex flex-col items-center justify-start min-h-screen mt-10 align-top bg-white">
+
+  
 <Form {...form}>
-      <form onSubmit={form.handleSubmit(onSubmit)} className="flex flex-col items-center justify-center p-10 space-y-6 bg-gray-100">
+      <form onSubmit={form.handleSubmit(onSubmit)} className="flex flex-col items-center justify-center p-20 space-y-6 border-2 border-black rounded-lg">
+        <h1>Login</h1>
         <FormField
           control={form.control}
           name="Email"
           render={({ field }) => (
             <FormItem>
-              <FormLabel>Username</FormLabel>
+              <FormLabel>Email</FormLabel>
               <FormControl>
                 <Input placeholder="" {...field} />
               </FormControl>
@@ -92,7 +95,7 @@ export default function Login() {
             </FormItem>
           )}
         />
-        <Button type="submit">Log In</Button>
+        <Button type="submit" className="w-full ">Log In</Button>
       </form>
     </Form>
 </div>
