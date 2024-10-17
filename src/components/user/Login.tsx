@@ -17,7 +17,6 @@ import {
 } from "@/components/ui/form"
 import { Input } from "@/components/ui/input"
 import { signIn } from "next-auth/react"
-import { CredentialsSignin } from "next-auth"
 
 const FormSchema = z.object({
   Email: z.string().min(2, {
@@ -48,10 +47,12 @@ export default function Login() {
   
     signIn('credentials',{email:data.Email,
         password:data.password,
+        
      redirect: true, 
         callbackUrl: "/" 
       },
     )
+    console.log(data);
     
     
   }

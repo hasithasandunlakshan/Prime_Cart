@@ -3,7 +3,7 @@ import React from "react";
 
 const BannerCarousel = () => {
   return (
-    <div className="relative m-5 overflow-hidden w- carousel">
+    <div className="relative w-full h-full min-h-screen overflow-hidden carousel">
       {/* Carousel Item */}
       <div id="item1" className="relative w-full carousel-item">
         <img
@@ -11,6 +11,8 @@ const BannerCarousel = () => {
           src="https://img.freepik.com/free-photo/excited-redhead-girl-showing-mobile-phone-screen-credit-card-demonstrating-online-store-appli_1258-156014.jpg?t=st=1726765734~exp=1726769334~hmac=9f34aedbb9de3b08cd380209b29f08d66265f204846b2561f1ded266fed5884f&w=2000"
           className="object-cover w-full h-full"
         />
+
+        
 
         {/* Gradient Overlay */}
         <div className="absolute inset-0 flex items-center p-20 bg-gradient-to-r from-black/70 via-black/20 to-transparent">
@@ -25,6 +27,9 @@ const BannerCarousel = () => {
           </div>
         </div>
       </div>
+      
+    
+      
     </div>
   );
 };
