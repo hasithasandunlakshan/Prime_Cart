@@ -57,12 +57,12 @@ export default function Nav() {
 
 <DropdownMenu   >
           <DropdownMenuTrigger asChild>
-<Avatar className="text-black bg-white">H</Avatar>
+<Avatar className="text-black bg-white">{session.user?.email?.charAt(0).toUpperCase()}</Avatar>
 
 
           </DropdownMenuTrigger>
           <DropdownMenuContent>
-            <DropdownMenuLabel >My Account</DropdownMenuLabel>
+            <DropdownMenuLabel >{session.user?.id}</DropdownMenuLabel>
             <DropdownMenuSeparator />
             <DropdownMenuItem className='cursor-pointer'>Profile</DropdownMenuItem>
             <DropdownMenuItem className='cursor-pointer'>History</DropdownMenuItem>

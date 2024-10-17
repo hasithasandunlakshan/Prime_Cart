@@ -50,7 +50,7 @@ export default function ViewCart({ product }: ViewCartProps) {
             <DeleteOutlinedIcon className="text-red-700" />
           </button>
         </div>
-        <h3 className="mt-auto text-base font-bold text-gray-800">${product.price.toFixed(2)}</h3>
+        <h3 className="mt-auto text-base font-bold text-gray-800">${product.price}</h3>
       </div>
     </div>
   );
