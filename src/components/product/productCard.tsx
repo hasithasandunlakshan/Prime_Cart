@@ -20,14 +20,12 @@ interface Product {
   return (
     <div onClick={()=>router.push(`/products/${product.productId}`)} className="relative flex flex-col w-full max-w-xs m-10 overflow-hidden bg-white border border-gray-100 rounded-lg shadow-md cursor-pointer">
   <div className="relative flex mx-3 mt-3 overflow-hidden h-60 rounded-xl" >
-
-    <img className="object-cover" src={`/${product.imageUrl}`} alt="product image" />
-
+    <img className="object-cover" src={`/${product.imageUrl}`}  alt="product image" />
     {/* <span className="absolute top-0 left-0 px-2 m-2 text-sm font-medium text-center text-white bg-black rounded-full">39% OFF</span> */}
   </div>
   <div className="px-5 pb-5 mt-4">
     <div >
-      <h5 className="text-xl tracking-tight text-slate-900">{`/${product.imageUrl}`}</h5>
+      <h5 className="text-xl tracking-tight text-slate-900">{product.title}</h5>
     </div>
     <div className="flex items-center justify-between mt-2 mb-5">
       <p>
