@@ -27,9 +27,11 @@ import {  DropdownMenu,
   DropdownMenuLabel,
   DropdownMenuSeparator,
   DropdownMenuTrigger, } from "../ui/dropdown-menu";
+import { useRouter } from 'next/navigation';
 
 export default function Nav() {
   const {data:session}=useSession();
+  const router =useRouter();
   return (
     <div className="flex flex-col items-center justify-center w-[full] text-white bg-black  min-h-16">
        <NavigationMenu className="">
@@ -64,7 +66,7 @@ export default function Nav() {
           <DropdownMenuContent>
             <DropdownMenuLabel >My Account</DropdownMenuLabel>
             <DropdownMenuSeparator />
-            <DropdownMenuItem className='cursor-pointer'>Profile</DropdownMenuItem>
+            <DropdownMenuItem onClick={()=>router.push("/user/profile")} className='cursor-pointer'>Profile</DropdownMenuItem>
             <DropdownMenuItem className='cursor-pointer'>History</DropdownMenuItem>
             <DropdownMenuItem className='cursor-pointer'>settings</DropdownMenuItem>
            
