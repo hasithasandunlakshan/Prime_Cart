@@ -2,22 +2,15 @@ import { NextResponse,NextRequest } from "next/server";
 import mysql from 'mysql2/promise'
 import { GetDBSettings } from "@/sharedCode/common";
 let connectionparams=GetDBSettings();
-export async function GET(request:NextRequest,{params}:{params:{id:string}}){
-    const keyword=decodeURIComponent(params.id)
-    console.log('Query param:', keyword);
-    
+export async function GET(request:Request){
+
     try{
         const connection=await mysql.createConnection(connectionparams);
-      
-        const query = 'SELECT * FROM defaultdb.Category WHERE title like  ?';
-        const values = [`%${keyword}%`];
-
+        let query='';
+        query='select * from Product p join SKU on  p.baseSKU=SKU.sku JOIN ProductImages pi ON p.productID = pi.productID ';
+        let values:any[]=[]
         const [result]=await connection.execute(query,values);
-        if(result){
-        const query = 'SELECT * FROM defaultdb.SubCategories WHERE title like  ?';
-        }
         connection.end();
-        
         return NextResponse.json(result);
 
 

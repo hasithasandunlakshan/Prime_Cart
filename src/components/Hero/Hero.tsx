@@ -94,32 +94,33 @@ export default function Hero() {
   ];
 
 
-  // async function fetchData() {
-  //   try {
-  //     const response = await fetch('https://gitcdn.link/cdn/seebham/ecommerce-dummy-data/main/data.json', {
-  //       method: 'GET',
-  //       headers: {
-  //         'Content-Type': 'application/json',
-  //       },
-  //     });
+  async function fetchData() {
+    try {
+      const response = await fetch('/api/products', {
+        method: 'GET',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+      });
 
-  //     if (!response.ok) {
-  //       console.log("API request failed, using local data.");
-  //       setData(products); // Use local data as fallback
-  //       return;
-  //     }
+      if (!response.ok) {
+        console.log("API request failed, using local data.");
+      // Use local data as fallback
+        return;
+      }
 
-  //     const datasample = await response.json();
-  //     setData(datasample);
-  //   } catch (error) {
-  //     console.log("Error fetching data, using local data:", error);
-  //     setData(products); // Use local data on error
-  //   }
-  // }
+      const datasample = await response.json();
+      setData(datasample);
+      console.log(data);
+    } catch (error) {
+      console.log("Error fetching data, using local data:", error);
+      // Use local data on error
+    }
+  }
 
-  // useEffect(() => {
-  //   fetchData();
-  // }, []);
+  useEffect(() => {
+    fetchData();
+  }, []);
 
   return (
     <>
@@ -130,8 +131,9 @@ export default function Hero() {
       
     
       <div className="grid grid-cols-4 gap-5">
-        {Products.map((product, key) => (
-          <ProductCard key={key}  product={product} />
+        {data.map((product, key) => (
+        
+      <ProductCard product={product}/>
         ))}
       </div>
     </div>
@@ -144,19 +146,7 @@ export default function Hero() {
           ))}
         </div>
 
-        <h1 className="mt-20 mb-10 text-3xl font-bold">Featuring Products</h1>
-        {/* <div className="grid grid-cols-4 my-10">
-          {items.map((item) => (
-            <ItemCard item={item} />
-          ))}
-        </div>
-
-        <h1 className="mt-20 mb-10 text-3xl font-bold">New Arrivals</h1>
-        <div className="grid grid-cols-4 my-10">
-          {items.map((item) => (
-            <ItemCard item={item} />
-          ))}
-        </div> */}
+     
       </div>
     </>
   

@@ -34,7 +34,7 @@ const router=useRouter();
             <div className="space-y-4">
                 <div className="flex items-center justify-between">
                     <span className="font-bold text-gray-700">Subtotal:</span>
-                    <span className="font-bold text-gray-800">$200.00</span>
+                    <span className="font-bold text-gray-800">$ {cartContext?.price}</span>
                 </div>
                 <div className="flex items-center justify-between">
                     <span className="font-bold text-gray-700">Shipping:</span>
