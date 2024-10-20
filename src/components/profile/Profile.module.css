@@ -1,189 +1,8 @@
-
-
-/*.container {
-    --primary-color: #45607b;
-    --secondary-color: #7b7878;
-    --highlight-color: #f4f4f9;
-    --border-color: #ddd;
-    --text-color: #333;
-    
-    --bg-color: white;
-  }
-  
-  .container {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    gap: 50px; 
-    padding: 20px;
-    background-color: var(--bg-color);
-    border-radius: 12px;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-    margin: 0 40px;
-  }
-  
-  .imgcontainer {
-    flex: 1;
-    position: relative;
-    height: 250px;  
-    width: 200px;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-  }
-  
-  .img {
-    object-fit: cover; 
-    border-radius: 5%;
-    height: 50px; 
-    width: 50px;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15);
-    
-  }
-  
-  .formcontainer {
-    flex: 2;
-    display: flex;
-    flex-direction: column;
-    gap: 15px;
-  }
-  
-  .labels {
-    font-size: 18px;
-    font-weight: bold;
-    color: var(--secondary-color);
-    margin-bottom: 5px;
-  }
-  
-  .title {
-    font-size: 24px;
-    font-weight: bold;
-    color: var(--text-color);
-    text-align: center;
-    margin-bottom: 20px;
-  }
-  
-  .userList {
-    display: flex;
-    flex-direction: column;
-    gap: 15px;
-    list-style-type: none;
-    padding: 0;
-    margin: 0;
-  }
-  
-  .userListItem {
-    padding: 15px;
-    background-color: var(--highlight-color);
-    border-radius: 8px;
-    border: 1px solid var(--border-color);
-    color: var(--text-color);
-    transition: background-color 0.3s ease;
-  }
-  
-  
-  
-  .error {
-    color: red;
-    text-align: center;
-    font-size: 18px;
-  }
-  
-  .loading {
-    text-align: center;
-    font-size: 18px;
-  }
-  
-  .heading2 {
-    top : 10px;
-    font-size: 32px;
-    font-weight: bold;
-    color: var(--primary-color);
-    text-align: center;
-    letter-spacing: 1px;
-    text-transform: uppercase;
-    margin-bottom: 20px;
-  }
-  
-  .heading3 {
-    top:10px;
-    font-size: 24px;
-    font-weight: bold;
-    color: var(--primary-color);
-    text-align: center;
-    margin-bottom: 20px;
-    letter-spacing: 1px;
-    text-transform: uppercase;
-  }
-  
-  .container_1,
-  .container_2,
-  .container_3 {
-    flex: 1;
-  }
-  
-  .container_1 {
-    height: 250px; 
-    background-color: var(--bg-color);
-    border-radius: 10px;
-  }
-  
-  
-  .buttonContainer {
-    display: flex;
-    justify-content: center; 
-    margin-top: 20px;
-  }
-  
-  .button {
-    background-color: #354e62; 
-    color: white; 
-    padding: 10px 20px; 
-    font-size: 18px; 
-    border: none;
-    border-radius: 8px; 
-    cursor: pointer; 
-    transition: background-color 0.3s ease; 
-  }
-  
-  
-  
-  
-  @media (max-width: 768px) {
-    .container {
-      flex-direction: column;
-      gap: 20px;
-    }
-  
-    .imgcontainer {
-      height: 200px; 
-    }
-  
-    .img {
-      height: 120px;
-      width: 120px;
-    }
-  
-    .formcontainer {
-      gap: 10px;
-    }
-  
-    .heading2 {
-      font-size: 28px;
-    }
-  
-    .heading3 {
-      font-size: 20px;
-    }
-  }*/
-
-  
-/* test.module.css */
 .container {
-  --primary-color: #45607b;
-  --secondary-color: #7b7878;
+  --primary-color: #e5e9ed;
+  --secondary-color: #504f4f;
   --highlight-color: #f4f4f9;
-  --border-color: #ddd;
+  --border-color: #c4c2c2;
   --text-color: #333;
   --bg-color: #f0f4f8;
 }
@@ -192,7 +11,7 @@
   display: flex;
   justify-content: space-between;
   align-items: center;
-  gap: 50px; /* Reduced gap for better spacing */
+  gap: 50px; 
   padding: 20px;
   background-color: var(--bg-color);
   border-radius: 12px;
@@ -201,22 +20,22 @@
 }
 
 .imgcontainer {
-  flex: 1;
+  flex: 0.75;
   position: relative;
-  height: 400px;  /*Reduced height for better balance */
+  height: 350px; 
   width:300px;
   display: flex;
-  justify-content: center;
-  align-items: center;
+  justify-content:center;
+  align-items:center;
 }
 
 .img {
-  object-fit: cover; /* Changed from contain to cover for better fit */
+  object-fit:fill; 
   border-radius: 5%;
-  height: 250px; /* Increased size for visibility */
-  width: 250px;
+  height: 150px; 
+  width: 150px;
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15);
-  /*border: 3px solid var(--primary-color);*/
+  
 }
 
 .formcontainer {
@@ -251,6 +70,7 @@
 }
 
 .userListItem {
+  /*box-shadow: #504f4f;*/
   padding: 15px;
   background-color: var(--highlight-color);
   border-radius: 8px;
