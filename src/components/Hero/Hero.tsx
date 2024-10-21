@@ -91,6 +91,20 @@ export default function Hero() {
       imageUrl:
         "https://img.freepik.com/premium-photo/macro-photography-naturephotographer-tourists-taking-pictures-sunset-silhouette-time_1273307-1835.jpg?w=2000",
     },
+    {
+      title: "Tablets",
+      description:
+        "Portable touchscreen computers that are larger than smartphones.",
+      imageUrl:
+        "https://img.freepik.com/premium-photo/tablets-isolated-white-background-8k_1304645-24575.jpg?w=2000",
+    },
+    {
+      title: "Headphones",
+      description:
+        "Audio devices worn on or over the ears to listen to music or audio.",
+      imageUrl:
+        "https://img.freepik.com/premium-photo/3d-rendering-brown-leather-headphones-brown-wooden-table-against-brown-background_1053268-16769.jpg?w=2000",
+    },
   ];
 
 
@@ -140,7 +154,7 @@ export default function Hero() {
 
     <div className="mx-10 ">
         <h1 className="mt-20 mb-10 text-3xl font-bold">Product Categories</h1>
-        <div className="flex py-5 space-x-4 overflow-x-auto">
+        <div className="relative flex py-5 space-x-4 overflow-auto carousel ">
           {Categories.map((category) => (
             <CategoryCard category={category} />
           ))}

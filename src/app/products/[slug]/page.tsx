@@ -3,6 +3,7 @@ import ProductPage from '@/components/product/ProductPage';
 import React, { useEffect, useState } from 'react';
 
 interface Product {
+
   productId: number;
   categoryid: number;
   title: string;

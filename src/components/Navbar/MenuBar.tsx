@@ -18,7 +18,7 @@ import {
   
   export default function MenubarDemo() {
     return (
-      <div className="w-full bg-black ">
+      <div className="w-full ">
    <Menubar  className="bg-black">
         <MenubarMenu>
           <MenubarTrigger>All Categories</MenubarTrigger>

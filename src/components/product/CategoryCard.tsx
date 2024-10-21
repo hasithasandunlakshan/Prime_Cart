@@ -10,7 +10,7 @@ interface Props{
 
 const CategoryCard = ({category} : Props) => {
   return (
-    <div className="card rounded-2xl h-64 aspect-[5/4] shadow-xl group text-white relative overflow-hidden">
+    <div className="card rounded-2xl h-64 aspect-[5/4] shadow-xl group text-white relative carousel-item">
       <figure className="absolute inset-0">
         <img
           src={category.imageUrl}

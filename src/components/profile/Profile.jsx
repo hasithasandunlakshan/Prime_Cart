@@ -55,32 +55,43 @@ const Profile = () => {
             ))}
           </ul>
 
-          <label className={styles.labels}>User Name</label>
+          <label className={styles.labels}>Address No</label>
           <ul className={styles.userList}>
             {names.map((user) => (
               <li key={user.userId} className={styles.userListItem}>
-                {user.username}
+                {user.addrNo}
               </li> 
             ))}
           </ul>
 
-          <label className={styles.labels}>Phone Number 01</label>
+          <label className={styles.labels}>Address Line 1</label>
           <ul className={styles.userList}>
             {names.map((user) => (
               <li key={user.userId} className={styles.userListItem}>
-                {user.contactNo}
+                {user.addrLine1}
               </li> 
             ))}
           </ul>
 
-          <label className={styles.labels}>Country</label>
+          <label className={styles.labels}>Address Town</label>
           <ul className={styles.userList}>
             {names.map((user) => (
               <li key={user.userId} className={styles.userListItem}>
-                {user.country}
+                {user.addrTown}
               </li> 
             ))}
           </ul>
+
+          <label className={styles.labels}>Province</label>
+          <ul className={styles.userList}>
+            {names.map((user) => (
+              <li key={user.userId} className={styles.userListItem}>
+                {user.addrProvince}
+              </li> 
+            ))}
+          </ul>
+
+          
         </div>
 
         <div className={styles.formcontainer}>
@@ -93,42 +104,11 @@ const Profile = () => {
             ))}
           </ul>
 
-          <label className={styles.labels}>Email</label>
+          <label className={styles.labels}>Address Street</label>
           <ul className={styles.userList}>
             {names.map((user) => (
               <li key={user.userId} className={styles.userListItem}>
-                {user.email}
-              </li> 
-            ))}
-          </ul>
-
-          <label className={styles.labels}>Phone Number 02</label>
-          <ul className={styles.userList}>
-            {names.map((user) => (
-              <li key={user.userId} className={styles.userListItem}>
-                {user.phone2}
-              </li> 
-            ))}
-          </ul>
-
-          <label className={styles.labels}>Zip Code</label>
-          <ul className={styles.userList}>
-            {names.map((user) => (
-              <li key={user.userId} className={styles.userListItem}>
-                {user.zipcode}
-              </li> 
-            ))}
-          </ul>
-        </div>
-      </div>
-
-      <div className={styles.container}>
-        <div className={styles.formcontainer}>
-          <label className={styles.labels}>Address No</label>
-          <ul className={styles.userList}>
-            {names.map((user) => (
-              <li key={user.userId} className={styles.userListItem}>
-                {user.addrNo}
+                {user.addrStreet}
               </li> 
             ))}
           </ul>
@@ -141,28 +121,28 @@ const Profile = () => {
               </li> 
             ))}
           </ul>
-        </div>
-
-        <div className={styles.formcontainer}>
-          <label className={styles.labels}>Address Line 1</label>
+          
+          <label className={styles.labels}>District</label>
           <ul className={styles.userList}>
             {names.map((user) => (
               <li key={user.userId} className={styles.userListItem}>
-                {user.addrLine1}
+                {user.addrDistrict}
               </li> 
             ))}
           </ul>
 
-          <label className={styles.labels}>Address Street</label>
+          <label className={styles.labels}>Postal Code</label>
           <ul className={styles.userList}>
             {names.map((user) => (
               <li key={user.userId} className={styles.userListItem}>
-                {user.addrStreet}
+                {user.postalCode}
               </li> 
             ))}
           </ul>
         </div>
       </div>
+
+      
 
       <div className={styles.buttonContainer}>
         <button className={styles.button}>Update My Profile!</button>
