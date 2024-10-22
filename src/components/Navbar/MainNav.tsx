@@ -8,16 +8,20 @@ import { Button } from '../ui/button';
 import Image from 'next/image';
 export default function MainNav() {
   const [searchText, setSearchText] = useState('');
+  
 
   // Handler function for text field changes
   const handleChange = (event:any) => {
     setSearchText(event.target.value);
+    
   };
 
   // Handler function for button click
   const handleSearch = () => {
     console.log('Search value:', searchText);
+    
     fetchData();
+  
     // Add your search logic here
   };
   async function fetchData() {
@@ -47,7 +51,7 @@ export default function MainNav() {
     
   }
   return (
-    <div className='fixed z-50 flex flex-row items-center justify-around w-full h-auto mb-2 bg-gray-50 max-h-20'>
+    <div className='z-50 flex flex-row items-center justify-around w-full h-auto mb-2 bg-gray-50 max-h-20'>
       <Link href={"/"}>
 <Image src={"/images/logo.png"} alt='logo' width={150} height={50} className=''></Image>
       </Link>
