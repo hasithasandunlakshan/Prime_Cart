@@ -73,6 +73,7 @@ const {data:session}=useSession();
     
     cartContext?.addProduct(newProduct);
     onSubmit(newProduct);
+  
    
   };
   const handleSkuChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
@@ -97,6 +98,7 @@ const {data:session}=useSession();
         // Log the status and response body for debugging
         const responseBody = await response.json();
         console.log('Response:', responseBody);
+        
 
         if (!response.ok) {
             throw new Error(`Error ${response.status}: ${responseBody.error || 'Something went wrong'}`);

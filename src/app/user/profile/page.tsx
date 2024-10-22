@@ -6,13 +6,11 @@ const page = () =>{
 
 
   return (
-    <div>
+    
       <div>
         <Profile/>
-      </div>
-      <div>
-        <Payment/>
-      </div>
+ 
+  
     </div>
    
   )

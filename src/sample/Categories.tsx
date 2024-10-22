@@ -2,8 +2,8 @@ export const Categories = [
     {
       name: "Electronics",
       subcategories: [
-        { name: "Mobile Phones", items: ["Smartphones", "Feature Phones", "Accessories"] },
-        { name: "Computers & Laptops", items: ["Laptops", "Desktops", "Monitors", "Keyboards & Mice", "External Storage Devices"] },
+        { name: "smartphones", items: ["Smartphones", "Feature Phones", "Accessories"] },
+        { name: "watches", items: ["Laptops", "Desktops", "Monitors", "Keyboards & Mice", "External Storage Devices"] },
         { name: "Cameras & Photography", items: ["DSLR Cameras", "Lenses", "Tripods", "Drones"] },
         { name: "Home Appliances", items: ["Refrigerators", "Washing Machines", "Air Conditioners", "Microwave Ovens"] },
         { name: "TV & Home Entertainment", items: ["Televisions", "Home Theatre Systems", "Streaming Devices"] },
