@@ -80,7 +80,7 @@ const Payment: React.FC<PaymentProps> = () => {
         body: JSON.stringify({ deliveryMethod, totalAmount, paymentMethod, estimatedDeliveryDate, addressId: deliveryAddress,deliveryFee,userId }),
         
       });
-      console.log("ggggggggggggggggggggggggg",{ deliveryMethod, totalAmount, paymentMethod, estimatedDeliveryDate, addressId: deliveryAddress,deliveryFee })
+      // console.log("ggggggggggggggggggggggggg",{ deliveryMethod, totalAmount, paymentMethod, estimatedDeliveryDate, addressId: deliveryAddress,deliveryFee })
 
       if (!response.ok) {
         throw new Error(`Error ${response.status}: ${await response.text()}`);
