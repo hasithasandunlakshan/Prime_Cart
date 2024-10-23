@@ -6,7 +6,7 @@ import { useSession } from 'next-auth/react';
 import { useRouter } from 'next/navigation';
 import React, { useContext, useState, useEffect } from 'react';
 import { ToastAction } from '../ui/toast';
-
+import { Select, SelectContent, SelectGroup, SelectItem, SelectLabel, SelectTrigger, SelectValue } from "@/components/ui/select";
 interface Product {
   productId: number; 
   title: string; 
@@ -73,10 +73,11 @@ const {data:session}=useSession();
     
     cartContext?.addProduct(newProduct);
     onSubmit(newProduct);
+  
    
   };
-  const handleSkuChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
-    const sku = e.target.value;
+  const handleSkuChange = (sku1:String) => {
+    const sku = sku1;
     const selected = skuData.find((s) => s.sku === sku);
     if (selected) {
       setSelectedSku(selected);
@@ -97,6 +98,7 @@ const {data:session}=useSession();
         // Log the status and response body for debugging
         const responseBody = await response.json();
         console.log('Response:', responseBody);
+        
 
         if (!response.ok) {
             throw new Error(`Error ${response.status}: ${responseBody.error || 'Something went wrong'}`);
@@ -149,8 +151,28 @@ const {data:session}=useSession();
                 <span className="text-gray-600 ">{selectedSku?.availableStock || product.AvailableStock}</span>
               </div>
             </div>
+            <div className="flex items-center justify-start gap-2 align-middle">
+          <Select   onValueChange={(value)=>handleSkuChange(value)}>
 
-            <div className="mb-4">
+              <SelectTrigger className="w-[280px]">
+                <SelectValue placeholder="Select Address" />
+              </SelectTrigger>
+              <SelectContent>
+                <SelectGroup>
+                  <SelectLabel>Select Address</SelectLabel>
+                  {skuData.map((sku,key) => (
+                    <SelectItem key={key} value={sku.sku}>
+                     {sku.sku}
+                    </SelectItem>
+                  ))}
+                </SelectGroup>
+              </SelectContent>
+            </Select>
+
+           
+          </div>
+
+            {/* <div className="mb-4">
               <span className="font-bold text-gray-700 ">Select SKU:</span>
               <select
                 className="px-4 py-2 mt-2 text-gray-700 bg-gray-300 rounded-full dark:bg-gray-700 dark:text-white hover:bg-gray-400 dark:hover:bg-gray-600"
@@ -163,7 +185,7 @@ const {data:session}=useSession();
                   </option>
                 ))}
               </select>
-            </div>
+            </div> */}
 
             <div className="mb-4">
               <span className="font-bold text-gray-700 ">Quantity:</span>

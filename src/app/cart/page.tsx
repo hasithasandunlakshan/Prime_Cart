@@ -36,14 +36,14 @@ const router=useRouter();
                     <span className="font-bold text-gray-700">Subtotal:</span>
                     <span className="font-bold text-gray-800">$ {cartContext?.price}</span>
                 </div>
-                <div className="flex items-center justify-between">
+                {/* <div className="flex items-center justify-between">
                     <span className="font-bold text-gray-700">Shipping:</span>
                     <span className="font-bold text-gray-800">$10.00</span>
-                </div>
+                </div> */}
             </div>
             <div className="flex items-center justify-between pt-4 font-bold text-gray-800 border-t border-gray-300">
                 <span>Total:</span>
-                <span>$210.00</span>
+                <span>$ {cartContext?.price}</span>
             </div>
 
             <button onClick={()=>router.push("/cart/checkout")} type="button" className="w-full py-3 text-white transition-colors bg-blue-500 rounded-md hover:bg-blue-600">Proceed to Checkout</button>

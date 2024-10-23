@@ -32,3 +32,4 @@ ON DUPLICATE KEY UPDATE quantity = quantity + VALUES(quantity);`,
         return NextResponse.json({ error:error }, { status: 500 });
     }
 }
+ 
