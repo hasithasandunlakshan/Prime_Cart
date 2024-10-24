@@ -7,7 +7,21 @@ import ViewCart from './ViewCart';
 import { toast } from '@/hooks/use-toast';
 import { ToastAction } from '../ui/toast';
 import { useSession } from 'next-auth/react';
-
+import UserDetails from '../profile/address';
+import {
+  AlertDialog,
+  AlertDialogAction,
+  AlertDialogCancel,
+  AlertDialogContent,
+  AlertDialogDescription,
+  AlertDialogFooter,
+  AlertDialogHeader,
+  AlertDialogTitle,
+  AlertDialogTrigger,
+} from "@/components/ui/alert-dialog"
+import { Button } from "@/components/ui/button"
+import { useRouter } from 'next/navigation';
+ 
 type Address = {
   addressId: string;
   firstName: string;
@@ -34,11 +48,11 @@ const Payment: React.FC<PaymentProps> = () => {
   const [deliveryAddress, setDeliveryAddress] = useState<number>(0);
   const cartContext = useContext(CartContext);
   const [deliveryFees,setDeliveryFees]=useState(0);
-  
+  const [address,setAddress]=useState(false);
   const totalPrice = Number(cartContext?.price) ?? 0;
   const [total, setTotal] = useState<number>(0);
   const session= useSession();
-
+  const router=useRouter();
   const shippingPrices = {
     fedex: 10.00,
     standard: 5.00,
@@ -50,12 +64,17 @@ const Payment: React.FC<PaymentProps> = () => {
     setTotal((shippingTotal || 0) + totalPrice);
   };
 
+    const openAddressForm = () => {
+      setAddress(prev => !prev);  // Toggle the address form
+    };
+  
+
   const onSubmit = async () => {
    
     const userId = session.data?.user?.id;
     const deliveryFee=deliveryFees;
     
-    
+
  
     const deliveryMethod = selectedShipping; 
     const totalAmount = total; 
@@ -158,6 +177,9 @@ const Payment: React.FC<PaymentProps> = () => {
         </div>
 
         <div className="px-4 pt-8">
+          
+          {address?<UserDetails/>:
+          
           <div className="flex items-center justify-start gap-2 align-middle">
           <Select onValueChange={(value) => setDeliveryAddress(parseInt(value))}>
 
@@ -176,10 +198,28 @@ const Payment: React.FC<PaymentProps> = () => {
               </SelectContent>
             </Select>
 
-            <button type="button"  className="px-4 py-2 text-white bg-black rounded-lg hover:bg-blue-600">
-              + Add
-            </button>
-          </div>
+            <AlertDialog>
+      <AlertDialogTrigger asChild className='' >
+        <Button variant="outline">Show Dialog</Button>
+      </AlertDialogTrigger>
+      <AlertDialogContent className='h-full overflow-y-auto'>
+        {/* <AlertDialogHeader >
+          <AlertDialogTitle>Are you absolutely sure?</AlertDialogTitle>
+          <AlertDialogDescription>
+        
+          </AlertDialogDescription>
+        </AlertDialogHeader> */}
+
+        <UserDetails></UserDetails>
+        <AlertDialogFooter>
+          <AlertDialogCancel >Cancel</AlertDialogCancel>
+          <AlertDialogAction onClick={()=>router.refresh()}>Continue</AlertDialogAction>
+        </AlertDialogFooter>
+      </AlertDialogContent>
+    </AlertDialog>
+          </div>}
+         
+          
           <p className="text-xl font-medium">Payment Methods</p>
           <form className="grid gap-6 mt-5">
             <div className="relative">

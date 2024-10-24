@@ -23,13 +23,19 @@ interface ImagesDetails {
   imageId: number;
   imageUrl: string;
 }
-
+interface Variant {
+  variantId: number;
+  title: string;
+  value: string;
+  textValue?: string; // Optional field, if some variants don't have a textValue
+}
 interface Sku {
-    sku: string,
-        productId: number,
-        price: number,
-        availableStock: number
-  }
+  sku: string;
+  productId: number;
+  price: number;
+  availableStock: number;
+  variants: Variant[];  // Array of `Variant` objects
+}
 interface cartProduct{
       
       userId:number,  // Assuming you have access to the user's ID
@@ -155,16 +161,39 @@ const {data:session}=useSession();
           <Select   onValueChange={(value)=>handleSkuChange(value)}>
 
               <SelectTrigger className="w-[280px]">
-                <SelectValue placeholder="Select Address" />
+                <SelectValue placeholder="Product Variants" />
               </SelectTrigger>
               <SelectContent>
                 <SelectGroup>
-                  <SelectLabel>Select Address</SelectLabel>
-                  {skuData.map((sku,key) => (
-                    <SelectItem key={key} value={sku.sku}>
-                     {sku.sku}
-                    </SelectItem>
-                  ))}
+                  <SelectLabel>Other Products</SelectLabel>
+                  {skuData.map((sku) => (
+  <SelectItem key={sku.sku} value={sku.sku} >
+
+    
+    {sku.sku}
+    {sku.variants.map((variant) => (
+      <p key={variant.variantId} className=''>
+        {variant.title}: 
+        {variant.variantId === 1 ? (
+          <>
+            {/* Render the color variant as a colored box */}
+            <span 
+              className="inline-block w-5 h-5 mt-2 border border-gray-300 rounded-full" 
+              style={{ backgroundColor: variant.value }}
+            ></span>
+          </>
+        ) : (
+          <>
+            {/* Render other variants normally */}
+            {variant.value}
+          </>
+        )}
+      </p>
+    ))}
+  </SelectItem>
+))}
+
+
                 </SelectGroup>
               </SelectContent>
             </Select>

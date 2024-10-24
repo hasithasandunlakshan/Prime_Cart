@@ -24,11 +24,18 @@ interface ImagesDetails {
   imageUrl: string;
 }
 
+interface Variant {
+  variantId: number;
+  title: string;
+  value: string;
+  textValue?: string; // Optional field, if some variants don't have a textValue
+}
 interface Sku {
-  sku: string,
-      productId: number,
-      price: number,
-      availableStock: number
+  sku: string;
+  productId: number;
+  price: number;
+  availableStock: number;
+  variants: Variant[];  // Array of `Variant` objects
 }
 
 interface ProductData {
