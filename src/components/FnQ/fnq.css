@@ -1,0 +1,50 @@
+.chatBox {
+    background-color: #f9f9f9; /* Light background color for the chat box */
+    border: 1px solid #ddd; /* Subtle border */
+    border-radius: 10px; /* Rounded corners */
+    padding: 20px; /* Internal padding */
+    max-width: 400px; /* Maximum width */
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Soft shadow */
+    margin: 20px auto; /* Centered with automatic left and right margins */
+}
+
+.qnaContainer {
+    margin-top: 20px; /* Space above the Q&A container */
+}
+
+.qnaItem {
+    margin-bottom: 15px; /* Space between each Q&A item */
+}
+
+.question {
+    background-color: #0070f3; /* Blue background for questions */
+    color: #fff; /* White text */
+    padding: 15px; /* Increased padding for better spacing */
+    width: 100%; /* Full width of the chat box */
+    text-align: left; /* Left-aligned text */
+    cursor: pointer; /* Pointer cursor on hover */
+    border-radius: 5px; /* Rounded corners for buttons */
+    border: none; /* No border */
+    margin-top: 10px; /* Space above each question */
+    display: flex; /* Use flexbox for alignment */
+    align-items: center; /* Center items vertically */
+    justify-content: space-between; /* Space between question text and icon */
+    transition: background-color 0.3s; /* Smooth background transition */
+}
+
+.question:hover {
+    background-color: #005bb5; /* Darker blue on hover */
+}
+
+.arrow {
+    margin-left: 10px; /* Space between the question text and the arrow */
+    font-size: 18px; /* Adjust icon size */
+    transition: transform 0.3s; /* Smooth transition for rotation */
+}
+
+.answer {
+    margin-top: 5px; /* Space above the answer */
+    padding: 10px; /* Internal padding for answer */
+    background-color: #eaeaea; /* Light gray background for answers */
+    border-radius: 5px; /* Rounded corners for answers */
+}
