@@ -1,76 +1,70 @@
 import Link from "next/link"
-import { Categories } from "../../sample/Categories" 
+import { useEffect, useState } from "react"
 import {
-    Menubar,
-    MenubarCheckboxItem,
-    MenubarContent,
-    MenubarItem,
-    MenubarMenu,
-    MenubarRadioGroup,
-    MenubarRadioItem,
-    MenubarSeparator,
-    MenubarShortcut,
-    MenubarSub,
-    MenubarSubContent,
-    MenubarSubTrigger,
-    MenubarTrigger,
-  } from "@/components/ui/menubar"
-  
-  export default function MenubarDemo() {
-    return (
-      <div className="w-full ">
-   <Menubar  className="bg-black">
+  Menubar,
+  MenubarContent,
+  MenubarItem,
+  MenubarMenu,
+  MenubarSeparator,
+  MenubarSub,
+  MenubarSubContent,
+  MenubarSubTrigger,
+  MenubarTrigger,
+} from "@/components/ui/menubar"
+
+interface SubCategory {
+  subCatId: number
+  subCategoryTitle: string
+}
+
+interface Category {
+  categoryId: number
+  categoryTitle: string
+  subCategories: SubCategory[] // Optional property to handle categories with no subcategories
+}
+
+export default function MenubarDemo() {
+  const [categories, setCategories] = useState<Category[]>([])
+
+  useEffect(() => {
+    const fetchCategories = async () => {
+      try {
+        const response = await fetch("/api/nav_dropdown") // Replace with your actual API endpoint
+        const data = await response.json()
+        setCategories(data)
+        console.log("Data",data)
+      } catch (error) {
+        console.error("Error fetching categories:", error)
+      }
+    }
+
+    fetchCategories()
+  }, [])
+
+  return (
+    <div className="w-full">
+      <Menubar className="bg-black">
         <MenubarMenu>
           <MenubarTrigger>All Categories</MenubarTrigger>
           <MenubarContent className="">
-
-            {/* <MenubarItem>
-             
-            </MenubarItem>
-          
-            <MenubarSeparator /> */}
-            {Categories.map((Categories,key)=>(
-   <MenubarSub key={key+1}>
-    <Link href={`/category/${Categories?.name}`}>
-   <MenubarSubTrigger>{Categories?.name}</MenubarSubTrigger>
-   </Link>
-   <MenubarSubContent className="">
-   {/* <MenubarSub>
-   <MenubarSubTrigger>Share</MenubarSubTrigger>
-   <MenubarSubContent>
-     <MenubarItem>Email link</MenubarItem>
-     <MenubarItem>Messages</MenubarItem>
-     <MenubarItem>Notes</MenubarItem>
-   </MenubarSubContent>
- </MenubarSub> */}
- {Categories?.subcategories.map((subcat,key)=>(
-
-  // <MenubarItem>{subcat?.name}</MenubarItem>
- <Link href={`/category/${Categories?.name}/${subcat?.name}`} key={key+10}>
-
-
-  <MenubarItem >{subcat?.name}</MenubarItem>
-
-  </Link>
-
-  
-
- ))}
-     
-    
-   </MenubarSubContent>
- </MenubarSub>
-
+            {categories.map((category) => (
+              <MenubarSub key={category.categoryId}>
+                <Link href={`/category/${category.categoryTitle}`}>
+                  <MenubarSubTrigger>{category.categoryTitle}</MenubarSubTrigger>
+                </Link>
+                <MenubarSubContent className="">
+                  {category?.subCategories?.map((subcat,key) => (
+                    <Link href={`/category/${category.categoryTitle}/${subcat.subCategoryTitle}`} key={subcat.subCatId}>
+                      <MenubarItem>{subcat.subCategoryTitle}</MenubarItem>
+                    </Link>
+                  ))}
+                </MenubarSubContent>
+              </MenubarSub>
             ))}
-         
             <MenubarSeparator />
-          
           </MenubarContent>
         </MenubarMenu>
-  
       </Menubar>
-      </div>
-   
-    )
-  }
-  
+    </div>
+  )
+}
