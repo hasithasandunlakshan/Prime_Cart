@@ -27,7 +27,7 @@ export default function MainNav() {
   };
  
   return (
-    <div className='fixed z-50 flex flex-row items-center justify-around w-full h-auto mb-2 bg-gray-50 max-h-20'>
+    <div className='z-50 flex flex-row items-center justify-around w-full h-auto mb-2 bg-gray-50 max-h-20'>
       <Link href={"/"}>
 <Image src={"/images/logo.png"} alt='logo' width={150} height={50} className=''></Image>
       </Link>
