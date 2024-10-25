@@ -33,7 +33,7 @@ export default function Nav() {
   const {data:session}=useSession();
   const router =useRouter();
   return (
-    <div className="z-50 flex flex-col items-center justify-center w-full mb-5 text-white bg-black  top-20 min-h-16">
+    <div className="z-50 flex flex-col items-center justify-center w-full mb-5 text-white bg-black top-20 min-h-16">
        <NavigationMenu className="">
          <NavigationMenuList  className="flex gap-5">
            <NavigationMenuItem>
@@ -45,7 +45,7 @@ export default function Nav() {
            Become a Seller
            
            </NavigationMenuItem>
-           <NavigationMenuItem>
+           <NavigationMenuItem  onClick={()=>router.push("/daily_offer")} >
            Daily Offers
            
            </NavigationMenuItem>

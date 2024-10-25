@@ -1,4 +1,5 @@
 "use client";
+import Loading from '@/components/Loading/loading';
 import ProductPage from '@/components/product/ProductPage';
 import React, { useEffect, useState } from 'react';
 
@@ -91,7 +92,7 @@ const Product = ({ params }: { params: { slug: string } }) => {
   }, []);
 
   if (loading) {
-    return <p>Loading...</p>;
+    return <Loading/>
   }
 
   if (error) {
