@@ -25,14 +25,14 @@ export async function GET(request: NextRequest, { params }: { params: { id: stri
             JOIN Variant v ON pv.variantId = v.variantId
             WHERE pv.sku IN (SELECT sku FROM SKU WHERE productID = ?);
         `;
-
+        let query5 = 'select * from ProductAttributes where productId=? '
         // Execute queries
         let values = [params.id];
         const [result] = await connection.execute(query1, values);
         const [images] = await connection.execute(query2, values);
         const [skuResult] = await connection.execute(query3, values);
         const [variantResult] = await connection.execute(query4, values);
-
+        const [attributes] = await connection.execute(query5, values);
         // Ensure skuResult and variantResult are arrays
         const sku: any[] = Array.isArray(skuResult) ? skuResult : [];
         const variants: any[] = Array.isArray(variantResult) ? variantResult : [];
@@ -62,7 +62,8 @@ export async function GET(request: NextRequest, { params }: { params: { id: stri
         const details = {
             result: result,
             sku: skuWithVariants, // SKUs with variants included
-            images: images
+            images: images,
+            attributes:attributes
         };
 
         console.log("Details:", details);

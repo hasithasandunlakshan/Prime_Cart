@@ -57,6 +57,7 @@ const Payment: React.FC<PaymentProps> = () => {
     fedex: 10.00,
     standard: 5.00,
   };
+  
 
   const calculateTotal = () => {
     const shippingTotal = shippingPrices[selectedShipping];
@@ -68,7 +69,6 @@ const Payment: React.FC<PaymentProps> = () => {
       setAddress(prev => !prev);  // Toggle the address form
     };
   
-
   const onSubmit = async () => {
    
     const userId = session.data?.user?.id;
@@ -107,6 +107,7 @@ const Payment: React.FC<PaymentProps> = () => {
 
       const responseBody = await response.json();
       console.log('Success:', responseBody);
+      router.push("/order")
 
     } catch (error) {
       console.error('Error in onSubmit:', error);
@@ -137,7 +138,7 @@ const Payment: React.FC<PaymentProps> = () => {
     };
     fetchAddresses();
     console.log("modaya" ,session.data?.user?.id)
-  }, []);
+  }, [openAddressForm,session.data?.user?.id]);
 
   return (
     <main className="flex flex-col items-center justify-center w-full">

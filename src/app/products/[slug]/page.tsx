@@ -37,17 +37,25 @@ interface Sku {
   availableStock: number;
   variants: Variant[];  // Array of `Variant` objects
 }
+interface attribute {
+  ProductId: number;
+  attribute: string;
+  value: string;
+  // Optional field, if some variants don't have a textValue
+}
 
 interface ProductData {
   result: Product[];
   images: ImagesDetails[];
-  sku: Sku[]; // Add Sku data interface
+  sku: Sku[];
+  attributes:attribute[] // Add Sku data interface
 }
 
 const Product = ({ params }: { params: { slug: string } }) => {
   const [data, setData] = useState<Product[]>([]);
   const [images, setImages] = useState<ImagesDetails[]>([]);
   const [skuData, setSkuData] = useState<Sku[]>([]);
+  const [attributes, setAttribute] = useState<attribute[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
 
@@ -68,7 +76,8 @@ const Product = ({ params }: { params: { slug: string } }) => {
       setData(datasample.result);
       setImages(datasample.images);
       setSkuData(datasample?.sku); 
-      console.log("ggggggggggggggggggggggggggggggggggg",skuData);// Store skuData
+      setAttribute(datasample.attributes)
+      console.log("",skuData);// Store skuData
       setLoading(false);
       
     } catch (error) {
@@ -100,7 +109,8 @@ const Product = ({ params }: { params: { slug: string } }) => {
           key={product.productId}
           product={product}
           images={images}
-         skuData={skuData}  // Pass skuData to ProductPage
+         skuData={skuData} 
+         attribute={attributes} // Pass skuData to ProductPage
         />
       ))}
     </>
