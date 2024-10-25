@@ -17,7 +17,8 @@ module.exports = {
   			sm: 'calc(var(--radius) - 4px)'
   		},
   		colors: {
-  			background: 'hsl(var(--background))',
+  			//background: 'hsl(var(--background))',
+			  background: 'white',
   			foreground: 'hsl(var(--foreground))',
   			card: {
   				DEFAULT: 'hsl(var(--card))',
@@ -60,6 +61,8 @@ module.exports = {
   		}
   	}
   },
-  plugins: [require("tailwindcss-animate"),],
+
+  plugins: [require("tailwindcss-animate"),require('daisyui')],
+
 }
 

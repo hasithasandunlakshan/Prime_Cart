@@ -1,113 +1,258 @@
-import React from 'react';
+"use client"
 
-export default function Payment() {
-  return (
-    <main className='flex  flex-col justify-center items-center  align-middle w-full]'>
-          <div className='shadow-2xl shadow-gray-500 w-[50%] mt-10'>
-      <div className="w-full max-w-lg mx-auto my-10">
-        <h1 className="relative text-2xl font-medium text-black sm:text-3xl">
-          Secure Checkout
-          <span className="block w-10 h-1 mt-2 bg-black sm:w-20"></span>
-        </h1>
-        <form action="" className="flex flex-col mt-10 space-y-4">
-          <div>
-            <label htmlFor="email" className="text-xs font-semibold text-gray-800">
-              Email
-            </label>
-            <input
-              type="email"
-              id="email"
-              name="email"
-              placeholder="john.capler@fang.com"
-              className="block w-full px-4 py-3 mt-1 text-sm placeholder-gray-400 transition bg-gray-100 border-gray-400 rounded shadow-sm outline-none focus:ring-2 focus:ring-black"
-            />
-          </div>
-          <div className="relative">
-            <label htmlFor="card-number" className="text-xs font-semibold text-gray-800">
-              Card number
-            </label>
-            <input
-              type="text"
-              id="card-number"
-              name="card-number"
-              placeholder="1234-5678-XXXX-XXXX"
-              className="block w-full px-4 py-3 pr-10 text-sm placeholder-gray-400 transition bg-gray-100 border-gray-400 rounded shadow-sm outline-none focus:ring-2 focus:ring-black"
-            />
-            {/* <img
-              src="/images/uQUFIfCYVYcLK0qVJF5Yw.png"
-              alt="Card logo"
-              className="absolute bottom-3 right-3 max-h-4"
-            /> */}
-          </div>
-          <div>
-            <p className="text-xs font-semibold text-gray-800">Expiration date</p>
-            <div className="flex flex-wrap mr-6">
-              <div className="my-1">
-                <label htmlFor="month" className="sr-only">
-                  Select expiration month
-                </label>
-                <select
-                  name="month"
-                  id="month"
-                  className="px-2 py-3 text-sm transition bg-gray-100 border-gray-400 rounded shadow-sm outline-none cursor-pointer focus:ring-2 focus:ring-black"
-                >
-                  <option value="">Month</option>
-                </select>
-              </div>
-              <div className="my-1 ml-3 mr-6">
-                <label htmlFor="year" className="sr-only">
-                  Select expiration year
-                </label>
-                <select
-                  name="year"
-                  id="year"
-                  className="px-2 py-3 text-sm transition bg-gray-100 border-gray-400 rounded shadow-sm outline-none cursor-pointer focus:ring-2 focus:ring-black"
-                >
-                  <option value="">Year</option>
-                </select>
-              </div>
-              <div className="relative my-1">
-                <label htmlFor="security-code" className="sr-only">
-                  Security code
-                </label>
-                <input
-                  type="text"
-                  id="security-code"
-                  name="security-code"
-                  placeholder="Security code"
-                  className="block px-4 py-3 text-sm placeholder-gray-400 transition bg-gray-100 border-gray-400 rounded shadow-sm outline-none w-36 focus:ring-2 focus:ring-black"
-                />
-              </div>
-            </div>
-          </div>
-          <div>
-            <label htmlFor="card-name" className="sr-only">
-              Card name
-            </label>
-            <input
-              type="text"
-              id="card-name"
-              name="card-name"
-              placeholder="Name on the card"
-              className="block w-full px-4 py-3 mt-1 text-sm placeholder-gray-400 transition bg-gray-100 border-gray-400 rounded shadow-sm outline-none focus:ring-2 focus:ring-black"
-            />
-          </div>
-        </form>
-        <p className="mt-10 text-sm font-semibold text-center text-gray-600">
-          By placing this order you agree to the{' '}
-          <a href="#" className="text-black underline whitespace-nowrap hover:text-gray-700">
-            Terms and Conditions
-          </a>
-        </p>
-        <button
-          type="submit"
-          className="mt-4 inline-flex w-full items-center justify-center rounded bg-black py-2.5 px-4 text-base font-semibold tracking-wide text-white text-opacity-80 outline-none ring-offset-2 transition hover:text-opacity-100 focus:ring-2 focus:ring-black sm:text-lg"
-        >
-          Place Order
-        </button>
-      </div>
-    </div>
-    </main>
+import React, { useContext, useEffect, useState } from 'react';
+import { Select, SelectContent, SelectGroup, SelectItem, SelectLabel, SelectTrigger, SelectValue } from "@/components/ui/select";
+import { CartContext } from '@/hooks/useCart';
+import ViewCart from './ViewCart';
+import { toast } from '@/hooks/use-toast';
+import { ToastAction } from '../ui/toast';
+import { useSession } from 'next-auth/react';
+import UserDetails from '../profile/address';
+import {
+  AlertDialog,
+  AlertDialogAction,
+  AlertDialogCancel,
+  AlertDialogContent,
+  AlertDialogDescription,
+  AlertDialogFooter,
+  AlertDialogHeader,
+  AlertDialogTitle,
+  AlertDialogTrigger,
+} from "@/components/ui/alert-dialog"
+import { Button } from "@/components/ui/button"
+import { useRouter } from 'next/navigation';
+ 
+type Address = {
+  addressId: string;
+  firstName: string;
+  lastName: string;
+  addrNo: string;
+  addrStreet: string;
+  addrLine1: string;
+  addrLine2: string;
+  addrTown: string;
+  addrDistrict: string;
+  addrProvince: string;
+  postalCode: string;
+  contactNo: string;
+};
+
+type PaymentProps = {
+  // Add any props if needed
+};
+
+const Payment: React.FC<PaymentProps> = () => {
+  const [selectedShipping, setSelectedShipping] = useState<'fedex' | 'standard'>('fedex');
+  const [selectedPayment, setSelectedPayment] = useState<'credit' | 'paypal'>('credit');
+  const [addresses, setAddresses] = useState<Address[]>([]);
+  const [deliveryAddress, setDeliveryAddress] = useState<number>(0);
+  const cartContext = useContext(CartContext);
+  const [deliveryFees,setDeliveryFees]=useState(0);
+  const [address,setAddress]=useState(false);
+  const totalPrice = Number(cartContext?.price) ?? 0;
+  const [total, setTotal] = useState<number>(0);
+  const session= useSession();
+  const router=useRouter();
+  const shippingPrices = {
+    fedex: 10.00,
+    standard: 5.00,
+  };
+
+  const calculateTotal = () => {
+    const shippingTotal = shippingPrices[selectedShipping];
+    setDeliveryFees(shippingTotal)
+    setTotal((shippingTotal || 0) + totalPrice);
+  };
+
+    const openAddressForm = () => {
+      setAddress(prev => !prev);  // Toggle the address form
+    };
   
+
+  const onSubmit = async () => {
+   
+    const userId = session.data?.user?.id;
+    const deliveryFee=deliveryFees;
+    
+
+ 
+    const deliveryMethod = selectedShipping; 
+    const totalAmount = total; 
+    const paymentMethod = selectedPayment; 
+    const estimatedDeliveryDate = "2024-10-05"; 
+
+    if (!userId || !deliveryMethod || !totalAmount || !paymentMethod || !estimatedDeliveryDate || !deliveryAddress || !deliveryFee) {
+      toast({
+        variant: "destructive",
+        title: "Uh oh! Something went wrongsssssss.",
+        description: "Missing required parameters.",
+        action: <ToastAction altText="Try again">Try again</ToastAction>,
+      });
+      return;
+    }
+
+
+    try {
+      const response = await fetch('/api/order', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ deliveryMethod, totalAmount, paymentMethod, estimatedDeliveryDate, addressId: deliveryAddress,deliveryFee,userId }),
+        
+      });
+      // console.log("ggggggggggggggggggggggggg",{ deliveryMethod, totalAmount, paymentMethod, estimatedDeliveryDate, addressId: deliveryAddress,deliveryFee })
+
+      if (!response.ok) {
+        throw new Error(`Error ${response.status}: ${await response.text()}`);
+      }
+
+      const responseBody = await response.json();
+      console.log('Success:', responseBody);
+
+    } catch (error) {
+      console.error('Error in onSubmit:', error);
+      toast({
+        variant: "destructive",
+        title: "Uh oh! Something went wrong.",
+        description: "There was a problem with your request.",
+        action: <ToastAction altText="Try again">Try again</ToastAction>,
+      });
+    }
+  };
+
+  useEffect(() => {
+    calculateTotal();
+  
+  }, [selectedShipping, totalPrice]);
+
+  useEffect(() => {
+    const fetchAddresses = async () => {
+      try {
+        const response = await fetch('/api/checkout');
+        if (!response.ok) throw new Error('Failed to fetch addresses');
+        const data = await response.json();
+        setAddresses(data);
+      } catch (err) {
+        console.log(err);
+      }
+    };
+    fetchAddresses();
+    console.log("modaya" ,session.data?.user?.id)
+  }, []);
+
+  return (
+    <main className="flex flex-col items-center justify-center w-full">
+      <div className="grid sm:px-10 lg:grid-cols-2 lg:px-20 xl:px-32">
+        <div className="px-4 pt-8">
+          <p className="text-xl font-medium">Order Summary</p>
+          <p className="text-gray-400">Check your items and select a suitable shipping method.</p>
+          <div className="space-y-4">
+            {cartContext?.products?.map((product, key) => (
+              <ViewCart key={key} product={product} />
+            ))}
+          </div>
+          <p className="mt-8 text-lg font-medium">Shipping Methods</p>
+          <form className="grid gap-6 mt-5">
+            {Object.entries(shippingPrices).map(([method, price]) => (
+              <div className="relative" key={method}>
+                <input
+                  className="hidden peer"
+                  id={`radio_${method}`}
+                  type="radio"
+                  name="shipping"
+                  value={method}
+                  checked={selectedShipping === method}
+                  onChange={() => setSelectedShipping(method as 'fedex' | 'standard')}
+                />
+                <span className="box-content absolute block w-3 h-3 -translate-y-1/2 bg-white border-8 border-gray-300 rounded-full peer-checked:border-gray-700 right-4 top-1/2"></span>
+                <label className="flex p-4 border border-gray-300 rounded-lg cursor-pointer select-none peer-checked:border-2 peer-checked:border-gray-700 peer-checked:bg-gray-50" htmlFor={`radio_${method}`}>
+                  <img className="object-contain w-14" src={"/images/credit.jpg"} alt={`${method.charAt(0).toUpperCase() + method.slice(1)} Delivery`} />
+                  <div className="ml-5">
+                    <span className="mt-2 font-semibold">{`${method.charAt(0).toUpperCase() + method.slice(1)} Delivery - $${price.toFixed(2)}`}</span>
+                    <p className="text-sm leading-6 text-slate-500">Delivery: {method === 'fedex' ? '2-4 Days' : '5-7 Days'}</p>
+                  </div>
+                </label>
+              </div>
+            ))}
+          </form>
+        </div>
+
+        <div className="px-4 pt-8">
+          
+          {address?<UserDetails/>:
+          
+          <div className="flex items-center justify-start gap-2 align-middle">
+          <Select onValueChange={(value) => setDeliveryAddress(parseInt(value))}>
+
+              <SelectTrigger className="w-[280px]">
+                <SelectValue placeholder="Select Address" />
+              </SelectTrigger>
+              <SelectContent>
+                <SelectGroup>
+                  <SelectLabel>Select Address</SelectLabel>
+                  {addresses.map((address) => (
+                    <SelectItem key={address.addressId} value={address.addressId}>
+                      <p>{`${address.firstName} ${address.lastName}`}</p>{address.addrNo}, {address.addrStreet}, {address.addrLine1}, {address.addrLine2}<br/>{address.addrTown}, {address.addrDistrict}, {address.addrProvince}, {address.postalCode}, {address.contactNo}
+                    </SelectItem>
+                  ))}
+                </SelectGroup>
+              </SelectContent>
+            </Select>
+
+            <AlertDialog>
+      <AlertDialogTrigger asChild className='' >
+        <Button variant="outline">Show Dialog</Button>
+      </AlertDialogTrigger>
+      <AlertDialogContent className='h-full overflow-y-auto'>
+        {/* <AlertDialogHeader >
+          <AlertDialogTitle>Are you absolutely sure?</AlertDialogTitle>
+          <AlertDialogDescription>
+        
+          </AlertDialogDescription>
+        </AlertDialogHeader> */}
+
+        <UserDetails></UserDetails>
+        <AlertDialogFooter>
+          <AlertDialogCancel >Cancel</AlertDialogCancel>
+          <AlertDialogAction onClick={()=>router.refresh()}>Continue</AlertDialogAction>
+        </AlertDialogFooter>
+      </AlertDialogContent>
+    </AlertDialog>
+          </div>}
+         
+          
+          <p className="text-xl font-medium">Payment Methods</p>
+          <form className="grid gap-6 mt-5">
+            <div className="relative">
+              <input className="hidden peer" id="payment_1" type="radio" name="payment" value="credit" checked={selectedPayment === 'credit'} onChange={() => setSelectedPayment('credit')} />
+              <span className="box-content absolute block w-3 h-3 -translate-y-1/2 bg-white border-8 border-gray-300 rounded-full peer-checked:border-gray-700 right-4 top-1/2"></span>
+              <label className="flex p-4 border border-gray-300 rounded-lg cursor-pointer select-none peer-checked:border-2 peer-checked:border-gray-700 peer-checked:bg-gray-50" htmlFor="payment_1">
+                <img className="object-contain w-14" src="/images/credit.jpg" alt="Credit Card Payment" />
+                <div className="ml-5">
+                  <span className="mt-2 font-semibold">Credit Card</span>
+                  <p className="text-sm leading-6 text-slate-500">Pay securely using your credit card.</p>
+                </div>
+              </label>
+            </div>
+            <div className="relative">
+              <input className="hidden peer" id="payment_2" type="radio" name="payment" value="paypal" checked={selectedPayment === 'paypal'} onChange={() => setSelectedPayment('paypal')} />
+              <span className="box-content absolute block w-3 h-3 -translate-y-1/2 bg-white border-8 border-gray-300 rounded-full peer-checked:border-gray-700 right-4 top-1/2"></span>
+              <label className="flex p-4 border border-gray-300 rounded-lg cursor-pointer select-none peer-checked:border-2 peer-checked:border-gray-700 peer-checked:bg-gray-50" htmlFor="payment_2">
+                <img className="object-contain w-14" src="/images/paypal.jpg" alt="PayPal Payment" />
+                <div className="ml-5">
+                  <span className="mt-2 font-semibold">PayPal</span>
+                  <p className="text-sm leading-6 text-slate-500">Pay using your PayPal account.</p>
+                </div>
+              </label>
+            </div>
+            <p className="mt-4 text-lg font-bold">Total: ${total}</p>
+            <button type="button" onClick={onSubmit} className="px-4 py-2 mt-4 text-white bg-blue-500 rounded-lg hover:bg-blue-600">
+              Place Order
+            </button>
+          </form>
+        </div>
+      </div>
+    </main>
   );
-}
+};
+
+export default Payment;

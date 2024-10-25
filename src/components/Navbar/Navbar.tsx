@@ -27,11 +27,13 @@ import {  DropdownMenu,
   DropdownMenuLabel,
   DropdownMenuSeparator,
   DropdownMenuTrigger, } from "../ui/dropdown-menu";
+import { useRouter } from 'next/navigation';
 
 export default function Nav() {
   const {data:session}=useSession();
+  const router =useRouter();
   return (
-    <div className="flex flex-col items-center justify-center w-[full] text-white bg-black  min-h-16">
+    <div className="z-50 flex flex-col items-center justify-center w-full mb-5 text-white bg-black  top-20 min-h-16">
        <NavigationMenu className="">
          <NavigationMenuList  className="flex gap-5">
            <NavigationMenuItem>
@@ -57,14 +59,14 @@ export default function Nav() {
 
 <DropdownMenu   >
           <DropdownMenuTrigger asChild>
-<Avatar className="text-black bg-white">H</Avatar>
+<Avatar className="text-black bg-white">{session.user?.email?.charAt(0).toUpperCase()}</Avatar>
 
 
           </DropdownMenuTrigger>
           <DropdownMenuContent>
-            <DropdownMenuLabel >My Account</DropdownMenuLabel>
+            <DropdownMenuLabel >{session.user?.id}</DropdownMenuLabel>
             <DropdownMenuSeparator />
-            <DropdownMenuItem className='cursor-pointer'>Profile</DropdownMenuItem>
+            <DropdownMenuItem onClick={()=>router.push("/user/profile")} className='cursor-pointer'>Profile</DropdownMenuItem>
             <DropdownMenuItem className='cursor-pointer'>History</DropdownMenuItem>
             <DropdownMenuItem className='cursor-pointer'>settings</DropdownMenuItem>
            

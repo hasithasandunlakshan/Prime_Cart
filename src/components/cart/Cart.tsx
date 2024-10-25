@@ -8,7 +8,7 @@ import { useRouter } from 'next/navigation';
 
 export default function Cart() {
   const cartContext = useContext(CartContext);
-  const productCount = cartContext?.products.length || 0;
+  const productCount = cartContext?.products?.length || 0;
 const router =useRouter();
   const handleClick = () => {
     // Add logic to handle click event, e.g., open cart modal
