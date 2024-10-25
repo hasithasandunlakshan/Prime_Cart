@@ -1,31 +1,31 @@
 .chatBox {
-    background-color: #f9f9f9; /* Light background color for the chat box */
+    background-color: #f3f4f6; /* Light gray background for the chat box */
     border: 1px solid #ddd; /* Subtle border */
     border-radius: 10px; /* Rounded corners */
-    padding: 20px; /* Internal padding */
-    max-width: 400px; /* Maximum width */
+    padding: 15px; /* Reduced internal padding to minimize white space */
+    max-width: 500px; /* Increased maximum width for the chat box */
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Soft shadow */
     margin: 20px auto; /* Centered with automatic left and right margins */
 }
 
 .qnaContainer {
-    margin-top: 20px; /* Space above the Q&A container */
+    margin-top: 10px; /* Reduced space above the Q&A container */
 }
 
 .qnaItem {
-    margin-bottom: 15px; /* Space between each Q&A item */
+    margin-bottom: 10px; /* Reduced space between each Q&A item */
 }
 
 .question {
-    background-color: #0070f3; /* Blue background for questions */
+    background: linear-gradient(135deg, #0070f3, #6f42c1); /* Gradient from blue to purple */
     color: #fff; /* White text */
     padding: 15px; /* Increased padding for better spacing */
-    width: 100%; /* Full width of the chat box */
+    width: calc(100% - 20px); /* Full width minus padding */
     text-align: left; /* Left-aligned text */
     cursor: pointer; /* Pointer cursor on hover */
     border-radius: 5px; /* Rounded corners for buttons */
     border: none; /* No border */
-    margin-top: 10px; /* Space above each question */
+    margin-top: 5px; /* Reduced space above each question */
     display: flex; /* Use flexbox for alignment */
     align-items: center; /* Center items vertically */
     justify-content: space-between; /* Space between question text and icon */
@@ -33,7 +33,7 @@
 }
 
 .question:hover {
-    background-color: #005bb5; /* Darker blue on hover */
+    background: linear-gradient(135deg, #005bb5, #5a36b2); /* Darker gradient on hover */
 }
 
 .arrow {
