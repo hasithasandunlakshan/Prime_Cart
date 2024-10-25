@@ -7,18 +7,11 @@ export async function GET(request:Request){
     try{
         const connection=await mysql.createConnection(connectionparams);
         let query='';
-        query=`SELECT DISTINCT 
-    p.*, 
-    SKU.*, 
-    MIN(pi.imageUrl) AS imageUrl -- Fetch the first image for each product
-FROM 
-    Product p
-JOIN 
-    SKU ON p.baseSKU = SKU.sku
-JOIN 
-    ProductImages pi ON p.productID = pi.productID
-GROUP BY 
-    p.productID, SKU.sku   ORDER BY p.productId desc;`;
+        query=`SELECT c.categoryId, c.title AS categoryTitle, s.subCatId, s.title AS subCategoryTitle
+FROM defaultCategory c
+LEFT JOIN defaultdb.SubCategory s ON c.categoryId = s.mainCatId
+ORDER BY c.categoryId, s.subCatId;
+`;
         let values:any[]=[]
         const [result]=await connection.execute(query,values);
         connection.end();
