@@ -17,7 +17,7 @@ interface Product {
 
 const incrementProductView = async (productId: number) => {
   try {
-    const response = await fetch('/api/productView', {
+    const response = await fetch('/api/products/productView', {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',

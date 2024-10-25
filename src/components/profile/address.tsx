@@ -86,7 +86,7 @@ export function UserDetails() {
   };
 
   return (
-    <main className="flex items-center justify-center h-full bg-primary">
+    <main className="flex items-center justify-center w-full h-full bg-primary">
       <div className="flex flex-col py-20 mt-10 container w-[100%] lg:w-[50%]">
         <h1 className="py-0 mb-4 text-3xl font-bold sm:text-4xl md:text-7xl text-secondary">
           User Address Details

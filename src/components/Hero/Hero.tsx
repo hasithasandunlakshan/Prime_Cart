@@ -147,7 +147,7 @@ export default function Hero() {
       <div className="grid grid-cols-4 gap-5">
         {data.map((product, key) => (
         
-      <ProductCard product={product}/>
+      <ProductCard product={product} key={key}/>
         ))}
       </div>
     </div>
@@ -155,8 +155,8 @@ export default function Hero() {
     <div className="mx-10 ">
         <h1 className="mt-20 mb-10 text-3xl font-bold">Product Categories</h1>
         <div className="relative flex py-5 space-x-4 overflow-auto carousel ">
-          {Categories.map((category) => (
-            <CategoryCard category={category} />
+          {Categories.map((category,key) => (
+            <CategoryCard category={category} key={key} />
           ))}
         </div>
 

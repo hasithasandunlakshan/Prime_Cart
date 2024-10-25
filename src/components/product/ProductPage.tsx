@@ -42,11 +42,18 @@ interface cartProduct{
       sku:string;
       quantity:number;
 }
+interface attribute {
+  ProductId: number;
+  attribute: string;
+  value: string;
+  // Optional field, if some variants don't have a textValue
+}
 
-const ProductPage: React.FC<{ product: Product; images: ImagesDetails[]; skuData: Sku[] }> = ({
+const ProductPage: React.FC<{ product: Product; images: ImagesDetails[]; skuData: Sku[];attribute:attribute[] }> = ({
   product,
   images,
   skuData,
+  attribute
 }) => 
     {
   const [quantity, setQuantity] = useState(1);
@@ -124,7 +131,7 @@ const {data:session}=useSession();
 };
 
   return (
-    <div className="py-8 bg-gray-100 dark:bg-gray-100">
+    <div className="container flex flex-col items-center justify-center py-8 align-middle bg-gray-100">
       <div className="max-w-6xl px-4 mx-auto sm:px-6 lg:px-8">
         <div className="flex flex-col -mx-4 md:flex-row">
           <div className="px-4 md:flex-1">
@@ -264,6 +271,34 @@ const {data:session}=useSession();
           </div>
         </div>
       </div>
+
+
+      <div className="border-b border-gray-300">
+          <nav className="flex gap-4">
+            <a href="#" title="" className="py-4 text-sm font-medium text-gray-900 border-b-2 border-gray-900 hover:border-gray-400 hover:text-gray-800"> Description </a>
+
+            {/* <a href="#" title="" className="inline-flex items-center py-4 text-sm font-medium text-gray-600 border-b-2 border-transparent">
+              Reviews
+              <span className="block px-2 py-px ml-2 text-xs font-bold text-gray-100 bg-gray-500 rounded-full"> 1,209 </span>
+            </a> */}
+          </nav>
+        </div>
+
+        <div className="items-start flow-root mt-8 sm:mt-12">
+
+          {attribute.map((attribute,key)=>(
+<>
+
+<h1 className="text-3xl font-bold">{attribute.attribute}</h1>
+<p className="mb-4">{attribute.value}</p>
+</>
+
+
+          ))}
+       
+        </div>
+    
+
     </div>
   );
 };
