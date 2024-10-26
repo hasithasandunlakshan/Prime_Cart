@@ -1,54 +1,64 @@
 // app/search/page.tsx
 "use client";
 import ProductCard from '@/components/product/productCard';
+import SkeletonLoader from '@/components/Loading/skelton';
 import { useSearchParams } from 'next/navigation';
 import { useEffect, useState } from 'react';
 
 export default function SearchPage({ params }: { params: { query: string } }) {
   const [data, setData] = useState([]);
-  console.log('hhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhh',params.query)
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState<string | null>(null);
+
   async function fetchData() {
-    try{
-      const response =await fetch(`/api/search/${params.query}`,
-       { method:'GET',
+    try {
+      setLoading(true);
+      const response = await fetch(`/api/search/${params.query}`, {
+        method: 'GET',
         headers: {
           'Content-Type': 'application/json',
-      },
-    
-    }
-      );
+        },
+      });
+
       if (!response.ok) {
         throw new Error('Network response was not ok');
       }
 
       const data = await response.json();
-      setData(data)
-      console.log('API response:', data);
-      // Process the response data as needed
-      
+      setData(data);
+    } catch (error) {
+      console.error('Error fetching data:', error);
+      setError('Failed to fetch data. Please try again later.');
+    } finally {
+      setLoading(false);
     }
-    
-    catch(error){
-      
-    }
-    
-    
   }
-  
+
   useEffect(() => {
     fetchData();
-  }, []);
+  }, [params.query]);
 
   return (
-    <div>
+    <div className='flex flex-col py-44'>
       <h1>Search Results for: {params.query ? params.query : 'No query provided'}</h1>
-      <div className="grid grid-cols-4 gap-5">
-        {data.map((product, key) => (
-        
-      <ProductCard product={product} key={key}/>
-        ))}
-      </div>
+      
+      {loading ? (
+        <div className="grid grid-cols-4 gap-5">
+          {[...Array(8)].map((_, index) => (
+            <SkeletonLoader key={index} />
+          ))}
+        </div>
+      ) : error ? (
+        <h2 className="text-red-500">{error}</h2>
+      ) : data.length > 0 ? (
+        <div className="grid grid-cols-4 gap-5">
+          {data.map((product, key) => (
+            <ProductCard product={product} key={key} />
+          ))}
+        </div>
+      ) : (
+        <h2>No results found.</h2>
+      )}
     </div>
-  
   );
 }

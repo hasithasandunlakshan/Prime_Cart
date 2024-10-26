@@ -25,7 +25,7 @@ export default function RootLayout({
         {/* Wrap the children inside NextUIProvider */}
         <CartContextProvider >
               <Toaster />
-              <MainNav />
+   
               <Nav />
               {children}
             </CartContextProvider>

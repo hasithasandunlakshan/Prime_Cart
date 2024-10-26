@@ -36,15 +36,19 @@ export const CartContextProvider: React.FC<{ children: ReactNode }> = ({ childre
           console.error("Error fetching cart items:", error);
         }
       }
+      else{
+        const total = products.reduce((sum, product) => sum + product.price * product.quantity, 0);
+    setPrice(total);
+      }
     };
 
     fetchCartItems();
-  }, [products,[]]); // Only re-run when session user ID changes
+  }, [products]); // Only re-run when session user ID changes
 
   // Function to add product to cart
   const addProduct = (product: any) => {
     setProducts((prevProducts) => [...prevProducts, product]);
-    router.refresh();
+   
 
     // Optionally, you can call an API to add this product to the cart in the database
   };
@@ -52,7 +56,7 @@ export const CartContextProvider: React.FC<{ children: ReactNode }> = ({ childre
   // Function to remove product from cart
   const removeProduct = (productSKU: string) => {
     setProducts((prevProducts) => prevProducts.filter(product => product.sku !== productSKU));
-    router.refresh();
+    
     // Optionally, you can call an API to remove this product from the cart in the database
   };
 

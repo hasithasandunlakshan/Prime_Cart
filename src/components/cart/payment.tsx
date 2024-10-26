@@ -201,7 +201,7 @@ const Payment: React.FC<PaymentProps> = () => {
 
             <AlertDialog>
       <AlertDialogTrigger asChild className='' >
-        <Button variant="outline">Show Dialog</Button>
+        <Button variant="outline">Add Address</Button>
       </AlertDialogTrigger>
       <AlertDialogContent className='h-full overflow-y-auto'>
         {/* <AlertDialogHeader >
