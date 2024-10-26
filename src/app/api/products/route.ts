@@ -18,7 +18,7 @@ JOIN
 JOIN 
     ProductImages pi ON p.productID = pi.productID
 GROUP BY 
-    p.productID, SKU.sku   ORDER BY p.productId desc;`;
+    p.productID, SKU.sku   ORDER BY p.productId desc limit 8;`;
         let values:any[]=[]
         const [result]=await connection.execute(query,values);
         connection.end();

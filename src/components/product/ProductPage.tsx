@@ -4,8 +4,9 @@ import { toast } from '@/hooks/use-toast';
 import { CartContext } from '@/hooks/useCart';
 import { useSession } from 'next-auth/react';
 import { useRouter } from 'next/navigation';
-import React, { useContext, useState } from 'react';
+import React, { useContext, useEffect, useState } from 'react';
 import { ToastAction } from '../ui/toast';
+import SkeletonLoader from '../Loading/productSkelton';
 
 interface Product {
   productId: number;
@@ -64,6 +65,16 @@ const ProductPage: React.FC<{ product: Product; images: ImagesDetails[]; skuData
   const cartContext = useContext(CartContext);
   const router = useRouter();
   const [isLoadingCart, setIsLoadingCart] = useState(false);
+  const [loading, setLoading] = useState(true); // New loading state
+
+  useEffect(() => {
+    // Simulate loading time for the product data
+    const timer = setTimeout(() => {
+      setLoading(false);
+    }, 1000); // Set a timeout for 1 second (or adjust as needed)
+
+    return () => clearTimeout(timer); // Clean up the timer
+  }, []);
 
   const handleIncrement = () => setQuantity(quantity + 1);
   const handleDecrement = () => quantity > 1 && setQuantity(quantity - 1);
@@ -76,7 +87,8 @@ const ProductPage: React.FC<{ product: Product; images: ImagesDetails[]; skuData
     };
   
     try {
-      await onSubmit(newProduct); // Await onSubmit
+      await onSubmit(newProduct);
+      cartContext?.addProduct(newProduct); // Await onSubmit
       setIsInCart(false); // Update the inCart state here if successful
     } catch (error) {
       console.error('Error adding to cart:', error);
@@ -220,7 +232,7 @@ const ProductPage: React.FC<{ product: Product; images: ImagesDetails[]; skuData
               ) : (
                 <button
                   onClick={() => router.push('/cart')}
-                  className="w-full px-4 py-2 font-bold text-white bg-red-600 rounded-md max-w-60 hover:bg-gray-700"
+                  className="w-[100%] px-4 py-2 font-bold text-white bg-red-600 rounded-md  hover:bg-gray-700"
                 >
                   View Cart
                 </button>
@@ -239,8 +251,8 @@ const ProductPage: React.FC<{ product: Product; images: ImagesDetails[]; skuData
 
         <div className="grid items-start justify-start mt-8 grid-col-2 sm:mt-12">
           {attribute.map((attr, key) => (
-            <div key={key}>
-              <h1 className="text-3xl font-bold"> ♦ {attr.attribute}</h1>
+            <div className='' key={key}>
+              <h1 className="text-3xl font-bold">  {attr.attribute}</h1>
               <p className="mb-4">{attr.value}</p>
             </div>
           ))}

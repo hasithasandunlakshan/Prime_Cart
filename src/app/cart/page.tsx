@@ -13,7 +13,7 @@ const router=useRouter();
  
 
   return (
-    <div className="max-w-4xl p-4 mx-auto font-sans max-md:max-w-xl">
+    <div className="max-w-4xl p-4 mx-auto font-sans py-44 max-md:max-w-xl">
     <h1 className="text-2xl font-extrabold text-gray-800">Your Cart</h1>
     <div className="grid gap-4 mt-8 md:grid-cols-3">
         <div className="space-y-4 md:col-span-2">

@@ -104,7 +104,7 @@ const Product = ({ params }: { params: { slug: string } }) => {
   }
 
   return (
-    <>
+    <main className='py-36'>
       {data.map((product) => (
         <ProductPage
           key={product.productId}
@@ -114,7 +114,7 @@ const Product = ({ params }: { params: { slug: string } }) => {
          attribute={attributes} // Pass skuData to ProductPage
         />
       ))}
-    </>
+    </main>
   );
 };
 

@@ -5,6 +5,7 @@ import { useSession } from 'next-auth/react';
 import BannerCarousel from './BannerCarousel';
 import CategoryCard from '../product/CategoryCard';
 import Loading from '../Loading/loading';
+import  Skeleton  from '@/components/Loading/skelton';
 
 export default function Hero() {
   const { data: session } = useSession();
@@ -96,13 +97,20 @@ export default function Hero() {
 
   return (
     <>
-      <div className='z-0 flex flex-col items-center justify-center min-h-screen '>
-        <BannerCarousel />
-        
+      <div className='container relative z-0 flex flex-col items-center justify-start min-h-screen align-top '>
+      <h1 className='absolute top-0  text-slate-800 items-start justify-start w-[95%] text-6xl font-bold'>New Arrivals</h1>
+    
+    {/* Add a horizontal line below the title */}
+    <hr className='w-[90%] mt-16 mb-2 border-t-2 border-gray-600' /> {/* Adjust margin and border thickness */}
+
         {loading ? (
-         <Loading/>
+        <div className="grid w-full grid-cols-4 gap-4"> {/* Change grid-cols to 4 to create 8 loaders */}
+        {[...Array(8)].map((_, index) => (
+            <Skeleton key={index} /> // Render 8 skeleton loaders
+        ))}
+    </div>
         ) : (
-          <div className="grid grid-cols-4 gap-5">
+          <div className="z-0 grid grid-cols-4 gap-5 mt-10">
             {data.map((product, key) => (
               <ProductCard product={product} key={key} />
             ))}

@@ -42,7 +42,7 @@ export default function MenubarDemo() {
   }, [])
 
   return (
-    <div className="w-full">
+    <div className="w-full bg-black">
       <Menubar className="bg-black">
         <MenubarMenu>
           <MenubarTrigger>All Categories</MenubarTrigger>
