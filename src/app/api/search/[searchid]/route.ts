@@ -9,13 +9,18 @@ export async function GET(request:NextRequest,{params}:{params:{searchid:string}
         const connection=await mysql.createConnection(connectionparams);
         
       
-        const query = 'select * from Product p join SKU on  p.baseSKU=SKU.sku JOIN ProductImages pi ON p.productID = pi.productID  ';
-        const values = [`%${params.searchid}%`,`%${params.searchid}%`];
+        const query = `SELECT * 
+FROM Product p 
+JOIN ProductImages pi ON p.productID = pi.productID 
+JOIN 
+    SKU ON p.baseSKU = SKU.sku
+WHERE p.title LIKE ?`;
+        const values = [`%${params.searchid}%`];
 
         const [result]=await connection.execute(query,values);
-        if(result){
-        const query = 'SELECT * FROM uom.Subcategories WHERE name like  ?';
-        }
+        // if(result){
+        // const query = 'SELECT * FROM uom.Subcategories WHERE name like  ?';
+        // }
         connection.end();
         
         return NextResponse.json(result);

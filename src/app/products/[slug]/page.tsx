@@ -1,4 +1,5 @@
 "use client";
+import Loading from '@/components/Loading/loading';
 import ProductPage from '@/components/product/ProductPage';
 import React, { useEffect, useState } from 'react';
 
@@ -91,7 +92,7 @@ const Product = ({ params }: { params: { slug: string } }) => {
   }, []);
 
   if (loading) {
-    return <p>Loading...</p>;
+    return <Loading/>
   }
 
   if (error) {
@@ -103,7 +104,7 @@ const Product = ({ params }: { params: { slug: string } }) => {
   }
 
   return (
-    <>
+    <main className='py-36'>
       {data.map((product) => (
         <ProductPage
           key={product.productId}
@@ -113,7 +114,7 @@ const Product = ({ params }: { params: { slug: string } }) => {
          attribute={attributes} // Pass skuData to ProductPage
         />
       ))}
-    </>
+    </main>
   );
 };
 

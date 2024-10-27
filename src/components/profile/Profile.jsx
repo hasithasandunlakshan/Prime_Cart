@@ -144,11 +144,14 @@ const Profile = () => {
 
       
 
-      <div className={styles.buttonContainer}>
-        <button className={styles.button}>Update My Profile!</button>
+      <div className={styles.buttonContainer} >
+          <button className={styles.button}>Update My Profile!</button>
       </div>
+        
+      
     </div>
   );
 };
 
 export default Profile;
+

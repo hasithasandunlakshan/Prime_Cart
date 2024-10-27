@@ -44,6 +44,9 @@
   flex-direction: column;
   gap: 15px;
 }
+.secondcontainer{
+  flex:2;
+}
 
 .labels {
   font-size: 18px;
@@ -142,7 +145,15 @@
   cursor: pointer; 
   transition: background-color 0.3s ease; 
 }
-
+.input{
+  
+  padding: 15px;
+  background-color: var(--highlight-color);
+  border-radius: 8px;
+  border: 1px solid var(--border-color);
+  color: var(--text-color);
+  transition: background-color 0.3s ease;
+}
 
 
 

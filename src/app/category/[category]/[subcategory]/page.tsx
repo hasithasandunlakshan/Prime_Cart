@@ -36,23 +36,27 @@ function Page({ params }: { params: { subcategory: string } }) {
     }, [params.subcategory]); // Add params.subcategory as a dependency
 
     return (
-        <div className='flex justify-center w-[100%] min-h-screen align-middle'>
-            <h1>{decodeURIComponent(params.subcategory)}</h1>
+        <div className='relative flex flex-col items-center justify-center min-h-screen align-middle py-44 max-w-screen'>
+         
 
             {loading ? (
                 <span className="loading loading-dots loading-lg"></span>  // Show loading state
             ) : (
                 data.length >0 ?
-                <div className="flex grid h-full grid-cols-3">
+
+                <>
+                   <h1 className=' text-slate-800 items-start justify-start w-[95%] text-6xl font-bold'>{decodeURIComponent(params.subcategory)}</h1>
+                <div className="grid h-full grid-cols-4 ">
                   {data.map((product,key)=>(
                     <ProductCard product={product}/>
                   ))}
                 </div>
+                </>
                 
                   
                  
               : (
-                    <h1>: No result</h1>
+                    <h1>: No products</h1>
                 ) 
             )}
         </div>

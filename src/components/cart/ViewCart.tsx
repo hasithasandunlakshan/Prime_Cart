@@ -35,8 +35,9 @@ const{data:session}=useSession();
           'Content-Type': 'application/json',
         },
         body: JSON.stringify({ productSKU: product.sku }),
+        
       });
-  
+  cartcontext?.removeProduct(product.sku);
       const data = await response.json();
       console.log("Product removed from DB:", data);
       router.refresh();

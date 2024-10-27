@@ -25,7 +25,7 @@ export async function GET(request: NextRequest, { params }: { params: { id: stri
             JOIN Variant v ON pv.variantId = v.variantId
             WHERE pv.sku IN (SELECT sku FROM SKU WHERE productID = ?);
         `;
-        let query5 = 'select * from ProductAttributes where productId=? '
+        let query5 = 'select * from ProductAttributes where productId=?  '
         // Execute queries
         let values = [params.id];
         const [result] = await connection.execute(query1, values);

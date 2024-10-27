@@ -196,17 +196,26 @@ const Payment: React.FC<PaymentProps> = () => {
               </SelectContent>
             </Select>
             <AlertDialog>
-              <AlertDialogTrigger asChild className=''>
-                <Button variant="outline">Show Dialog</Button>
-              </AlertDialogTrigger>
-              <AlertDialogContent className='h-full overflow-y-auto'>
-                <UserDetails />
-                <AlertDialogFooter>
-                  <AlertDialogCancel>Cancel</AlertDialogCancel>
-                  <AlertDialogAction onClick={() => router.refresh()}>Continue</AlertDialogAction>
-                </AlertDialogFooter>
-              </AlertDialogContent>
-            </AlertDialog>
+
+      <AlertDialogTrigger asChild className='' >
+        <Button variant="outline">Add Address</Button>
+      </AlertDialogTrigger>
+      <AlertDialogContent className='h-full overflow-y-auto'>
+        {/* <AlertDialogHeader >
+          <AlertDialogTitle>Are you absolutely sure?</AlertDialogTitle>
+          <AlertDialogDescription>
+        
+          </AlertDialogDescription>
+        </AlertDialogHeader> */}
+
+        <UserDetails></UserDetails>
+        <AlertDialogFooter>
+          <AlertDialogCancel >Cancel</AlertDialogCancel>
+          <AlertDialogAction onClick={()=>router.refresh()}>Continue</AlertDialogAction>
+        </AlertDialogFooter>
+      </AlertDialogContent>
+    </AlertDialog>
+
           </div>}
 
           <p className="text-xl font-medium">Payment Methods</p>
