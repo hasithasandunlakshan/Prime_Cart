@@ -19,8 +19,8 @@ export async function GET(request) {
 
     try {
         connection = await mysql.createConnection(connectionparams);
-        //const query = 'select * from defaultdb.UserAddress left outer join defaultdb.RegisteredUser on RegisteredUser.userId=UserAddress.userId';
-        const query = 'select * from UserAddress u join RegisteredUser r on u.userId=r.userId where u.userId=1';
+       
+        const query = 'select * from UserAddress u join RegisteredUser r on u.userId=r.userId where u.userId=16 limit 1';
         const [result]=await connection.execute(query);
 
         return NextResponse.json(result);

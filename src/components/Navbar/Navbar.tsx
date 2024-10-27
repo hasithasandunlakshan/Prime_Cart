@@ -28,13 +28,15 @@ import {  DropdownMenu,
   DropdownMenuSeparator,
   DropdownMenuTrigger, } from "../ui/dropdown-menu";
 import { useRouter } from 'next/navigation';
+import MainNav from './MainNav';
 
 export default function Nav() {
   const {data:session}=useSession();
   const router =useRouter();
   return (
-    <div className="fixed z-50 flex flex-col items-center justify-center w-full mb-5 text-white bg-black top-20 min-h-16">
-       <NavigationMenu className="">
+    <div className="fixed top-0 z-50 flex flex-col items-center justify-center w-full gap-2 mb-5 text-white bg-black ">
+        <MainNav/>
+       <NavigationMenu className="w-[90%] mb-5 ">
          <NavigationMenuList  className="flex gap-5">
            <NavigationMenuItem>
 
@@ -45,7 +47,7 @@ export default function Nav() {
            Become a Seller
            
            </NavigationMenuItem>
-           <NavigationMenuItem>
+           <NavigationMenuItem  onClick={()=>router.push("/daily_offer")} >
            Daily Offers
            
            </NavigationMenuItem>

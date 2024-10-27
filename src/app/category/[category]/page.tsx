@@ -45,7 +45,7 @@ function Page({ params }: { params: { category: string } }) {
         fetchData();
       },[])
     return (
-        <div>
+        <div className='py-32'>
 
 
         <h1>{decodeURIComponent(params.category)}</h1>

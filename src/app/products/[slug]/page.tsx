@@ -1,4 +1,5 @@
 "use client";
+import Loading from '@/components/Loading/loading';
 import ProductPage from '@/components/product/ProductPage';
 import React, { useEffect, useState } from 'react';
 
@@ -24,23 +25,38 @@ interface ImagesDetails {
   imageUrl: string;
 }
 
+interface Variant {
+  variantId: number;
+  title: string;
+  value: string;
+  textValue?: string; // Optional field, if some variants don't have a textValue
+}
 interface Sku {
-  sku: string,
-      productId: number,
-      price: number,
-      availableStock: number
+  sku: string;
+  productId: number;
+  price: number;
+  availableStock: number;
+  variants: Variant[];  // Array of `Variant` objects
+}
+interface attribute {
+  ProductId: number;
+  attribute: string;
+  value: string;
+  // Optional field, if some variants don't have a textValue
 }
 
 interface ProductData {
   result: Product[];
   images: ImagesDetails[];
-  sku: Sku[]; // Add Sku data interface
+  sku: Sku[];
+  attributes:attribute[] // Add Sku data interface
 }
 
 const Product = ({ params }: { params: { slug: string } }) => {
   const [data, setData] = useState<Product[]>([]);
   const [images, setImages] = useState<ImagesDetails[]>([]);
   const [skuData, setSkuData] = useState<Sku[]>([]);
+  const [attributes, setAttribute] = useState<attribute[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
 
@@ -61,7 +77,8 @@ const Product = ({ params }: { params: { slug: string } }) => {
       setData(datasample.result);
       setImages(datasample.images);
       setSkuData(datasample?.sku); 
-      console.log("ggggggggggggggggggggggggggggggggggg",skuData);// Store skuData
+      setAttribute(datasample.attributes)
+      console.log("",skuData);// Store skuData
       setLoading(false);
       
     } catch (error) {
@@ -75,7 +92,7 @@ const Product = ({ params }: { params: { slug: string } }) => {
   }, []);
 
   if (loading) {
-    return <p>Loading...</p>;
+    return <Loading/>
   }
 
   if (error) {
@@ -87,16 +104,17 @@ const Product = ({ params }: { params: { slug: string } }) => {
   }
 
   return (
-    <>
+    <main className='py-36'>
       {data.map((product) => (
         <ProductPage
           key={product.productId}
           product={product}
           images={images}
-         skuData={skuData}  // Pass skuData to ProductPage
+         skuData={skuData} 
+         attribute={attributes} // Pass skuData to ProductPage
         />
       ))}
-    </>
+    </main>
   );
 };
 

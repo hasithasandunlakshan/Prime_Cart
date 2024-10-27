@@ -1,5 +1,6 @@
 "use client";
 import { useSession } from "next-auth/react";
+import { useRouter } from "next/navigation";
 import { createContext, useState, useEffect, ReactNode } from "react";
 
 // Define CartContext type
@@ -14,6 +15,7 @@ export const CartContextProvider: React.FC<{ children: ReactNode }> = ({ childre
   const [products, setProducts] = useState<any[]>([]);
   const [price, setPrice] = useState(0);
   const { data: session } = useSession();
+  const router =useRouter();
 
   // Fetch cart items from the database
   useEffect(() => {
@@ -34,6 +36,10 @@ export const CartContextProvider: React.FC<{ children: ReactNode }> = ({ childre
           console.error("Error fetching cart items:", error);
         }
       }
+      else{
+        const total = products.reduce((sum, product) => sum + product.price * product.quantity, 0);
+    setPrice(total);
+      }
     };
 
     fetchCartItems();
@@ -42,12 +48,15 @@ export const CartContextProvider: React.FC<{ children: ReactNode }> = ({ childre
   // Function to add product to cart
   const addProduct = (product: any) => {
     setProducts((prevProducts) => [...prevProducts, product]);
+   
+
     // Optionally, you can call an API to add this product to the cart in the database
   };
 
   // Function to remove product from cart
   const removeProduct = (productSKU: string) => {
     setProducts((prevProducts) => prevProducts.filter(product => product.sku !== productSKU));
+    
     // Optionally, you can call an API to remove this product from the cart in the database
   };
 

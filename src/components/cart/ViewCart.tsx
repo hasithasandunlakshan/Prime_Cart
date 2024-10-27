@@ -4,6 +4,7 @@ import { useContext } from 'react'
 import * as React from 'react';
 import DeleteOutlinedIcon from '@mui/icons-material/Delete';
 import { useSession } from 'next-auth/react';
+import { useRouter } from 'next/navigation';
 
 interface Product {
   id: string;
@@ -21,12 +22,12 @@ interface ViewCartProps {
 
 export default function ViewCart({ product }: ViewCartProps) {
   const cartcontext = useContext(CartContext);
+  const router=useRouter();
 
 const{data:session}=useSession();
   const handleRemoveCart = async () => {
-    cartcontext?.removeProduct(product.sku); // Removes from the local context
-  
-    // Optionally, make an API call to delete the product from the database
+   
+   
     try {
       const response = await fetch(`/api/cart/${session?.user?.id}`, {
         method: 'DELETE',
@@ -34,10 +35,13 @@ const{data:session}=useSession();
           'Content-Type': 'application/json',
         },
         body: JSON.stringify({ productSKU: product.sku }),
+        
       });
-  
+  cartcontext?.removeProduct(product.sku);
       const data = await response.json();
       console.log("Product removed from DB:", data);
+      router.refresh();
+      
   
       if (!response.ok) {
         console.error("Error removing product from the cart in DB:", data.message);

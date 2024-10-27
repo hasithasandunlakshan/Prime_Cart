@@ -1,4 +1,4 @@
-import Dailyoffer from '@/components/daily_offer/daily_offer'
+import Dailyoffer from '@/components/daily_offer/page'
 import React from 'react'
 
 export default function page() {
