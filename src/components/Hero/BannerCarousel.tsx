@@ -1,35 +1,41 @@
-"use client"
+"use client";
 import React from "react";
 import { Carousel, CarouselContent, CarouselItem, CarouselNext, CarouselPrevious } from "@/components/ui/carousel";
-
 import Autoplay from "embla-carousel-autoplay";
-import Link from "next/link";
+import Image from "next/image"; // Ensure the Image component is imported
+
+// Import your imagess
+import img1 from "./carousel_Images/C_image_01.webp";
+import img2 from "./carousel_Images/C_image_02.webp";
+import img3 from "./carousel_Images/C_image_03.webp";
+import img4 from "./carousel_Images/C_image_04.webp";
 
 const BannerCarousel = () => {
-  const plugin = React.useRef(Autoplay({ delay: 2000,  stopOnInteraction: false }));
+  const plugin = React.useRef(Autoplay({ delay: 2000, stopOnInteraction: false }));
 
+  // Update the slides array to use local images
   const slides = [
     {
       id: 1,
-      image: "https://img.freepik.com/free-photo/excited-redhead-girl-showing-mobile-phone-screen-credit-card-demonstrating-online-store-appli_1258-156014.jpg?t=st=1726765734~exp=1726769334~hmac=9f34aedbb9de3b08cd380209b29f08d66265f204846b2561f1ded266fed5884f&w=2000",
+      image: img1,
       title: "Super Sale!",
       description: "Get the best deals on all your favorite products.",
     },
     {
       id: 2,
-      image: "https://img.freepik.com/free-photo/excited-redhead-girl-showing-mobile-phone-screen-credit-card-demonstrating-online-store-appli_1258-156014.jpg?t=st=1726765734~exp=1726769334~hmac=9f34aedbb9de3b08cd380209b29f08d66265f204846b2561f1ded266fed5884f&w=2000",
+      image: img2,
       title: "Limited Offer!",
       description: "Grab your exclusive discounts now!",
     },
     {
       id: 3,
-      image: "https://img.daisyui.com/images/stock/photo-1414694762283-acccc27bca85.webp",
+      image: img3,
       title: "Best Sellers!",
       description: "Discover our best-selling products.",
     },
     {
       id: 4,
-      image: "https://img.daisyui.com/images/stock/photo-1665553365602-b2fb8e5d1707.webp",
+      image: img4,
       title: "New Arrivals!",
       description: "Check out the latest additions to our collection.",
     },
@@ -46,15 +52,17 @@ const BannerCarousel = () => {
         <CarouselContent>
           {slides.map((slide) => (
             <CarouselItem key={slide.id}>
-              <div className="relative w-full carousel-item">
-                <img
-                  alt="Banner"
+              <div className="relative w-full carousel-item h-[400px]"> {/* Set a height for the image */}
+                <Image
+                  alt={slide.title} // Use slide title for alt text
                   src={slide.image}
-                  className="object-cover w-full h-full"
+                  layout="fill" // Make it responsive
+                  objectFit="cover" // Cover the entire area
+                  className="rounded-lg" // Optional: add some styling
                 />
-                <div className="absolute inset-0 flex items-end p-20 justify-left bg-gradient-to-r from-black/70 via-black/20 to-transparent">
-                  <div className="space-y-4 text-left text-white">
-                    <h1 className="text-3xl font-bold md:text-5xl">{slide.title}</h1>
+                <div className="absolute inset-0 flex items-end p-4 justify-start bg-gradient-to-r from-black/70 via-black/20 to-transparent">
+                  <div className="space-y-2 text-left text-white">
+                    <h1 className="text-3xl font-bold md:text-4xl">{slide.title}</h1>
                     <p className="text-lg md:text-xl">{slide.description}</p>
                     <button className="px-6 py-3 font-semibold text-white transition-all bg-red-500 rounded-md hover:bg-red-600">
                       Shop Now
@@ -68,7 +76,6 @@ const BannerCarousel = () => {
         <CarouselPrevious />
         <CarouselNext />
       </Carousel>
-    
     </div>
   );
 };
