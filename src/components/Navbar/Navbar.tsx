@@ -44,17 +44,23 @@ export default function Nav() {
            
            </NavigationMenuItem>
            <NavigationMenuItem>
-           Become a Seller
-           
-           </NavigationMenuItem>
-           <NavigationMenuItem  onClick={()=>router.push("/daily_offer")} >
-           Daily Offers
-           
-           </NavigationMenuItem>
-           <NavigationMenuItem>
-          Help & Support 
-           
-           </NavigationMenuItem>
+
+  <Link href="/my-orders" className="hover:text-gray-300">
+    My Orders
+  </Link>
+</NavigationMenuItem>
+<NavigationMenuItem>
+  <Link href="/daily-offers" className="hover:text-gray-300">
+    Daily Offers
+  </Link>
+</NavigationMenuItem>
+<NavigationMenuItem>
+  <Link href="/help-support" className="hover:text-gray-300">
+    Help & Support
+  </Link>
+</NavigationMenuItem>
+
+
            <NavigationMenuItem>
            {session?      
       <div className="cursor-pointer ">
