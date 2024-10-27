@@ -1,3 +1,5 @@
+/* components/daily_offer/DailyOfferCard/DailyOfferCard.css */
+
 .card {
     /* Keep existing card styles or modify as needed */
     border: 1px solid #ddd;
@@ -7,34 +9,54 @@
     text-align: center;
     width: 300px; /* Set a fixed width for the card */
     height: 400px; /* Set a fixed height for the card */
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Adds a subtle shadow for depth */
+    transition: transform 0.3s ease; /* Smooth transition for hover effect */
+}
+
+.card:hover {
+    transform: scale(1.05); /* Slightly enlarges the card on hover */
 }
 
 .image {
-    width: 100%; /* or a specific size, like '200px' */
-    height: 200px; /* Set a fixed height */
-    object-fit: cover; /* This will crop the image to fill the box */
-    border-radius: 8px; /* Optional: round the corners of the image */
+    width: 100%; /* Full width of the card */
+    height: 200px; /* Fixed height */
+    object-fit: cover; /* Crop the image to fill the box */
+    border-radius: 8px; /* Round corners of the image */
 }
 
 .cardTitle {
-    font-size: 1.2rem;
-    margin: 8px 0;
+    font-size: 1.4rem; /* Slightly larger title */
+    font-weight: bold; /* Makes the title bold */
+    margin: 12px 0; /* More space around the title */
 }
 
 .description {
-    font-size: 1rem;
-    margin: 8px 0;
+    font-size: 1rem; /* Default size */
+    margin: 12px 0; /* More space around the description */
+    color: #555; /* Slightly darker text for better readability */
 }
 
 .button {
-    background-color: #0070f3;
-    color: white;
-    padding: 10px 20px;
-    border: none;
-    border-radius: 5px;
-    cursor: pointer;
+    background-color: #0070f3; /* Button color */
+    color: white; /* Text color */
+    padding: 12px 24px; /* Adjusted padding for a better button size */
+    border: none; /* No border */
+    border-radius: 5px; /* Rounded corners */
+    cursor: pointer; /* Pointer cursor on hover */
+    font-size: 1rem; /* Default button text size */
+    transition: background-color 0.3s ease; /* Smooth background color change */
 }
 
 .button:hover {
-    background-color: #005bb5;
+    background-color: #005bb5; /* Darker shade on hover */
 }
+
+/* Added spacing at the top of the page to account for the menu bar */
+.container {
+    padding-top: 80px; /* Adjust this value based on the height of your menu bar */
+    display: flex;
+    flex-direction: column;
+    align-items: center; /* Centers the content */
+}
+
+
