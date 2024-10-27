@@ -1,6 +1,6 @@
 
 
-"use client"; // Mark this component as a client component
+"use client"; 
 
 import React, { useEffect, useState } from 'react';
 import styles from './daily_offer.module.css';
