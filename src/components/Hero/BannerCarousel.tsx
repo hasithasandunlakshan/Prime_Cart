@@ -8,7 +8,6 @@ import Image from "next/image"; // Ensure the Image component is imported
 import img1 from "./carousel_Images/C_image_01.webp";
 import img2 from "./carousel_Images/C_image_02.webp";
 import img3 from "./carousel_Images/C_image_03.webp";
-import img4 from "./carousel_Images/C_image_04.webp";
 
 const BannerCarousel = () => {
   const plugin = React.useRef(Autoplay({ delay: 2000, stopOnInteraction: false }));
@@ -33,16 +32,16 @@ const BannerCarousel = () => {
       title: "Best Sellers!",
       description: "Discover our best-selling products.",
     },
-    {
-      id: 4,
-      image: img4,
-      title: "New Arrivals!",
-      description: "Check out the latest additions to our collection.",
-    },
+    // {
+    //   id: 4,
+    //   image: img4,
+    //   title: "New Arrivals!",
+    //   description: "Check out the latest additions to our collection.",
+    // },
   ];
 
   return (
-    <div className="flex items-center justify-center py-44">
+    <div className="flex items-center justify-center h-full align-middle py-44">
       <Carousel
         plugins={[plugin.current]}
         className="relative overflow-hidden rounded-lg shadow-lg w-[98%]"
@@ -52,7 +51,7 @@ const BannerCarousel = () => {
         <CarouselContent>
           {slides.map((slide) => (
             <CarouselItem key={slide.id}>
-              <div className="relative w-full carousel-item h-[400px]"> {/* Set a height for the image */}
+              <div className="relative w-full carousel-item h-[70dvh]"> {/* Set a height for the image */}
                 <Image
                   alt={slide.title} // Use slide title for alt text
                   src={slide.image}
@@ -60,7 +59,7 @@ const BannerCarousel = () => {
                   objectFit="cover" // Cover the entire area
                   className="rounded-lg" // Optional: add some styling
                 />
-                <div className="absolute inset-0 flex items-end p-4 justify-start bg-gradient-to-r from-black/70 via-black/20 to-transparent">
+                <div className="absolute inset-0 flex items-end justify-start p-4 bg-gradient-to-r from-black/70 via-black/20 to-transparent">
                   <div className="space-y-2 text-left text-white">
                     <h1 className="text-3xl font-bold md:text-4xl">{slide.title}</h1>
                     <p className="text-lg md:text-xl">{slide.description}</p>
