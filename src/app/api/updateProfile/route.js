@@ -1,15 +1,6 @@
 import { NextResponse } from "next/server";
 import mysql from 'mysql2/promise';
-
-export const GetDBSettings = () => {
-  return {
-    host: 'mysql-13eae395-hasiofficial2002-f9b9.c.aivencloud.com',
-    user: 'avnadmin',
-    password: 'AVNS_TVFlXjqaBIrs_ewIgdP',
-    database: 'defaultdb',
-    port: 18475,
-  };
-};
+import { GetDBSettings } from "@/sharedCode/common";
 
 let connectionparams = GetDBSettings();
 
