@@ -84,6 +84,7 @@ const ProductPage: React.FC<{ product: Product; images: ImagesDetails[]; skuData
       userId: Number(session?.user?.id) || 0,
       sku: selectedSku?.sku || product?.sku,
       quantity: quantity,
+      price:selectedSku?.price,
     };
   
     try {

@@ -69,56 +69,54 @@ const Payment: React.FC<PaymentProps> = () => {
       setAddress(prev => !prev);  // Toggle the address form
     };
   
-  const onSubmit = async () => {
-   
-    const userId = session.data?.user?.id;
-    const deliveryFee=deliveryFees;
+    const onSubmit = async () => {
+      const userId = session.data?.user?.id||null;
+      const deliveryFee = deliveryFees;
+      const deliveryMethod = selectedShipping;
+      const totalAmount = total;
+      const paymentMethod = selectedPayment;
+      const estimatedDeliveryDate = "2024-10-05";
     
-
- 
-    const deliveryMethod = selectedShipping; 
-    const totalAmount = total; 
-    const paymentMethod = selectedPayment; 
-    const estimatedDeliveryDate = "2024-10-05"; 
-
-    if (!userId || !deliveryMethod || !totalAmount || !paymentMethod || !estimatedDeliveryDate || !deliveryAddress || !deliveryFee) {
-      toast({
-        variant: "destructive",
-        title: "Uh oh! Something went wrongsssssss.",
-        description: "Missing required parameters.",
-        action: <ToastAction altText="Try again">Try again</ToastAction>,
-      });
-      return;
-    }
-
-
-    try {
-      const response = await fetch('/api/order', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ deliveryMethod, totalAmount, paymentMethod, estimatedDeliveryDate, addressId: deliveryAddress,deliveryFee,userId }),
-        
-      });
-      // console.log("ggggggggggggggggggggggggg",{ deliveryMethod, totalAmount, paymentMethod, estimatedDeliveryDate, addressId: deliveryAddress,deliveryFee })
-
-      if (!response.ok) {
-        throw new Error(`Error ${response.status}: ${await response.text()}`);
+      if (!deliveryMethod || !totalAmount || !paymentMethod || !estimatedDeliveryDate || !deliveryAddress || !deliveryFee) {
+        toast({
+          variant: "destructive",
+          title: "Uh oh! Something went wrong.",
+          description: "Missing required parameters.",
+          action: <ToastAction altText="Try again">Try again</ToastAction>,
+        });
+        return;
       }
-
-      const responseBody = await response.json();
-      console.log('Success:', responseBody);
-      router.push("/order")
-
-    } catch (error) {
-      console.error('Error in onSubmit:', error);
-      toast({
-        variant: "destructive",
-        title: "Uh oh! Something went wrong.",
-        description: "There was a problem with your request.",
-        action: <ToastAction altText="Try again">Try again</ToastAction>,
-      });
-    }
-  };
+    
+      try {
+        const apiUrl = userId ? '/api/order' : '/api/guestOrder';
+        const body = userId
+          ? { deliveryMethod, totalAmount, paymentMethod, estimatedDeliveryDate, addressId: deliveryAddress, deliveryFee, userId }
+          : { deliveryMethod, totalAmount, paymentMethod, estimatedDeliveryDate, address: cartContext?.address[0], deliveryFee,cart:cartContext?.products };
+           console.log("unregistered user",body);
+        const response = await fetch(apiUrl, {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify(body),
+        });
+    
+        if (!response.ok) {
+          throw new Error(`Error ${response.status}: ${await response.text()}`);
+        }
+    
+        const responseBody = await response.json();
+        console.log('Success:', responseBody);
+        router.push("/order");
+      } catch (error) {
+        console.error('Error in onSubmit:', error);
+        toast({
+          variant: "destructive",
+          title: "Uh oh! Something went wrong.",
+          description: "There was a problem with your request.",
+          action: <ToastAction altText="Try again">Try again</ToastAction>,
+        });
+      }
+    };
+    
 
   useEffect(() => {
     calculateTotal();
@@ -190,11 +188,30 @@ const Payment: React.FC<PaymentProps> = () => {
               <SelectContent>
                 <SelectGroup>
                   <SelectLabel>Select Address</SelectLabel>
-                  {addresses.map((address) => (
-                    <SelectItem key={address.addressId} value={address.addressId}>
-                      <p>{`${address.firstName} ${address.lastName}`}</p>{address.addrNo}, {address.addrStreet}, {address.addrLine1}, {address.addrLine2}<br/>{address.addrTown}, {address.addrDistrict}, {address.addrProvince}, {address.postalCode}, {address.contactNo}
-                    </SelectItem>
-                  ))}
+
+
+                  {session?.data?.user ? (
+        // If user is logged in, map through addresses
+        addresses.map((address) => (
+          <SelectItem key={address.addressId} value={address.addressId}>
+            <p>{`${address.firstName} ${address.lastName}`}</p>
+            {address.addrNo}, {address.addrStreet}, {address.addrLine1}, {address.addrLine2}
+            <br />
+            {address.addrTown}, {address.addrDistrict}, {address.addrProvince}, {address.postalCode}, {address.contactNo}
+          </SelectItem>
+        ))
+      ) : (
+       
+        cartContext?.address.map((address) => (
+          <SelectItem key={address} value={address}>
+            <p>{`${address.firstName} ${address.lastName}`}</p>
+            {address.addrNo}, {address.addrStreet}, {address.addrLine1}, {address.addrLine2}
+            <br />
+            {address.addrTown}, {address.addrDistrict}, {address.addrProvince}, {address.postalCode}, {address.contactNo}
+          </SelectItem>
+        ))
+       
+      )}
                 </SelectGroup>
               </SelectContent>
             </Select>

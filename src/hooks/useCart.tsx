@@ -9,6 +9,8 @@ export const CartContext = createContext<{
   price: number;
   addProduct: (product: any) => void;
   removeProduct: (productSKU: string) => void;
+  address:any[];
+  addAddress:(address:any)=>void;
 } | null>(null);
 
 export const CartContextProvider: React.FC<{ children: ReactNode }> = ({ children }) => {
@@ -16,6 +18,7 @@ export const CartContextProvider: React.FC<{ children: ReactNode }> = ({ childre
   const [price, setPrice] = useState(0);
   const { data: session } = useSession();
   const router =useRouter();
+  const[address,setAddress]=useState<any[]>([]);
 
   // Fetch cart items from the database
   useEffect(() => {
@@ -38,6 +41,7 @@ export const CartContextProvider: React.FC<{ children: ReactNode }> = ({ childre
       }
       else{
         const total = products.reduce((sum, product) => sum + product.price * product.quantity, 0);
+        console.log("total:" ,products)
     setPrice(total);
       }
     };
@@ -53,6 +57,10 @@ export const CartContextProvider: React.FC<{ children: ReactNode }> = ({ childre
     // Optionally, you can call an API to add this product to the cart in the database
   };
 
+  const addAddress=(address:any)=>{
+    setAddress((prevAddress)=>[...prevAddress,address])
+  }
+
   // Function to remove product from cart
   const removeProduct = (productSKU: string) => {
     setProducts((prevProducts) => prevProducts.filter(product => product.sku !== productSKU));
@@ -61,7 +69,7 @@ export const CartContextProvider: React.FC<{ children: ReactNode }> = ({ childre
   };
 
   return (
-    <CartContext.Provider value={{ products, addProduct, removeProduct, price }}>
+    <CartContext.Provider value={{ products, addProduct, removeProduct, price,address,addAddress }}>
       {children}
     </CartContext.Provider>
   );

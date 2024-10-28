@@ -16,6 +16,8 @@ import {
 import { Input } from "@/components/ui/input";
 import { useRouter } from "next/navigation";
 import { useSession } from "next-auth/react";
+import { CartContext } from "@/hooks/useCart";
+import { useContext } from "react";
 
 // Updated schema without userId
 const FormSchema = z.object({
@@ -36,7 +38,8 @@ type FormSchemaType = z.infer<typeof FormSchema>;
 
 export function UserDetails() {
   const router = useRouter();
-  const session = useSession();
+  const { data: session } = useSession();
+  const cartContext = useContext(CartContext);
 
   const form = useForm<FormSchemaType>({
     resolver: zodResolver(FormSchema),
@@ -53,9 +56,21 @@ export function UserDetails() {
     },
   });
 
+  const onSubmitUnregisteredUser = (data: FormSchemaType) => {
+    cartContext?.addAddress(data);
+    toast({ title: "Address saved successfully!" });
+    form.reset();
+  };
+
   const onSubmit = async (data: FormSchemaType) => {
+    if (!session) {
+      // Unregistered user
+      onSubmitUnregisteredUser(data);
+      return;
+    }
+
     try {
-      const userId = session.data?.user?.id;
+      const userId = session.user?.id;
       const userdata = { ...data, userId };
       console.log("User data:", userdata);
       
@@ -83,11 +98,9 @@ export function UserDetails() {
   return (
     <main className="flex items-center justify-center w-full h-full bg-white max-w-screen">
       <div className="container flex flex-col  py-20 mt-10  rounded-lg  w-[100%]">
-        {/* <h2 className="mb-6 text-lg font-bold text-center">User Details</h2> */}
         <Form {...form}>
           <form onSubmit={form.handleSubmit(onSubmit)} className="w-[100%] space-y-6">
-            {/* Address Number Field */}
-            <FormField
+          <FormField
               control={form.control}
               name="addrNo"
               render={({ field }) => (
@@ -266,7 +279,6 @@ export function UserDetails() {
                 </FormItem>
               )}
             />
-
             <div className="flex items-end justify-end">
               <Button type="submit" className="px-8 py-1 text-black rounded-full bg-secondary">
                 Submit
