@@ -1,35 +1,26 @@
-import { NextResponse,NextRequest } from "next/server";
-import mysql from 'mysql2/promise'
+import { NextResponse } from "next/server";
+import mysql from 'mysql2/promise';
 import { GetDBSettings } from "@/sharedCode/common";
-let connectionparams=GetDBSettings();
-export async function GET(request:Request){
 
-    try{
-        const connection=await mysql.createConnection(connectionparams);
-        let query='';
-        query=`SELECT DISTINCT 
-    p.*, 
-    SKU.*, 
-    MIN(pi.imageUrl) AS imageUrl -- Fetch the first image for each product
-FROM 
-    Product p
-JOIN 
-    SKU ON p.baseSKU = SKU.sku
-JOIN 
-    ProductImages pi ON p.productID = pi.productID
-GROUP BY 
-    p.productID, SKU.sku   ORDER BY p.productId desc limit 8;`;
-        let values:any[]=[]
-        const [result]=await connection.execute(query,values);
-        connection.end();
-        return NextResponse.json(result);
+let connectionparams = GetDBSettings();
 
+export async function GET(request: Request) {
+    let connection;
+    try {
+        // Establish MySQL connection
+        connection = await mysql.createConnection(connectionparams);
 
-    }
-    catch(error){
+        // Call the stored procedure
+        const [result] = await connection.execute<any[]>(`CALL GetLatestProducts()`);
 
-        return NextResponse.json(error);
+        await connection.end();
 
-
+        // Return the result as JSON
+        return NextResponse.json(result[0]); // Use result[0] to access data rows from procedure call
+    } catch (error) {
+        console.error("Error executing stored procedure:", error);
+        return NextResponse.json({ error: "An error occurred while retrieving data." }, { status: 500 });
+    } finally {
+        if (connection) await connection.end();
     }
 }

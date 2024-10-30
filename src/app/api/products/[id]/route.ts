@@ -5,37 +5,22 @@ import { GetDBSettings } from "@/sharedCode/common";
 let connectionparams = GetDBSettings();
 
 export async function GET(request: NextRequest, { params }: { params: { id: string } }) {
-
     try {
         // Create a database connection
         const connection = await mysql.createConnection(connectionparams);
 
-        // Queries
-        let query1 = 'SELECT * FROM Product p JOIN SKU ON p.baseSKU = SKU.sku JOIN ProductImages pi ON p.productID = pi.productID WHERE p.productID = ? LIMIT 1;';
-        let query2 = 'SELECT * FROM ProductImages WHERE productID = ?';
-        let query3 = 'SELECT * FROM SKU WHERE productID = ?';
-        let query4 = `
-            SELECT 
-                pv.sku AS SKU, 
-                pv.variantId AS VariantID, 
-                v.tiitle AS VariantTitle, 
-                pv.value AS VariantValue, 
-                pv.textValue AS VariantTextValue
-            FROM ProductVariant pv 
-            JOIN Variant v ON pv.variantId = v.variantId
-            WHERE pv.sku IN (SELECT sku FROM SKU WHERE productID = ?);
-        `;
-        let query5 = 'select * from ProductAttributes where productId=?  '
-        // Execute queries
-        let values = [params.id];
-        const [result] = await connection.execute(query1, values);
-        const [images] = await connection.execute(query2, values);
-        const [skuResult] = await connection.execute(query3, values);
-        const [variantResult] = await connection.execute(query4, values);
-        const [attributes] = await connection.execute(query5, values);
-        // Ensure skuResult and variantResult are arrays
-        const sku: any[] = Array.isArray(skuResult) ? skuResult : [];
-        const variants: any[] = Array.isArray(variantResult) ? variantResult : [];
+        // Call the stored procedure and pass in productID as the parameter
+        const [resultSets]: any[] = await connection.query(`CALL GetProductDetails(?)`, [params.id]);
+
+        // Destructure each result set from resultSets with explicit typing
+        const [productResult, imagesResult, skuResult, variantResult, attributesResult] = resultSets;
+
+        // Type definitions for each result if needed
+        const result: any[] = productResult;
+        const images: any[] = imagesResult;
+        const sku: any[] = skuResult;
+        const variants: any[] = variantResult;
+        const attributes: any[] = attributesResult;
 
         // Process SKUs and group the variants by SKU
         const skuMap = sku.reduce((acc: any, skuItem: any) => {
@@ -63,7 +48,7 @@ export async function GET(request: NextRequest, { params }: { params: { id: stri
             result: result,
             sku: skuWithVariants, // SKUs with variants included
             images: images,
-            attributes:attributes
+            attributes: attributes
         };
 
         console.log("Details:", details);
