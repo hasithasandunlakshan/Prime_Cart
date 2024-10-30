@@ -9,27 +9,19 @@ export async function GET(request: Request) {
         // Create a MySQL connection
         const connection = await mysql.createConnection(connectionparams);
 
-        // SQL query to fetch provinces, districts, and cities
-        const query = `
-            SELECT 
-                p.provinceId, 
-                p.provinceName, 
-                d.districtId, 
-                d.districtName, 
-                mc.cityId, 
-                mc.cityName
-            FROM 
-                Province p
-            LEFT JOIN 
-                District d ON p.provinceId = d.provinceId
-            LEFT JOIN 
-                MainCity mc ON d.districtId = mc.districtId
-            ORDER BY 
-                p.provinceId, d.districtId, mc.cityId;
-        `;
+        // Call the stored procedure
+        const [rows] = await connection.execute('CALL GetProvincesDistrictsCities()') as [
+            Array<{ 
+                provinceId: number; 
+                provinceName: string; 
+                districtId: number | null; 
+                districtName: string | null; 
+                cityId: number | null; 
+                cityName: string | null; 
+            }>,
+            any
+        ];
 
-        // Execute the query
-        const [rows] = await connection.execute<any[]>(query); // Use 'any[]' for rows
         await connection.end();
 
         // Organize the data into the desired structure

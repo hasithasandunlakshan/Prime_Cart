@@ -14,9 +14,9 @@ export async function GET(request:NextRequest,{params}:{params:{id:string}}){
         const values = [`%${keyword}%`];
 
         const [result]=await connection.execute(query,values);
-        if(result){
-        const query = 'SELECT * FROM defaultdb.SubCategories WHERE title like  ?';
-        }
+        // if(result){
+        // const query = 'SELECT * FROM defaultdb.SubCategories WHERE title like  ?';
+        // }
         connection.end();
         
         return NextResponse.json(result);
