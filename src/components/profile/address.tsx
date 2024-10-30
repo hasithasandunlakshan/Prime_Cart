@@ -149,7 +149,7 @@ export function UserDetails() {
 
   return (
     <main className="flex items-center justify-center w-full h-full bg-white max-w-screen">
-      <div className="container flex  py-20 mt-10 rounded-lg w-[80%]">
+      <div className="container flex items-center justify-center align-middle  rounded-lg w-[80%]">
         <Form {...form}>
           <form onSubmit={form.handleSubmit(onSubmit)} className="w-[100%] space-y-6">
             {/* Name Field */}
@@ -160,7 +160,7 @@ export function UserDetails() {
               control={form.control}
               name="name"
               render={({ field }) => (
-                <FormItem className=" w-[40%]">
+                <FormItem className=" w-[50%]">
                   <FormLabel className="text-black">Name</FormLabel>
                   <FormControl>
                     <Input placeholder="Name" className="text-black bg-white border" {...field} />
@@ -173,7 +173,7 @@ export function UserDetails() {
               control={form.control}
               name="addrNo"
               render={({ field }) => (
-                <FormItem className=" w-[40%]">
+                <FormItem className=" w-[50%]">
                   <FormLabel className="text-black">Address No</FormLabel>
                   <FormControl>
                     <Input
@@ -194,7 +194,7 @@ export function UserDetails() {
               control={form.control}
               name="addrStreet"
               render={({ field }) => (
-                <FormItem className=" w-[40%]">
+                <FormItem className=" w-[50%]">
                   <FormLabel className="text-black">Street</FormLabel>
                   <FormControl>
                     <Input
@@ -213,7 +213,7 @@ export function UserDetails() {
               control={form.control}
               name="addrLine1"
               render={({ field }) => (
-                <FormItem className=" w-[40%]">
+                <FormItem className=" w-[50%]">
                   <FormLabel className="text-black">Address Line 1</FormLabel>
                   <FormControl>
                     <Input
@@ -237,7 +237,7 @@ export function UserDetails() {
               control={form.control}
               name="addrLine2"
               render={({ field }) => (
-                <FormItem className=" w-[40%]">
+                <FormItem className=" w-[50%]">
                   <FormLabel className="text-black">Address Line 2</FormLabel>
                   <FormControl>
                     <Input
@@ -254,7 +254,7 @@ export function UserDetails() {
               control={form.control}
               name="postalCode"
               render={({ field }) => (
-                <FormItem className=" w-[40%]">
+                <FormItem className=" w-[50%]">
                   <FormLabel className="text-black">Postal Code</FormLabel>
                   <FormControl>
                     <Input
@@ -270,30 +270,37 @@ export function UserDetails() {
             
               
             </div>
-
+<div className="flex gap-5">
+  
             <FormField
               control={form.control}
               name="addrProvince"
               render={({ field }) => (
-                <FormItem>
+                <FormItem className="w-[33%]">
                   <FormLabel className="text-black">Province</FormLabel>
                   <FormControl>
-                    <select
-                      className="text-black bg-white border"
-                      {...field}
-                      onChange={(e) => {
-                        field.onChange(e);
-                        setSelectedProvince(e.target.value);
-                        setSelectedDistrict("");
-                      }}
-                    >
-                      <option value="">Select Province</option>
-                      {data.map((province) => (
-                        <option key={province.provinceId} value={province.provinceId}>
-                          {province.provinceName}
-                        </option>
-                      ))}
-                    </select>
+                  <Select
+      {...field}
+      onValueChange={(value) => {
+        field.onChange(value); // Handles form field update
+        setSelectedProvince(value); // Sets the selected province
+        setSelectedDistrict(""); // Clears district selection
+      }}
+    >
+      <SelectTrigger className="w-full text-black bg-white border">
+        <SelectValue placeholder="Select Province" />
+      </SelectTrigger>
+      <SelectContent>
+        <SelectGroup>
+          <SelectLabel>Select Province</SelectLabel>
+          {data.map((province) => (
+            <SelectItem key={province.provinceId} value={province.provinceId.toString()}>
+              {province.provinceName}
+            </SelectItem>
+          ))}
+        </SelectGroup>
+      </SelectContent>
+    </Select>
                   </FormControl>
                   <FormMessage />
                 </FormItem>
@@ -302,79 +309,92 @@ export function UserDetails() {
 
             {/* District Selector */}
             <FormField
-              control={form.control}
-              name="districtId"
-              render={({ field }) => (
-                <FormItem>
-                  <FormLabel className="text-black">District</FormLabel>
-                  <FormControl>
-                    <select
-                      className="text-black bg-white border"
-                      {...field}
-                      onChange={(e) => {
-                        field.onChange(e);
-                        setSelectedDistrict(e.target.value);
-                      }}
-                    >
-                      <option value="">Select District</option>
-                      {data
-                        .find((province) => province.provinceId.toString() === selectedProvince)
-                        ?.districts.map((district) => (
-                          <option key={district.districtId} value={district.districtId}>
-                            {district.districtName}
-                          </option>
-                        ))}
-                    </select>
-                  </FormControl>
-                  <FormMessage />
-                </FormItem>
-              )}
-            />
+      control={form.control}
+      name="districtId"
+      render={({ field }) => (
+        <FormItem className="w-[33%]">
+          <FormLabel className="text-black">District</FormLabel>
+          <FormControl>
+            <Select
+              {...field}
+              onValueChange={(value) => {
+                field.onChange(value); // Update form value
+                setSelectedDistrict(value); // Set the selected district
+              }}
+            >
+              <SelectTrigger className="w-full text-black bg-white border">
+                <SelectValue placeholder="Select District" />
+              </SelectTrigger>
+              <SelectContent>
+                <SelectGroup>
+                  <SelectLabel>Select District</SelectLabel>
+                  {data
+                    .find((province) => province.provinceId.toString() === selectedProvince)
+                    ?.districts.map((district) => (
+                      <SelectItem key={district.districtId} value={district.districtId.toString()}>
+                        {district.districtName}
+                      </SelectItem>
+                    ))}
+                </SelectGroup>
+              </SelectContent>
+            </Select>
+          </FormControl>
+          <FormMessage />
+        </FormItem>
+      )}
+    />
 
             {/* City Selector or Other Input */}
             <FormField
-              control={form.control}
-              name="addrTown"
-              render={({ field }) => (
-                <FormItem>
-                  <FormLabel className="text-black">Town</FormLabel>
-                  <FormControl>
-                    <select
-                      className="text-black bg-white border"
-                      {...field}
-                      onChange={(e) => {
-                        const value = e.target.value;
-                        field.onChange(value === "Other" ? "" : value);
-                        setIsOtherTown(value === "Other");
-                        setIsMainCity(value === "Other" ? 0 : 1);
-                     
-                      }}
-                    >
-                      {/* <option value="">Select Town</option> */}
-                      {data
-                        .find((province) => province.provinceId.toString() === selectedProvince)
-                        ?.districts.find((district) => district.districtId.toString() === selectedDistrict)
-                        ?.cities.map((city) => (
-                          <option key={city.cityId} value={city.cityName}>
-                            {city.cityName}
-                          </option>
-                        ))}
-                      <option   value="Other">Other</option>
-                    </select>
-                  </FormControl>
-                  <FormMessage />
-                </FormItem>
-              )}
-            />
+      control={form.control}
+      name="addrTown"
+      render={({ field }) => (
+        <FormItem className="w-[33%]">
+          <FormLabel className="text-black">Town</FormLabel>
+          <FormControl>
+            <Select
+              {...field}
+              onValueChange={(value) => {
+                field.onChange(value === "Other" ? "" : value);
+                setIsOtherTown(value === "Other");
+                setIsMainCity(value === "Other" ? 0 : 1);
+              }}
+            >
+              <SelectTrigger className="w-full text-black bg-white border">
+                <SelectValue placeholder="Select Town" />
+              </SelectTrigger>
+              <SelectContent>
+                <SelectGroup>
+                  <SelectLabel>Select Town</SelectLabel>
+                  {data
+                    .find((province) => province.provinceId.toString() === selectedProvince)
+                    ?.districts.find((district) => district.districtId.toString() === selectedDistrict)
+                    ?.cities.map((city) => (
+                      <SelectItem key={city.cityId} value={city.cityName}>
+                        {city.cityName}
+                      </SelectItem>
+                    ))}
+                  <SelectItem value="Other">Other</SelectItem>
+                </SelectGroup>
+              </SelectContent>
+            </Select>
+          </FormControl>
+          <FormMessage />
+        </FormItem>
+      )}
+    />
+</div>
 
             {/* Display text input if "Other" is selected */}
+            <div className="flex gap-5">
+              
             {isOtherTown && (
               <FormField
                 control={form.control}
                 name="addrTown"
                 render={({ field }) => (
-                  <FormItem>
-                    <FormLabel className="text-black">Specify Town</FormLabel>
+                  <FormItem className="w-[50%]">
+                    <FormLabel className="text-black">Mention Your Nearest Town</FormLabel>
                     <FormControl>
                       <Input placeholder="Enter town name" className="text-black bg-white border" {...field} />
                     </FormControl>
@@ -391,7 +411,7 @@ export function UserDetails() {
               control={form.control}
               name="contactNo"
               render={({ field }) => (
-                <FormItem>
+                <FormItem  className="w-[50%]">
                   <FormLabel className="text-black">Contact Number</FormLabel>
                   <FormControl>
                     <Input
@@ -405,12 +425,14 @@ export function UserDetails() {
               )}
             />
             
+            </div>
 
             {/* Other form fields... */}
             <div className="flex items-end justify-end">
-              <Button type="submit" className="px-8 py-1 text-black rounded-full bg-secondary">
-                Submit
-              </Button>
+            <button type="submit"
+					className="px-4 py-2 m-2 text-white transition duration-500 bg-gray-700 border border-gray-700 rounded-md select-none ease hover:bg-gray-800 focus:outline-none focus:shadow-outline">
+					Submit
+				</button>
             </div>
           </form>
         </Form>
