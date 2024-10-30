@@ -110,7 +110,7 @@ export default function Hero() {
         ))}
     </div>
         ) : (
-          <div className="z-0 grid grid-cols-4 gap-5 mt-10">
+          <div className="z-0 grid h-full gap-5 my-10 min-h-[50vh] grid-cols-4">
             {data.map((product, key) => (
               <ProductCard product={product} key={key} />
             ))}
@@ -118,14 +118,14 @@ export default function Hero() {
         )}
       </div>
 
-      <div className="mx-10">
+      {/* <div className="mx-10">
         <h1 className="mt-20 mb-10 text-3xl font-bold">Product Categories</h1>
         <div className="relative flex py-5 space-x-4 overflow-auto carousel">
           {Categories.map((category, key) => (
             <CategoryCard category={category} key={key} />
           ))}
         </div>
-      </div>
+      </div> */}
     </>
   );
 }

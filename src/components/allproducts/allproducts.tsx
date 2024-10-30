@@ -43,13 +43,13 @@ export default function allproducts() {
   return (
     <>
       <div className='container relative z-0 flex flex-col items-center justify-start min-h-screen align-top '>
-      <h1 className='absolute top-0  text-slate-800 items-start justify-start w-[95%] text-6xl font-bold'>All products</h1>
+      <h1 className='absolute top-0  text-slate-800 items-start justify-start w-[95%] text-5xl font-bold mt-10'>All products</h1>
     
     {/* Add a horizontal line below the title */}
-    <hr className='w-[90%] mt-16 mb-2 border-t-2 border-gray-600' /> {/* Adjust margin and border thickness */}
+    <hr className='w-[90%]  mb-2 border-t-2 border-gray-600' /> {/* Adjust margin and border thickness */}
 
         {loading ? (
-        <div className="grid w-full grid-cols-4 gap-4"> {/* Change grid-cols to 4 to create 8 loaders */}
+        <div className="grid w-full grid-cols-4 gap-4 mt-10"> {/* Change grid-cols to 4 to create 8 loaders */}
         {[...Array(8)].map((_, index) => (
             <Skeleton key={index} /> // Render 8 skeleton loaders
         ))}

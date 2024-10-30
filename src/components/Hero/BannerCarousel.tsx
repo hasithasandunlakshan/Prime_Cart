@@ -5,9 +5,9 @@ import Autoplay from "embla-carousel-autoplay";
 import Image from "next/image"; // Ensure the Image component is imported
 
 // Import your imagess
-import img1 from "./carousel_Images/C_image_01.webp";
-import img2 from "./carousel_Images/C_image_02.webp";
-import img3 from "./carousel_Images/C_image_03.webp";
+import img1 from "./carousel_Images/5.png";
+import img2 from "./carousel_Images/6.jpg";
+import img3 from "./carousel_Images/7.jpg";
 
 const BannerCarousel = () => {
   const plugin = React.useRef(Autoplay({ delay: 2000, stopOnInteraction: false }));
@@ -41,7 +41,7 @@ const BannerCarousel = () => {
   ];
 
   return (
-    <div className="flex items-center justify-center h-full align-middle py-44">
+    <div className="flex items-center justify-center h-full align-middle pt-44">
       <Carousel
         plugins={[plugin.current]}
         className="relative overflow-hidden rounded-lg shadow-lg w-[98%]"

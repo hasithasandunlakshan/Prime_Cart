@@ -1,14 +1,16 @@
-import React from 'react'
+import Link from "next/link";
+import React from "react";
 
-interface Props{
-    category: {
-        title: string,
-        description : string,
-        imageUrl: string
-    }
+interface Props {
+  category: {
+    title: string;
+    href: string;
+    description: string;
+    imageUrl: string;
+  };
 }
 
-const CategoryCard = ({category} : Props) => {
+const CategoryCard = ({ category }: Props) => {
   return (
     <div className="card rounded-2xl h-64 aspect-[5/4] shadow-xl group text-white relative carousel-item">
       <figure className="absolute inset-0">
@@ -25,13 +27,16 @@ const CategoryCard = ({category} : Props) => {
         <h2 className="card-title">{category.title}</h2>
         <p>{category.description}</p>
         <div className="justify-end card-actions">
-        <button className="btn btn-primary bg-gradient-to-r from-primary to-secondary">
-      Shop Now
-    </button>
+          <Link
+            href={category.href}
+            className="btn btn-primary bg-gradient-to-r from-sky-400 to-sky-600"
+          >
+            Shop Now
+          </Link>
         </div>
       </div>
     </div>
   );
-}
+};
 
-export default CategoryCard
+export default CategoryCard;

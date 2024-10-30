@@ -8,7 +8,7 @@ const page = () =>{
 
   return (
     
-      <div>
+      <div className='py-44'>
         <div>
         <Profile/> 
         </div>
