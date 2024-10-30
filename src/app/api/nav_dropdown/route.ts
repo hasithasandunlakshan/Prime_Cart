@@ -21,8 +21,17 @@ export async function GET(request: Request) {
         // Create a MySQL connection
         const connection = await mysql.createConnection(connectionparams);
 
-        // Call the stored procedure
-        const [rows] = await connection.execute('CALL GetCategoriesWithSubCategories()') as [
+        // SQL query to get categories and their respective subcategories
+        const query = `
+            SELECT c.categoryId, c.title AS categoryTitle, 
+                   s.subCatId, s.title AS subCategoryTitle
+            FROM defaultdb.Category c
+            LEFT JOIN defaultdb.SubCategory s ON c.categoryId = s.mainCatId
+            ORDER BY c.categoryId, s.subCatId;
+        `;
+
+        // Execute the query and specify the result type
+        const [rows] = await connection.execute(query) as [
             Array<{ 
                 categoryId: number; 
                 categoryTitle: string; 

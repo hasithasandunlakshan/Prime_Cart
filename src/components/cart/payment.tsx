@@ -161,7 +161,7 @@ const Payment: React.FC<PaymentProps> = () => {
   useEffect(() => {
     const fetchAddresses = async () => {
       try {
-        const response = await fetch('/api/checkout');
+        const response = await fetch(`/api/checkout/${session.data?.user?.id}`);
         if (!response.ok) throw new Error('Failed to fetch addresses');
         const data = await response.json();
         setAddresses(data);

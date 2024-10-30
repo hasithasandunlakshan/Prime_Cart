@@ -47,7 +47,9 @@ interface Province {
 // Schema without userId
 const FormSchema = z.object({
   name: z.string().min(1, { message: "Name Required" }),
-  addrNo: z.string().min(1, { message: "Address Number is required." }),
+  addrNo: z
+    .number({ invalid_type_error: "Address Number must be a number" })
+    .positive({ message: "Address Number must be a positive number" }),
   addrStreet: z.string().min(1, { message: "Street is required." }),
   addrLine1: z.string().min(1, { message: "Address Line 1 is required." }),
   addrLine2: z.string().min(1, { message: "Address Line 2 is required." }),
@@ -98,7 +100,7 @@ export function UserDetails() {
     resolver: zodResolver(FormSchema),
     defaultValues: {
       name: "",
-      addrNo: "",
+      
       addrStreet: "",
       addrLine1: "",
       addrLine2: "",
@@ -177,6 +179,7 @@ export function UserDetails() {
                   <FormLabel className="text-black">Address No</FormLabel>
                   <FormControl>
                     <Input
+                    type="number"
                       placeholder="Address No"
                       className="text-black bg-white border"
                       {...field}
@@ -352,14 +355,14 @@ export function UserDetails() {
         <FormItem className="w-[33%]">
           <FormLabel className="text-black">Town</FormLabel>
           <FormControl>
-            <Select
-              {...field}
-              onValueChange={(value) => {
-                field.onChange(value === "Other" ? "" : value);
-                setIsOtherTown(value === "Other");
-                setIsMainCity(value === "Other" ? 0 : 1);
-              }}
-            >
+          <Select
+  {...field}
+  onValueChange={(value) => {
+    field.onChange(value === "Other" ? "" : value);
+    setIsOtherTown(value === "Other"); // Show the nearest town input only if "Other" is selected
+    setIsMainCity(value === "Other" ? 0 : 1);
+  }}
+>
               <SelectTrigger className="w-full text-black bg-white border">
                 <SelectValue placeholder="Select Town" />
               </SelectTrigger>

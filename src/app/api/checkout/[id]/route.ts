@@ -1,7 +1,7 @@
 
 import { NextResponse ,NextRequest} from "next/server";
 import mysql from 'mysql2/promise';
-import {GetDBSettings} from "../../../sharedCode/common"
+import {GetDBSettings} from "../../../../sharedCode/common"
 import { useSession } from "next-auth/react";
 // export const GetDBSettings = () => {
 //   return {
@@ -15,15 +15,15 @@ import { useSession } from "next-auth/react";
 
 let connectionparams = GetDBSettings();
 
-export async function GET(request:NextRequest) {
+export async function GET(request:NextRequest ,{params}:{params:{id:string}}) {
     let connection;
- const {data:session}=useSession();
- let     userId= Number(session?.user?.id)
+    const keyword=decodeURIComponent(params.id)
+    console.log('Query param:', keyword);
     try {
         connection = await mysql.createConnection(connectionparams);
         //const query = 'select * from defaultdb.UserAddress left outer join defaultdb.RegisteredUser on RegisteredUser.userId=UserAddress.userId';
         const query = 'select * from UserAddress u join RegisteredUser r on u.userId=r.userId where u.userId=? ';
-        const [result]=await connection.execute(query,[userId]);
+        const [result]=await connection.execute(query,[keyword]);
 
         return NextResponse.json(result);
     } catch (error) {
