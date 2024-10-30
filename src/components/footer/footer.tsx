@@ -11,10 +11,10 @@ const Footer = () => {
 
       {/* Links */}
       <div className={styles.linksContainer}>
-        <a href="/about" className={styles.link}>About Us</a>
-        <a href="/contact" className={styles.link}>Contact Us</a>
-        <a href="/privacy-policy" className={styles.link}>Privacy Policy</a>
-        <a href="/terms" className={styles.link}>Terms & Conditions</a>
+        <a href="/about_us" className={styles.link}>About Us</a>
+        <a href="/contact_us" className={styles.link}>Contact Us</a>
+        <a href="/privacy_policy" className={styles.link}>Privacy Policy</a>
+        <a href="/term" className={styles.link}>Terms & Conditions</a>
       </div>
 
       {/* Social Media Icons */}
