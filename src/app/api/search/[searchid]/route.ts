@@ -9,12 +9,14 @@ export async function GET(request:NextRequest,{params}:{params:{searchid:string}
         const connection=await mysql.createConnection(connectionparams);
         
       
-        const query = `SELECT * 
-FROM Product p 
-JOIN ProductImages pi ON p.productID = pi.productID 
-JOIN 
-    SKU ON p.baseSKU = SKU.sku
-WHERE p.title LIKE ?`;
+        const query = `
+        SELECT p.*, SKU.*, MIN(pi.imageurl) AS imageurl
+        FROM Product p 
+        JOIN ProductImages pi ON p.productID = pi.productID 
+        JOIN SKU ON p.baseSKU = SKU.sku
+        WHERE p.title LIKE ?
+        GROUP BY p.productID;
+    `;
         const values = [`%${params.searchid}%`];
 
         const [result]=await connection.execute(query,values);

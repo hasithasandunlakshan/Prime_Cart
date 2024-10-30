@@ -8,14 +8,29 @@ export async function GET(request:NextRequest,{params}:{params:{id:string}}){
         let query1='';
         let query2='';
         let query3='';
-        query1='select * from  SKU  join Cart on Cart.sku=SKU.sku where Cart.userId=?';
+        query1 = `
+        SELECT 
+            c.*, 
+            s.imageUrl,
+            s.price,
+            p.title AS productName
+        FROM 
+            Cart c
+        JOIN 
+            SKU s ON c.sku = s.sku
+        JOIN 
+            Product p ON s.productId = p.productID
+        WHERE 
+            c.userId = ?;
+    `;
+    
         query2='select * from ProductImages where productId = ?';
         query3='select sum(price*quantity) from  SKU  join Cart on Cart.sku=SKU.sku where Cart.userId=?';
         let values=[params.id]
         console.log("id",params.id)
         const [result]=await connection.execute(query1,values);
       
-        const [images]=await connection.execute(query2,values);
+       
         const [price]=await connection.execute(query3,values);
         
 
@@ -24,7 +39,7 @@ export async function GET(request:NextRequest,{params}:{params:{id:string}}){
         const details={
             result:result,
            
-            images:images,
+            
             price:price
         }
         console.log("results1",details);

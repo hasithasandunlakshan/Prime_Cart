@@ -36,7 +36,8 @@ interface Sku {
   productId: number;
   price: number;
   availableStock: number;
-  variants: Variant[];  // Array of `Variant` objects
+  variants: Variant[];
+  imageUrl:string;  // Array of `Variant` objects
 }
 interface attribute {
   ProductId: number;
