@@ -6,7 +6,7 @@ const Footer = () => {
     <footer className={styles.footer}>
       {/* Logo */}
       <div className={styles.logoContainer}>
-        <img src="/path/to/logo.png" alt="Logo" className={styles.logo} />
+        <img src="images/logo.png" alt="Logo" className={styles.logo} />
       </div>
 
       {/* Links */}
