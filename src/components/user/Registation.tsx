@@ -67,7 +67,7 @@ export function Registration() {
   }
 
   return (
-    <div className="flex items-center justify-center min-h-screen py-32 bg-white">
+    <div className="flex items-center justify-center min-h-screen bg-white py-44">
       <div className="flex w-full max-w-4xl overflow-hidden bg-white rounded-lg shadow-lg">
         
         {/* Left Side Image */}

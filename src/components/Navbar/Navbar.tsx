@@ -71,7 +71,7 @@ export default function Nav() {
 
           </DropdownMenuTrigger>
           <DropdownMenuContent>
-            <DropdownMenuLabel >{session.user?.id}</DropdownMenuLabel>
+            <DropdownMenuLabel >Account Settings</DropdownMenuLabel>
             <DropdownMenuSeparator />
             <DropdownMenuItem onClick={()=>router.push("/user/profile")} className='cursor-pointer'>Profile</DropdownMenuItem>
             <DropdownMenuItem className='cursor-pointer'>History</DropdownMenuItem>

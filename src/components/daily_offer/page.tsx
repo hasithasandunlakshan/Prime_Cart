@@ -35,8 +35,8 @@ const DailyOffer: React.FC = () => {
 
   return (
     <div>
-      <div className="py-44">
-        <h1 className="text-slate-800 items-start justify-start w-[95%] text-6xl font-bold mb-5">Daily Offers</h1>
+      <div className="flex flex-col items-center justify-center min-h-screen align-middle">
+        <h1 className="items-start justify-start mb-5 text-6xl font-bold text-slate-800 ">Daily Offers</h1>
         <div className="grid grid-cols-1 gap-6 md:grid-cols-2 lg:grid-cols-3">
           {offers.map((offer) => (
             <div
