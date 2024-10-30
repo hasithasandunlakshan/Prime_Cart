@@ -41,7 +41,7 @@ const BannerCarousel = () => {
   ];
 
   return (
-    <div className="flex items-center justify-center h-full align-middle py-44">
+    <div className="flex items-center justify-center align-middle py-44">
       <Carousel
         plugins={[plugin.current]}
         className="relative overflow-hidden rounded-lg shadow-lg w-[98%]"

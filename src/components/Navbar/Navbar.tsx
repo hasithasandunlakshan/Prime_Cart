@@ -49,7 +49,7 @@ export default function Nav() {
   </Link>
 </NavigationMenuItem>
 <NavigationMenuItem>
-  <Link href="/daily-offers" className="hover:text-gray-300">
+  <Link href="/daily_offer" className="hover:text-gray-300">
     Daily Offers
   </Link>
 </NavigationMenuItem>

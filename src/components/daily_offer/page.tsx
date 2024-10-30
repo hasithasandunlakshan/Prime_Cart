@@ -36,18 +36,18 @@ const DailyOffer: React.FC = () => {
   return (
     <div>
       <div className="py-44">
-        <h1 className="text-4xl font-bold mb-8 text-center">Daily Offers</h1>
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+        <h1 className="text-slate-800 items-start justify-start w-[95%] text-6xl font-bold mb-5">Daily Offers</h1>
+        <div className="grid grid-cols-1 gap-6 md:grid-cols-2 lg:grid-cols-3">
           {offers.map((offer) => (
             <div
               key={offer.productId}
               onClick={() => handleOfferClick(offer.productId)}
-              className="card p-5 rounded-lg bg-gray-50 shadow-md cursor-pointer"
+              className="p-5 rounded-lg shadow-md cursor-pointer card bg-gray-50"
             >
-              <img src={`/${offer.imageUrl}`} alt={offer.title} className="w-full h-full object-cover rounded-md mb-4" />
-              <h3 className="font-bold text-xl">{offer.title}</h3>
-              <p className="text-gray-800 mt-2 test-xl bg-blue-100 border-l-4 border-blue-500 p-3 rounded-lg flex items-center">
-                <span className="material-icons text-blue-500 mr-2 font-bold">{offer.description}</span>
+              <img src={`/${offer.imageUrl}`} alt={offer.title} className="object-cover w-full h-full mb-4 rounded-md" />
+              <h3 className="text-xl font-bold">{offer.title}</h3>
+              <p className="flex items-center p-3 mt-2 text-gray-800 bg-blue-100 border-l-4 border-blue-500 rounded-lg test-xl">
+                <span className="mr-2 font-bold text-blue-500 material-icons">{offer.description}</span>
               </p>
               
             </div>

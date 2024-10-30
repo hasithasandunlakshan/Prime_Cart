@@ -11,7 +11,7 @@ export default async function MyOrders() {
     return <div>Please sign in to view your orders</div>;
   }
   const response = await fetch(
-    `http://localhost:3001/api/myorders?userId=${userId}&status=${"pending"}`,
+    `http://localhost:3000/api/myorders?userId=${userId}&status=${"pending"}`,
     {
       method: "GET",
       cache: "no-store",
