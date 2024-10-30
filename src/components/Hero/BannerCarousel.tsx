@@ -5,9 +5,9 @@ import Autoplay from "embla-carousel-autoplay";
 import Image from "next/image"; // Ensure the Image component is imported
 
 // Import your imagess
-import img1 from "./carousel_Images/C_image_01.webp";
-import img2 from "./carousel_Images/C_image_02.webp";
-import img3 from "./carousel_Images/C_image_03.webp";
+import img1 from "./carousel_Images/1.png";
+import img2 from "./carousel_Images/2.png";
+import img3 from "./carousel_Images/3.png";
 
 const BannerCarousel = () => {
   const plugin = React.useRef(Autoplay({ delay: 2000, stopOnInteraction: false }));

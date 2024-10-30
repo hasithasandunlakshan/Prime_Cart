@@ -28,7 +28,7 @@ export default async function MyOrders() {
 
   return (
     <div>
-      <h1 className="text-2xl font-bold mb-5">Shipped Orders</h1>
+      <h1 className="mb-5 text-2xl font-bold">Shipped Orders</h1>
       <ul>
         {orders.map((order) => (
           <OrderItemCard order={order} />

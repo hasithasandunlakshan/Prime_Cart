@@ -83,16 +83,16 @@ const OrderDetails = async ({ params: { orderId } }: Props) => {
 
   return (
     <>
-      <div className="flex flex-row space-x-4">
-        <h1 className="text-2xl font-bold mb-5 me-10">
+      <div className="z-50 flex flex-row space-x-4">
+        <h1 className="mb-5 text-2xl font-bold me-10">
           Order Details - Order Id #{orderId}{" "}
         </h1>
         <span className={spanClassName}>{order.status}</span>
       </div>
 
-      <div className="grid grid-cols-3 space-x-5 w-full">
-        <div className="card p-5 h-min col-span-2 rounded-lg bg-gray-50 dark:bg-gray-800">
-          <h2 className="font-bold text-xl mb-7">Products</h2>
+      <div className="grid w-full grid-cols-3 space-x-5">
+        <div className="col-span-2 p-5 rounded-lg card h-min bg-gray-50 dark:bg-gray-800">
+          <h2 className="text-xl font-bold mb-7">Products</h2>
           <ul className="space-y-3">
             {order.products.map((productVal) => (
               <OrderProductCard
@@ -102,8 +102,8 @@ const OrderDetails = async ({ params: { orderId } }: Props) => {
             ))}
           </ul>
         </div>
-        <div className="card p-5 h-min rounded-lg bg-gray-50 dark:bg-gray-800">
-          <h2 className="font-bold text-xl mb-7">Order Summary</h2>
+        <div className="p-5 rounded-lg card h-min bg-gray-50 dark:bg-gray-800">
+          <h2 className="text-xl font-bold mb-7">Order Summary</h2>
           <h1 className="text-2xl font-bold">{order.name}</h1>
           <p className="text-gray-400">{order.address}</p>
           <div className="mt-5">
@@ -112,21 +112,21 @@ const OrderDetails = async ({ params: { orderId } }: Props) => {
               {order.date} {order.time.split(".")[0]}
             </p>
           </div>
-          <h2 className="font-bold text-xl mt-10">Payment Details</h2>
-          <div className="grid grid-cols-2 mt-5 gap-5">
+          <h2 className="mt-10 text-xl font-bold">Payment Details</h2>
+          <div className="grid grid-cols-2 gap-5 mt-5">
             <h3 className="text-gray-400">Sub total</h3>
             <p className="font-bold">Rs. {order.totalAmount.toFixed(2)}</p>
             <h3 className="text-gray-400">Delivery Charges</h3>
             <p className="font-bold">Rs. {order.deliveryFee.toFixed(2)}</p>
             <h3 className="text-gray-400">Total Amount</h3>
-            <p className="font-bold text-lg">
+            <p className="text-lg font-bold">
               Rs. {(order.totalAmount + order.deliveryFee).toFixed(2)}
             </p>
             <h3 className="text-gray-400">Payment Method</h3>
             <p className="font-bold">{order.paymentMethod}</p>
           </div>
-          <h2 className="font-bold text-xl mt-10">Delivery Details</h2>
-          <div className="grid grid-cols-2 mt-5 gap-5">
+          <h2 className="mt-10 text-xl font-bold">Delivery Details</h2>
+          <div className="grid grid-cols-2 gap-5 mt-5">
             <div>
               <h3 className="text-gray-400">Delivery Method</h3>
               <p className="font-bold">{order.deliveryMethod}</p>

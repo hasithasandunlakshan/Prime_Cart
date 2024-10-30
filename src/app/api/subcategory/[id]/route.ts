@@ -9,7 +9,27 @@ export async function GET(request:NextRequest,{params}:{params:{id:string}}){
     try{
         const connection=await mysql.createConnection(connectionparams);
       
-        const query = 'SELECT * FROM Product p JOIN SKU ON p.baseSKU = SKU.sku JOIN ProductImages pi ON p.productID = pi.productID JOIN ProductSubCategory pc ON pc.productID = p.productID JOIN SubCategory s ON s.subCatId = pc.subCategoryId WHERE s.title LIKE ? LIMIT 0, 1000';
+        const query = `SELECT 
+    p.*, 
+    SKU.*, 
+    MIN(pi.imageurl) AS imageUrl  -- Get one image per product
+FROM 
+    Product p 
+JOIN 
+    SKU ON p.baseSKU = SKU.sku 
+JOIN 
+    ProductImages pi ON p.productID = pi.productID 
+JOIN 
+    ProductSubCategory pc ON pc.productID = p.productID 
+JOIN 
+    SubCategory s ON s.subCatId = pc.subCategoryId 
+WHERE 
+    s.title LIKE ? 
+GROUP BY 
+    p.productID, SKU.sku  -- Group by the relevant identifiers
+LIMIT 
+    0, 1000;
+`;
 
         const values = [`%${keyword}%`];
 

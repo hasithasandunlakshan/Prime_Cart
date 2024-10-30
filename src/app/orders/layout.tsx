@@ -7,7 +7,7 @@ export default function OrdersLayout({
     <div className="w-full h-screen bg-gray-100 mt-36">
       <div className="flex flex-row h-[calc(100vh-100px)]">
         <SideBar />
-        <div className="flex-1 p-7 overflow-y-auto">{children}</div>
+        <div className="flex-1 overflow-y-auto p-7">{children}</div>
       </div>
     </div>
   );
