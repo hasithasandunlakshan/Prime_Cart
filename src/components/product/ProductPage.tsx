@@ -36,6 +36,7 @@ interface Sku {
   productId: number;
   price: number;
   availableStock: number;
+  imageUrl: string;
   variants: Variant[];
 }
 
@@ -58,7 +59,7 @@ const ProductPage: React.FC<{ product: Product; images: ImagesDetails[]; skuData
   attribute,
 }) => {
   const [quantity, setQuantity] = useState(1);
-  const [image, setImage] = useState(`${product.imageUrl}`);
+  const [image, setImage] = useState(product.imageUrl);
   const [selectedSku, setSelectedSku] = useState<Sku | null>(skuData[0]);
   const { data: session } = useSession();
   const [isInCart, setIsInCart] = useState(true);
@@ -108,7 +109,7 @@ const ProductPage: React.FC<{ product: Product; images: ImagesDetails[]; skuData
     const selected = skuData.find((s) => s.sku === sku);
     if (selected) {
       setSelectedSku(selected);
-      setImage(images[0]?.imageUrl);
+      setImage(selected?.imageUrl);
     }
   };
 
@@ -138,15 +139,16 @@ const ProductPage: React.FC<{ product: Product; images: ImagesDetails[]; skuData
       <div className="max-w-6xl px-4 mx-auto sm:px-6 lg:px-8">
         <div className="flex flex-col -mx-4 md:flex-row">
           <div className="px-4 md:flex-1">
-            <div className="h-[460px] rounded-lg bg-gray-300 mb-4">
-              <img className="object-cover w-full h-full rounded-2xl" src={`/${image}`} alt="Product Image" />
+            <div className="h-[460px] rounded-lg bg-white
+             mb-4">
+              <img className="w-full h-full bg-white rounded-2xl" src={image} alt="Product Image" />
             </div>
 
             <div className="flex justify-center h-20 gap-4 ">
               {images.map((image, key) => (
                 <img
                   key={key}
-                  src={`/${image.imageUrl}`}
+                  src={image.imageUrl}
                   alt={`Thumbnail ${key + 1}`}
                   onClick={() => setImage(image.imageUrl)}
                   className="object-cover transition duration-300 rounded-md cursor-pointer opacity-60 hover:opacity-100"
@@ -228,7 +230,7 @@ const ProductPage: React.FC<{ product: Product; images: ImagesDetails[]; skuData
                     isLoadingCart ? 'bg-gray-500 cursor-not-allowed' : 'bg-gray-900 hover:bg-gray-800 dark:hover:bg-gray-700'
                   }`}
                 >
-                  {isLoadingCart ? 'Adding...' : 'Add to Cat'}
+                  {isLoadingCart ? 'Adding...' : 'Add to Cart'}
                 </button>
               ) : (
                 <button

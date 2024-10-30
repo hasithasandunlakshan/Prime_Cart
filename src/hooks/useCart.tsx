@@ -11,6 +11,7 @@ export const CartContext = createContext<{
   removeProduct: (productSKU: string) => void;
   address:any[];
   addAddress:(address:any)=>void;
+  clearCart: () => void;
 } | null>(null);
 
 export const CartContextProvider: React.FC<{ children: ReactNode }> = ({ children }) => {
@@ -19,6 +20,7 @@ export const CartContextProvider: React.FC<{ children: ReactNode }> = ({ childre
   const { data: session } = useSession();
   const router =useRouter();
   const[address,setAddress]=useState<any[]>([]);
+
 
   // Fetch cart items from the database
   useEffect(() => {
@@ -47,7 +49,7 @@ export const CartContextProvider: React.FC<{ children: ReactNode }> = ({ childre
     };
 
     fetchCartItems();
-  }, [products]); // Only re-run when session user ID changes
+  }, [products,[]]); // Only re-run when session user ID changes
 
   // Function to add product to cart
   const addProduct = (product: any) => {
@@ -67,9 +69,13 @@ export const CartContextProvider: React.FC<{ children: ReactNode }> = ({ childre
     
     // Optionally, you can call an API to remove this product from the cart in the database
   };
-
+ const clearCart = () => {
+    setProducts([]);
+    setPrice(0);
+     // Clear addresses if desired
+  };
   return (
-    <CartContext.Provider value={{ products, addProduct, removeProduct, price,address,addAddress }}>
+    <CartContext.Provider value={{ products, addProduct, removeProduct, price,address,addAddress,clearCart }}>
       {children}
     </CartContext.Provider>
   );

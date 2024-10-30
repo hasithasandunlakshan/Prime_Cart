@@ -1,10 +1,23 @@
-import React from 'react'
+"use client"
+import { CartContext } from '@/hooks/useCart';
+import React, { useContext, useEffect } from 'react'
 
 export default function page() {
+  const cartContext=useContext(CartContext);
+  
+  useEffect(() => {
+    // Clear the cart when the component mounts
+    cartContext?.clearCart();
+  }, []); // Empty dependency array to run only once when the component mounts
+
   return (
     <div>
 
-<div className="h-screen bg-gray-100 py-44">
+<div className="min-h-screen bg-gray-100 py-44">
+  
+  
+
+  
       <div className="p-6 bg-white md:mx-auto">
         <svg viewBox="0 0 24 24" className="w-16 h-16 mx-auto my-6 text-green-600">
             <path fill="currentColor"

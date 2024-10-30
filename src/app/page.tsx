@@ -1,6 +1,6 @@
 import BannerCarousel from '@/components/Hero/BannerCarousel';
 import Hero from '@/components/Hero/Hero';
-import UserDetails from '@/components/profile/address';
+import ALLPRODUCTS from '@/components/allproducts/allproducts';
 
 import React from 'react';
 export default function Home() {
@@ -9,7 +9,8 @@ export default function Home() {
    <BannerCarousel/>
    {/* <UserDetails/> */}
    <Hero/>
-
+   
+<ALLPRODUCTS/>
    </div>
   );
 }
