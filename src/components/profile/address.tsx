@@ -47,9 +47,7 @@ interface Province {
 // Schema without userId
 const FormSchema = z.object({
   name: z.string().min(1, { message: "Name Required" }),
-  addrNo: z
-    .number({ invalid_type_error: "Address Number must be a number" })
-    .positive({ message: "Address Number must be a positive number" }),
+  addrNo: z.number().int().positive({ message: "Address Number must be a positive number." }), // Change here
   addrStreet: z.string().min(1, { message: "Street is required." }),
   addrLine1: z.string().min(1, { message: "Address Line 1 is required." }),
   addrLine2: z.string().min(1, { message: "Address Line 2 is required." }),
@@ -100,7 +98,7 @@ export function UserDetails() {
     resolver: zodResolver(FormSchema),
     defaultValues: {
       name: "",
-      
+      addrNo: 123,
       addrStreet: "",
       addrLine1: "",
       addrLine2: "",
@@ -171,24 +169,31 @@ export function UserDetails() {
                 </FormItem>
               )}
             />
-             <FormField
-              control={form.control}
-              name="addrNo"
-              render={({ field }) => (
-                <FormItem className=" w-[50%]">
-                  <FormLabel className="text-black">Address No</FormLabel>
-                  <FormControl>
-                    <Input
-                    type="number"
-                      placeholder="Address No"
-                      className="text-black bg-white border"
-                      {...field}
-                    />
-                  </FormControl>
-                  <FormMessage />
-                </FormItem>
-              )}
-            />
+           <FormField
+  control={form.control}
+  name="addrNo"
+  render={({ field }) => (
+    <FormItem className="w-[50%]">
+      <FormLabel className="text-black">Address No</FormLabel>
+      <FormControl>
+        <Input
+          type="number" // Keep input type as number
+          placeholder="Address No"
+          className="text-black bg-white border"
+          {...field}
+          min="1" // Minimum value
+          onChange={(e) => {
+            const value = e.target.value; // Get the input value
+            // Update the form field with a parsed integer or default to 1
+            field.onChange(value ? Math.max(1, parseInt(value)) : 1); // Ensure value is at least 1
+          }}
+        />
+      </FormControl>
+      <FormMessage />
+    </FormItem>
+  )}
+/>
+
             </div>
 
 <div className="flex gap-5">
@@ -349,64 +354,76 @@ export function UserDetails() {
 
             {/* City Selector or Other Input */}
             <FormField
-      control={form.control}
-      name="addrTown"
-      render={({ field }) => (
-        <FormItem className="w-[33%]">
-          <FormLabel className="text-black">Town</FormLabel>
-          <FormControl>
-          <Select
-  {...field}
-  onValueChange={(value) => {
-    field.onChange(value === "Other" ? "" : value);
-    setIsOtherTown(value === "Other"); // Show the nearest town input only if "Other" is selected
-    setIsMainCity(value === "Other" ? 0 : 1);
-  }}
->
-              <SelectTrigger className="w-full text-black bg-white border">
-                <SelectValue placeholder="Select Town" />
-              </SelectTrigger>
-              <SelectContent>
-                <SelectGroup>
-                  <SelectLabel>Select Town</SelectLabel>
-                  {data
-                    .find((province) => province.provinceId.toString() === selectedProvince)
-                    ?.districts.find((district) => district.districtId.toString() === selectedDistrict)
-                    ?.cities.map((city) => (
-                      <SelectItem key={city.cityId} value={city.cityName}>
-                        {city.cityName}
-                      </SelectItem>
-                    ))}
-                  <SelectItem value="Other">Other</SelectItem>
-                </SelectGroup>
-              </SelectContent>
-            </Select>
-          </FormControl>
-          <FormMessage />
-        </FormItem>
-      )}
-    />
+  control={form.control}
+  name="addrTown"
+  render={({ field }) => (
+    <FormItem className="w-[33%]">
+      <FormLabel className="text-black">Town</FormLabel>
+      <FormControl>
+        <Select
+          onValueChange={(value) => {
+            if (value === "Other") {
+              setIsOtherTown(true); // Show other input
+              field.onChange(""); // Clear addrTown when selecting "Other"
+              setIsMainCity(0); // Set isMainCity to 0
+            } else {
+              setIsOtherTown(false); // Hide other input
+              setIsMainCity(1); // Set isMainCity to 1
+              field.onChange(value); // Set addrTown to selected value
+            }
+          }}
+        >
+          <SelectTrigger className="w-full text-black bg-white border">
+            <SelectValue placeholder="Select Town" />
+          </SelectTrigger>
+          <SelectContent>
+            <SelectGroup>
+              <SelectLabel>Select Town</SelectLabel>
+              {data
+                .find((province) => province.provinceId.toString() === selectedProvince)
+                ?.districts.find((district) => district.districtId.toString() === selectedDistrict)
+                ?.cities.map((city) => (
+                  <SelectItem key={city.cityId} value={city.cityName}>
+                    {city.cityName}
+                  </SelectItem>
+                ))}
+              <SelectItem value="Other">Other</SelectItem>
+            </SelectGroup>
+          </SelectContent>
+        </Select>
+      </FormControl>
+      <FormMessage />
+    </FormItem>
+  )}
+/>
+
+{/* Display text input if "Other" is selected */}
+{isOtherTown && (
+  <FormField
+    control={form.control}
+    name="addrTown"
+    render={({ field }) => (
+      <FormItem className="w-[50%]">
+        <FormLabel className="text-black">Mention Your Nearest To</FormLabel>
+        <FormControl>
+          <Input
+            placeholder="Enter town name"
+            className="text-black bg-white border"
+            {...field} // Ensure you're passing down the field prop correctly
+          />
+        </FormControl>
+        <FormMessage />
+      </FormItem>
+    )}
+  />
+)}
+
 </div>
 
             {/* Display text input if "Other" is selected */}
             <div className="flex gap-5">
               
-            {isOtherTown && (
-              <FormField
-                control={form.control}
-                name="addrTown"
-                render={({ field }) => (
-                  <FormItem className="w-[50%]">
-                    <FormLabel className="text-black">Mention Your Nearest Town</FormLabel>
-                    <FormControl>
-                      <Input placeholder="Enter town name" className="text-black bg-white border" {...field} />
-                    </FormControl>
-                    <FormMessage />
-                  </FormItem>
-                )}
-              />
-            )}
-
+          
 
 
             {/* Contact Number Field */}
