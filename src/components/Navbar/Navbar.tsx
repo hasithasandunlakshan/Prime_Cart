@@ -126,7 +126,6 @@
 // }
 
 
-
 "use client";
 import React, { useState } from 'react';
 import Avatar from '@mui/material/Avatar';
@@ -160,7 +159,7 @@ export default function Nav() {
             </Link>
           </NavigationMenuItem>
           <NavigationMenuItem>
-            <Link href="/daily_offer"  className="text-white hover:text-gray-300">
+            <Link href="/daily_offer" className="text-white hover:text-gray-300">
               Daily Offers
             </Link>
           </NavigationMenuItem>
