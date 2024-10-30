@@ -3,7 +3,6 @@ import ProductCard from '@/components/product/productCard';
 import React, { useEffect, useState } from 'react';
 
 function Page({ params }: { params: { subcategory: string } }) {
-    console.log("huuuuuuuuuuu", params.subcategory);
 
     const [data, setData] = useState([]);
     const [loading, setLoading] = useState(true); // Loading state
