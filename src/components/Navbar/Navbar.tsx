@@ -19,7 +19,6 @@ import { Key, LogOut } from "lucide-react"
 import MenubarDemo from "./MenuBar"
 import { Button } from "../ui/button"
 import { useSession } from "next-auth/react"
-import { red } from "@mui/material/colors";
 
 import {  DropdownMenu,
   DropdownMenuContent,
@@ -45,7 +44,7 @@ export default function Nav() {
            </NavigationMenuItem>
            <NavigationMenuItem>
 
-  <Link href="/my-orders" className="hover:text-gray-300">
+  <Link href="/orders" className="hover:text-gray-300">
     My Orders
   </Link>
 </NavigationMenuItem>
