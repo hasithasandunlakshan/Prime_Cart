@@ -21,11 +21,13 @@ import {
 } from "@/components/ui/alert-dialog"
 import { Button } from "@/components/ui/button"
 import { useRouter } from 'next/navigation';
+import Checkout from '../Payment/payment';
  
 type Address = {
+  
   addressId: string;
-  firstName: string;
-  lastName: string;
+  name: string;
+  
   addrNo: string;
   addrStreet: string;
   addrLine1: string;
@@ -35,6 +37,7 @@ type Address = {
   addrProvince: string;
   postalCode: string;
   contactNo: string;
+  isMainCity:number;
 };
 
 type PaymentProps = {
@@ -42,8 +45,8 @@ type PaymentProps = {
 };
 
 const Payment: React.FC<PaymentProps> = () => {
-  const [selectedShipping, setSelectedShipping] = useState<'fedex' | 'standard'>('fedex');
-  const [selectedPayment, setSelectedPayment] = useState<'credit' | 'paypal'>('credit');
+  const [selectedShipping, setSelectedShipping] = useState<'StorePickup' | 'Delivery'>('StorePickup');
+  const [selectedPayment, setSelectedPayment] = useState<'credit' | 'paypal'>('paypal');
   const [addresses, setAddresses] = useState<Address[]>([]);
   const [deliveryAddress, setDeliveryAddress] = useState<number>(0);
   const cartContext = useContext(CartContext);
@@ -53,9 +56,34 @@ const Payment: React.FC<PaymentProps> = () => {
   const [total, setTotal] = useState<number>(0);
   const session= useSession();
   const router=useRouter();
+  const [isMainCity,setIsMainCity]=useState<number>(0);
+  const [deliveryDate, setDeliveryDate] = useState<string>(calculateDeliveryDate(isMainCity));
+  const [isUserDetailsOpen, setIsUserDetailsOpen] = useState(false);
+  const [isCreditCardOpen, setIsCreditCardOpen] = useState(false);
+  const [isPaymentGateOpen, setIsPaymentGateOpen] = useState(false);
+ 
+  
+
+    // Update delivery date if `isMainCity` changes
+    useEffect(() => {
+        setDeliveryDate(calculateDeliveryDate(isMainCity));
+    }, [isMainCity]);
+  function calculateDeliveryDate(isMainCity: number): string {
+    const deliveryDate = new Date();
+    const daysToAdd = isMainCity === 1 ? 3 : 5;
+    deliveryDate.setDate(deliveryDate.getDate() + daysToAdd);
+    
+    const year = deliveryDate.getFullYear();
+    const month = String(deliveryDate.getMonth() + 1).padStart(2, '0'); // Months are zero-based
+    const day = String(deliveryDate.getDate()).padStart(2, '0');
+    
+    return `${year}-${month}-${day}`;
+}
+
+
   const shippingPrices = {
-    fedex: 10.00,
-    standard: 5.00,
+    StorePickup: 10.00,
+    Delivery: 5.00,
   };
   
 
@@ -69,29 +97,31 @@ const Payment: React.FC<PaymentProps> = () => {
       setAddress(prev => !prev);  // Toggle the address form
     };
   
-    const onSubmit = async () => {
+    const onSubmit1 = async () => {
       const userId = session.data?.user?.id||null;
       const deliveryFee = deliveryFees;
       const deliveryMethod = selectedShipping;
       const totalAmount = total;
       const paymentMethod = selectedPayment;
-      const estimatedDeliveryDate = "2024-10-05";
+      const estimatedDeliveryDate = deliveryDate;
     
-      if (!deliveryMethod || !totalAmount || !paymentMethod || !estimatedDeliveryDate || !deliveryAddress || !deliveryFee) {
-        toast({
-          variant: "destructive",
-          title: "Uh oh! Something went wrong.",
-          description: "Missing required parameters.",
-          action: <ToastAction altText="Try again">Try again</ToastAction>,
-        });
-        return;
-      }
+      // if (!deliveryMethod || !totalAmount || !paymentMethod || !estimatedDeliveryDate || !deliveryAddress || !deliveryFee) {
+      //   toast({
+      //     variant: "destructive",
+      //     title: "Uh oh! Something went wrong.",
+      //     description: "Missing required parameters.",
+      //     action: <ToastAction altText="Try again">Try again</ToastAction>,
+      //   });
+      //   return;
+      // }
+      console.log("trying..................")
     
       try {
+       
         const apiUrl = userId ? '/api/order' : '/api/guestOrder';
         const body = userId
           ? { deliveryMethod, totalAmount, paymentMethod, estimatedDeliveryDate, addressId: deliveryAddress, deliveryFee, userId }
-          : { deliveryMethod, totalAmount, paymentMethod, estimatedDeliveryDate, address: cartContext?.address[0], deliveryFee,cart:cartContext?.products };
+          : { deliveryMethod, totalAmount, paymentMethod, estimatedDeliveryDate, address: cartContext?.address[0], deliveryFee,orderProducts:cartContext?.products };
            console.log("unregistered user",body);
         const response = await fetch(apiUrl, {
           method: 'POST',
@@ -105,7 +135,12 @@ const Payment: React.FC<PaymentProps> = () => {
     
         const responseBody = await response.json();
         console.log('Success:', responseBody);
-        router.push("/order");
+        router.push("/orderSuccess")
+       
+          // Set to true if payment is successful
+        
+    
+        // router.push("/order");
       } catch (error) {
         console.error('Error in onSubmit:', error);
         toast({
@@ -135,7 +170,7 @@ const Payment: React.FC<PaymentProps> = () => {
       }
     };
     fetchAddresses();
-    console.log("modaya" ,session.data?.user?.id)
+    // console.log("user" ,session.data?.user?.id)
   }, [openAddressForm,session.data?.user?.id]);
 
   return (
@@ -160,19 +195,21 @@ const Payment: React.FC<PaymentProps> = () => {
                   name="shipping"
                   value={method}
                   checked={selectedShipping === method}
-                  onChange={() => setSelectedShipping(method as 'fedex' | 'standard')}
+                  onChange={() => setSelectedShipping(method as 'StorePickup' | 'Delivery')}
                 />
                 <span className="box-content absolute block w-3 h-3 -translate-y-1/2 bg-white border-8 border-gray-300 rounded-full peer-checked:border-gray-700 right-4 top-1/2"></span>
                 <label className="flex p-4 border border-gray-300 rounded-lg cursor-pointer select-none peer-checked:border-2 peer-checked:border-gray-700 peer-checked:bg-gray-50" htmlFor={`radio_${method}`}>
-                  <img className="object-contain w-14" src={"/images/credit.jpg"} alt={`${method.charAt(0).toUpperCase() + method.slice(1)} Delivery`} />
+                  <img className="object-contain w-14" src={"/images/credit.jpg"} alt={`${method.charAt(0).toUpperCase() + method.slice(1)} `} />
                   <div className="ml-5">
                     <span className="mt-2 font-semibold">{`${method.charAt(0).toUpperCase() + method.slice(1)} Delivery - $${price.toFixed(2)}`}</span>
-                    <p className="text-sm leading-6 text-slate-500">Delivery: {method === 'fedex' ? '2-4 Days' : '5-7 Days'}</p>
+                    <p className="text-sm leading-6 text-slate-500">Delivery: {deliveryDate}</p>
                   </div>
                 </label>
               </div>
             ))}
           </form>
+
+          
         </div>
 
         <div className="px-4 pt-8">
@@ -180,7 +217,14 @@ const Payment: React.FC<PaymentProps> = () => {
           {address?<UserDetails/>:
           
           <div className="flex items-center justify-start gap-2 align-middle">
-          <Select onValueChange={(value) => setDeliveryAddress(parseInt(value))}>
+          <Select 
+           onValueChange={(value) => {
+            const selectedAddress = addresses.find((address) => address.addressId === value);
+            setDeliveryAddress(parseInt(value));
+            setIsPaymentGateOpen(true);
+            setIsMainCity(selectedAddress?.isMainCity || 0); // Default to 0 if isMainCity is undefined
+          }}
+          >
 
               <SelectTrigger className="w-[280px]">
                 <SelectValue placeholder="Select Address" />
@@ -194,7 +238,7 @@ const Payment: React.FC<PaymentProps> = () => {
         // If user is logged in, map through addresses
         addresses.map((address) => (
           <SelectItem key={address.addressId} value={address.addressId}>
-            <p>{`${address.firstName} ${address.lastName}`}</p>
+            <p>{`${address.name}`}</p>
             {address.addrNo}, {address.addrStreet}, {address.addrLine1}, {address.addrLine2}
             <br />
             {address.addrTown}, {address.addrDistrict}, {address.addrProvince}, {address.postalCode}, {address.contactNo}
@@ -204,7 +248,7 @@ const Payment: React.FC<PaymentProps> = () => {
        
         cartContext?.address.map((address) => (
           <SelectItem key={address} value={address}>
-            <p>{`${address.firstName} ${address.lastName}`}</p>
+            <p>{`${address.name}`}</p>
             {address.addrNo}, {address.addrStreet}, {address.addrLine1}, {address.addrLine2}
             <br />
             {address.addrTown}, {address.addrDistrict}, {address.addrProvince}, {address.postalCode}, {address.contactNo}
@@ -216,31 +260,45 @@ const Payment: React.FC<PaymentProps> = () => {
               </SelectContent>
             </Select>
 
-            <AlertDialog>
-      <AlertDialogTrigger asChild className='' >
-        <Button variant="outline">Add Address</Button>
-      </AlertDialogTrigger>
-      <AlertDialogContent className='h-full overflow-y-auto'>
-        {/* <AlertDialogHeader >
-          <AlertDialogTitle>Are you absolutely sure?</AlertDialogTitle>
-          <AlertDialogDescription>
-        
-          </AlertDialogDescription>
-        </AlertDialogHeader> */}
 
-        <UserDetails></UserDetails>
-        <AlertDialogFooter>
-          <AlertDialogCancel >Cancel</AlertDialogCancel>
-          <AlertDialogAction onClick={()=>router.refresh()}>Continue</AlertDialogAction>
-        </AlertDialogFooter>
-      </AlertDialogContent>
-    </AlertDialog>
+            <div>
+            {/* Button to open UserDetails in full screen */}
+            <Button variant="outline" onClick={() => setIsUserDetailsOpen(true)}>
+                Add Address
+            </Button>
+
+            {/* Full-screen UserDetails component */}
+            {isUserDetailsOpen && (
+                <div
+                    className="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-50"
+                >
+                    <div className="relative w-full h-full p-6 overflow-y-auto bg-white">
+                        {/* Close button */}
+                        <button
+                            onClick={() => setIsUserDetailsOpen(false)}
+                            className="absolute p-2 text-gray-500 top-4 right-4"
+                        >
+                            Close
+                        </button>
+
+                        {/* Full-screen UserDetails content */}
+                        <UserDetails />
+                    </div>
+                </div>
+            )}
+        </div>
+
+
           </div>}
          
-          
+         {isPaymentGateOpen &&
+         
+         
+          <div>
+            
           <p className="text-xl font-medium">Payment Methods</p>
           <form className="grid gap-6 mt-5">
-            <div className="relative">
+            <div className="relative " onClick={() => setIsCreditCardOpen(true)}>
               <input className="hidden peer" id="payment_1" type="radio" name="payment" value="credit" checked={selectedPayment === 'credit'} onChange={() => setSelectedPayment('credit')} />
               <span className="box-content absolute block w-3 h-3 -translate-y-1/2 bg-white border-8 border-gray-300 rounded-full peer-checked:border-gray-700 right-4 top-1/2"></span>
               <label className="flex p-4 border border-gray-300 rounded-lg cursor-pointer select-none peer-checked:border-2 peer-checked:border-gray-700 peer-checked:bg-gray-50" htmlFor="payment_1">
@@ -250,23 +308,60 @@ const Payment: React.FC<PaymentProps> = () => {
                   <p className="text-sm leading-6 text-slate-500">Pay securely using your credit card.</p>
                 </div>
               </label>
+
+              {isCreditCardOpen && (
+                <div
+                    className="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-50"
+                >
+                    <div className="relative w-full h-full p-6 overflow-y-auto bg-white">
+                        {/* Close button */}
+                        <button
+                            onClick={() => setIsCreditCardOpen(false)}
+                            className="absolute p-2 text-gray-500 top-4 right-4"
+                        >
+                            Close
+                        </button>
+
+                      <Checkout onSubmit={onSubmit1}/>
+
+                                
+                    </div>
+                </div>
+            )}
             </div>
             <div className="relative">
               <input className="hidden peer" id="payment_2" type="radio" name="payment" value="paypal" checked={selectedPayment === 'paypal'} onChange={() => setSelectedPayment('paypal')} />
               <span className="box-content absolute block w-3 h-3 -translate-y-1/2 bg-white border-8 border-gray-300 rounded-full peer-checked:border-gray-700 right-4 top-1/2"></span>
-              <label className="flex p-4 border border-gray-300 rounded-lg cursor-pointer select-none peer-checked:border-2 peer-checked:border-gray-700 peer-checked:bg-gray-50" htmlFor="payment_2">
+              <label className="flex p-4 border border-gray-300 rounded-lg cursor-pointer select-none peer-checked:border-2 peer-checked:border-gray-700 peer-checked:bg-gray-50">
                 <img className="object-contain w-14" src="/images/paypal.jpg" alt="PayPal Payment" />
                 <div className="ml-5">
-                  <span className="mt-2 font-semibold">PayPal</span>
+                  <span className="mt-2 font-semibold">Cash On Delivery</span>
                   <p className="text-sm leading-6 text-slate-500">Pay using your PayPal account.</p>
                 </div>
               </label>
             </div>
-            <p className="mt-4 text-lg font-bold">Total: ${total}</p>
+          </form>
+          </div>
+         }
+
+<div className="bg-white rounded-md px-4 py-6 mt-10 h-max shadow-[0_2px_12px_-3px_rgba(6,81,237,0.3)]">
+                    <ul className="space-y-4 text-gray-800">
+                        <li className="flex flex-wrap gap-4 text-sm">Subtotal <span className="ml-auto font-bold">{totalPrice}</span></li>
+                        <li className="flex flex-wrap gap-4 text-sm">Shipping <span className="ml-auto font-bold">{deliveryFees}</span></li>
+                    
+                        <hr className="border-gray-300" />
+                        <li className="flex flex-wrap gap-4 text-sm font-bold">Total <span className="ml-auto">${total}</span></li>
+                    </ul>
+
+                    <div className="mt-8 space-y-2">
+                        <button onClick={onSubmit1} disabled={!isPaymentGateOpen} type="submit" className="text-sm px-4 hover:scale-105 py-2.5 w-full font-semibold tracking-wide bg-gray-800 hover:bg-gray-900 text-white rounded-md">Place Order</button>
+                        <button onClick={()=>router.push("/")} type="button" className="text-sm px-4 py-2.5 w-full font-semibold tracking-wide bg-transparent hover:bg-gray-100 text-gray-800 border border-gray-300 rounded-md">Continue Shopping  </button>
+                    </div>
+            {/* <p className="mt-4 text-lg font-bold">Total: ${total}</p>
             <button type="button" onClick={onSubmit} className="px-4 py-2 mt-4 text-white bg-blue-500 rounded-lg hover:bg-blue-600">
               Place Order
-            </button>
-          </form>
+            </button> */}
+            </div>
         </div>
       </div>
     </main>

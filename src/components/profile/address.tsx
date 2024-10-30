@@ -17,16 +17,42 @@ import { Input } from "@/components/ui/input";
 import { useRouter } from "next/navigation";
 import { useSession } from "next-auth/react";
 import { CartContext } from "@/hooks/useCart";
-import { useContext } from "react";
+import { useContext, useEffect, useState } from "react";
+import {
+  Select,
+  SelectContent,
+  SelectGroup,
+  SelectItem,
+  SelectLabel,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select";
+interface City {
+  cityId: number;
+  cityName: string;
+}
 
-// Updated schema without userId
+interface District {
+  districtId: number;
+  districtName: string;
+  cities: City[];
+}
+
+interface Province {
+  provinceId: number;
+  provinceName: string;
+  districts: District[];
+}
+
+// Schema without userId
 const FormSchema = z.object({
+  name: z.string().min(1, { message: "Name Required" }),
   addrNo: z.string().min(1, { message: "Address Number is required." }),
   addrStreet: z.string().min(1, { message: "Street is required." }),
   addrLine1: z.string().min(1, { message: "Address Line 1 is required." }),
   addrLine2: z.string().min(1, { message: "Address Line 2 is required." }),
   addrTown: z.string().min(1, { message: "Town is required." }),
-  addrDistrict: z.string().min(1, { message: "District is required." }),
+  districtId: z.string().min(1, { message: "District is required." }),
   addrProvince: z.string().min(1, { message: "Province is required." }),
   postalCode: z.string().min(1, { message: "Postal Code is required." }),
   contactNo: z
@@ -40,16 +66,44 @@ export function UserDetails() {
   const router = useRouter();
   const { data: session } = useSession();
   const cartContext = useContext(CartContext);
+  const [data, setData] = useState<Province[]>([]);
+  const [selectedProvince, setSelectedProvince] = useState<string>("");
+  const [selectedDistrict, setSelectedDistrict] = useState<string>("");
+  const [isOtherTown, setIsOtherTown] = useState<boolean>(false);
+  const [loading, setLoading] = useState<boolean>(true);
+  const [error, setError] = useState<string | null>(null);
+  const [isMainCity,setIsMainCity]=useState(1);
+  
+
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const response = await fetch('/api/maincities');
+        if (!response.ok) {
+          throw new Error('Network response was not ok');
+        }
+        const result: Province[] = await response.json();
+        setData(result);
+      } catch (err: any) {
+        setError(err.message);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchData();
+  }, []);
 
   const form = useForm<FormSchemaType>({
     resolver: zodResolver(FormSchema),
     defaultValues: {
+      name: "",
       addrNo: "",
       addrStreet: "",
       addrLine1: "",
       addrLine2: "",
       addrTown: "",
-      addrDistrict: "",
+      districtId: "",
       addrProvince: "",
       postalCode: "",
       contactNo: "",
@@ -57,23 +111,21 @@ export function UserDetails() {
   });
 
   const onSubmitUnregisteredUser = (data: FormSchemaType) => {
-    cartContext?.addAddress(data);
+    const extendedData={...data,isMainCity};
+    cartContext?.addAddress(extendedData);
     toast({ title: "Address saved successfully!" });
     form.reset();
   };
 
   const onSubmit = async (data: FormSchemaType) => {
     if (!session) {
-      // Unregistered user
       onSubmitUnregisteredUser(data);
       return;
     }
 
     try {
       const userId = session.user?.id;
-      const userdata = { ...data, userId };
-      console.log("User data:", userdata);
-      
+      const userdata = { ...data, userId,isMainCity };
       const response = await fetch('/api/profile/address', {
         method: 'POST',
         headers: {
@@ -97,14 +149,31 @@ export function UserDetails() {
 
   return (
     <main className="flex items-center justify-center w-full h-full bg-white max-w-screen">
-      <div className="container flex flex-col  py-20 mt-10  rounded-lg  w-[100%]">
+      <div className="container flex items-center justify-center align-middle  rounded-lg w-[80%]">
         <Form {...form}>
           <form onSubmit={form.handleSubmit(onSubmit)} className="w-[100%] space-y-6">
-          <FormField
+            {/* Name Field */}
+
+            <div className="flex gap-5">
+              
+            <FormField 
+              control={form.control}
+              name="name"
+              render={({ field }) => (
+                <FormItem className=" w-[50%]">
+                  <FormLabel className="text-black">Name</FormLabel>
+                  <FormControl>
+                    <Input placeholder="Name" className="text-black bg-white border" {...field} />
+                  </FormControl>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
+             <FormField
               control={form.control}
               name="addrNo"
               render={({ field }) => (
-                <FormItem>
+                <FormItem className=" w-[50%]">
                   <FormLabel className="text-black">Address No</FormLabel>
                   <FormControl>
                     <Input
@@ -117,13 +186,15 @@ export function UserDetails() {
                 </FormItem>
               )}
             />
+            </div>
 
-            {/* Street Field */}
+<div className="flex gap-5">
+  
             <FormField
               control={form.control}
               name="addrStreet"
               render={({ field }) => (
-                <FormItem>
+                <FormItem className=" w-[50%]">
                   <FormLabel className="text-black">Street</FormLabel>
                   <FormControl>
                     <Input
@@ -142,7 +213,7 @@ export function UserDetails() {
               control={form.control}
               name="addrLine1"
               render={({ field }) => (
-                <FormItem>
+                <FormItem className=" w-[50%]">
                   <FormLabel className="text-black">Address Line 1</FormLabel>
                   <FormControl>
                     <Input
@@ -155,13 +226,18 @@ export function UserDetails() {
                 </FormItem>
               )}
             />
+</div>
+            {/* Street Field */}
 
             {/* Address Line 2 Field */}
+
+
+            <div className="flex gap-5">
             <FormField
               control={form.control}
               name="addrLine2"
               render={({ field }) => (
-                <FormItem>
+                <FormItem className=" w-[50%]">
                   <FormLabel className="text-black">Address Line 2</FormLabel>
                   <FormControl>
                     <Input
@@ -174,80 +250,11 @@ export function UserDetails() {
                 </FormItem>
               )}
             />
-
-            {/* Province Selector */}
-            <FormField
-              control={form.control}
-              name="addrProvince"
-              render={({ field }) => (
-                <FormItem>
-                  <FormLabel className="text-black">Province</FormLabel>
-                  <FormControl>
-                    <select className="text-black bg-white border" {...field}>
-                      <option value="">Select Province</option>
-                      <option value="Western">Western</option>
-                      <option value="Central">Central</option>
-                      <option value="Southern">Southern</option>
-                      <option value="Northern">Northern</option>
-                      <option value="Eastern">Eastern</option>
-                      <option value="North Western">North Western</option>
-                      <option value="North Central">North Central</option>
-                      <option value="Uva">Uva</option>
-                      <option value="Sabaragamuwa">Sabaragamuwa</option>
-                    </select>
-                  </FormControl>
-                  <FormMessage />
-                </FormItem>
-              )}
-            />
-
-            {/* Town Selector */}
-            <FormField
-              control={form.control}
-              name="addrTown"
-              render={({ field }) => (
-                <FormItem>
-                  <FormLabel className="text-black">Town</FormLabel>
-                  <FormControl>
-                    <select className="text-black bg-white border" {...field}>
-                      <option value="">Select Town</option>
-                      <option value="Colombo">Colombo</option>
-                      <option value="Galle">Galle</option>
-                      <option value="Kandy">Kandy</option>
-                      <option value="Jaffna">Jaffna</option>
-                      <option value="Trincomalee">Trincomalee</option>
-                    </select>
-                  </FormControl>
-                  <FormMessage />
-                </FormItem>
-              )}
-            />
-
-            {/* District Field */}
-            <FormField
-              control={form.control}
-              name="addrDistrict"
-              render={({ field }) => (
-                <FormItem>
-                  <FormLabel className="text-black">District</FormLabel>
-                  <FormControl>
-                    <Input
-                      placeholder="District"
-                      className="text-black bg-white border"
-                      {...field}
-                    />
-                  </FormControl>
-                  <FormMessage />
-                </FormItem>
-              )}
-            />
-
-            {/* Postal Code Field */}
             <FormField
               control={form.control}
               name="postalCode"
               render={({ field }) => (
-                <FormItem>
+                <FormItem className=" w-[50%]">
                   <FormLabel className="text-black">Postal Code</FormLabel>
                   <FormControl>
                     <Input
@@ -260,13 +267,151 @@ export function UserDetails() {
                 </FormItem>
               )}
             />
+            
+              
+            </div>
+<div className="flex gap-5">
+  
+            <FormField
+              control={form.control}
+              name="addrProvince"
+              render={({ field }) => (
+                <FormItem className="w-[33%]">
+                  <FormLabel className="text-black">Province</FormLabel>
+                  <FormControl>
+                  <Select
+      {...field}
+      onValueChange={(value) => {
+        field.onChange(value); // Handles form field update
+        setSelectedProvince(value); // Sets the selected province
+        setSelectedDistrict(""); // Clears district selection
+      }}
+    >
+      <SelectTrigger className="w-full text-black bg-white border">
+        <SelectValue placeholder="Select Province" />
+      </SelectTrigger>
+      <SelectContent>
+        <SelectGroup>
+          <SelectLabel>Select Province</SelectLabel>
+          {data.map((province) => (
+            <SelectItem key={province.provinceId} value={province.provinceId.toString()}>
+              {province.provinceName}
+            </SelectItem>
+          ))}
+        </SelectGroup>
+      </SelectContent>
+    </Select>
+                  </FormControl>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
+
+            {/* District Selector */}
+            <FormField
+      control={form.control}
+      name="districtId"
+      render={({ field }) => (
+        <FormItem className="w-[33%]">
+          <FormLabel className="text-black">District</FormLabel>
+          <FormControl>
+            <Select
+              {...field}
+              onValueChange={(value) => {
+                field.onChange(value); // Update form value
+                setSelectedDistrict(value); // Set the selected district
+              }}
+            >
+              <SelectTrigger className="w-full text-black bg-white border">
+                <SelectValue placeholder="Select District" />
+              </SelectTrigger>
+              <SelectContent>
+                <SelectGroup>
+                  <SelectLabel>Select District</SelectLabel>
+                  {data
+                    .find((province) => province.provinceId.toString() === selectedProvince)
+                    ?.districts.map((district) => (
+                      <SelectItem key={district.districtId} value={district.districtId.toString()}>
+                        {district.districtName}
+                      </SelectItem>
+                    ))}
+                </SelectGroup>
+              </SelectContent>
+            </Select>
+          </FormControl>
+          <FormMessage />
+        </FormItem>
+      )}
+    />
+
+            {/* City Selector or Other Input */}
+            <FormField
+      control={form.control}
+      name="addrTown"
+      render={({ field }) => (
+        <FormItem className="w-[33%]">
+          <FormLabel className="text-black">Town</FormLabel>
+          <FormControl>
+            <Select
+              {...field}
+              onValueChange={(value) => {
+                field.onChange(value === "Other" ? "" : value);
+                setIsOtherTown(value === "Other");
+                setIsMainCity(value === "Other" ? 0 : 1);
+              }}
+            >
+              <SelectTrigger className="w-full text-black bg-white border">
+                <SelectValue placeholder="Select Town" />
+              </SelectTrigger>
+              <SelectContent>
+                <SelectGroup>
+                  <SelectLabel>Select Town</SelectLabel>
+                  {data
+                    .find((province) => province.provinceId.toString() === selectedProvince)
+                    ?.districts.find((district) => district.districtId.toString() === selectedDistrict)
+                    ?.cities.map((city) => (
+                      <SelectItem key={city.cityId} value={city.cityName}>
+                        {city.cityName}
+                      </SelectItem>
+                    ))}
+                  <SelectItem value="Other">Other</SelectItem>
+                </SelectGroup>
+              </SelectContent>
+            </Select>
+          </FormControl>
+          <FormMessage />
+        </FormItem>
+      )}
+    />
+</div>
+
+            {/* Display text input if "Other" is selected */}
+            <div className="flex gap-5">
+              
+            {isOtherTown && (
+              <FormField
+                control={form.control}
+                name="addrTown"
+                render={({ field }) => (
+                  <FormItem className="w-[50%]">
+                    <FormLabel className="text-black">Mention Your Nearest Town</FormLabel>
+                    <FormControl>
+                      <Input placeholder="Enter town name" className="text-black bg-white border" {...field} />
+                    </FormControl>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
+            )}
+
+
 
             {/* Contact Number Field */}
             <FormField
               control={form.control}
               name="contactNo"
               render={({ field }) => (
-                <FormItem>
+                <FormItem  className="w-[50%]">
                   <FormLabel className="text-black">Contact Number</FormLabel>
                   <FormControl>
                     <Input
@@ -279,10 +424,15 @@ export function UserDetails() {
                 </FormItem>
               )}
             />
+            
+            </div>
+
+            {/* Other form fields... */}
             <div className="flex items-end justify-end">
-              <Button type="submit" className="px-8 py-1 text-black rounded-full bg-secondary">
-                Submit
-              </Button>
+            <button type="submit"
+					className="px-4 py-2 m-2 text-white transition duration-500 bg-gray-700 border border-gray-700 rounded-md select-none ease hover:bg-gray-800 focus:outline-none focus:shadow-outline">
+					Submit
+				</button>
             </div>
           </form>
         </Form>
