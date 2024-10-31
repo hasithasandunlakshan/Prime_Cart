@@ -14,6 +14,7 @@ interface Product {
   quantity: number;
   imageUrl: string;
   sku:string;
+  availableStock:number;
 }
 
 interface ViewCartProps {
@@ -77,7 +78,7 @@ const{data:session}=useSession();
             <DeleteOutlinedIcon className="text-red-400" />
           </button>
         </div>
-        <h3 className="mt-auto text-base font-bold text-gray-800"> Total   Rs {(product.price * product.quantity).toFixed(2)}</h3>
+        <h3 className="mt-auto text-base font-bold text-gray-800"> Total   Rs {(Number(product.price) * product.quantity).toFixed(2)}</h3>
       </div>
     </div>
   );

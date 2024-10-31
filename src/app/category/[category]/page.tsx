@@ -54,8 +54,8 @@ function Page({ params }: { params: { category: string } }) {
 {data.map((product,key)=>(
     <div className="flex">
         
-        {/* {product?.id}
-        <div className="flex">{product?.name}</div> */}
+        {product?.id}
+        <div className="flex">{product?.name}</div>
         </div>
     
 ))}

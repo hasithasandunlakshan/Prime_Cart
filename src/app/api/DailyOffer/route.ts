@@ -11,7 +11,7 @@ export async function GET() {
         connection = await mysql.createConnection(connectionparams);
        
         const query = 'CALL getDailyOffers()';
-        ;
+        
         const [result] = await connection.execute(query);
 
         return NextResponse.json(result);

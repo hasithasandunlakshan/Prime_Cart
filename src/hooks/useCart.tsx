@@ -35,8 +35,8 @@ export const CartContextProvider: React.FC<{ children: ReactNode }> = ({ childre
           }
 
           const data = await response.json();
-          setProducts(data.result);
-          setPrice(data.price[0]['sum(price*quantity)']);
+          setProducts(data.result[0]);
+          setPrice(data.price[0][0].cartTotal);
         } catch (error) {
           console.error("Error fetching cart items:", error);
         }
@@ -49,7 +49,7 @@ export const CartContextProvider: React.FC<{ children: ReactNode }> = ({ childre
     };
 
     fetchCartItems();
-  }, [products,[]]); // Only re-run when session user ID changes
+  }, [products,]); // Only re-run when session user ID changes
 
   // Function to add product to cart
   const addProduct = (product: any) => {

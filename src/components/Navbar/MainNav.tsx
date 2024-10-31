@@ -29,7 +29,7 @@ export default function MainNav() {
   return (
     <div className='z-50 flex flex-row items-center justify-around w-full h-auto mb-2 bg-gray-50 max-h-20'>
       <Link href={"/"}>
-<Image src={"/images/logo.png"} alt='logo' width={150} height={50} className=''></Image>
+<Image src={"/images/logo.png"} alt='logo' width={120} height={50} className=''></Image>
       </Link>
 <div className='flex w-1/2 gap-5'>
 <TextField id="outlined-basic" label="Explore" variant="outlined" size='small' fullWidth onChange={handleChange}   />

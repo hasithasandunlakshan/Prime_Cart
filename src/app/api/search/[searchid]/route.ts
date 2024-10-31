@@ -1,38 +1,27 @@
-import { NextResponse,NextRequest } from "next/server";
-import mysql from 'mysql2/promise'
+import { NextResponse, NextRequest } from "next/server";
+import mysql from 'mysql2/promise';
 import { GetDBSettings } from "@/sharedCode/common";
-let connectionparams=GetDBSettings();
-export async function GET(request:NextRequest,{params}:{params:{searchid:string}}){
-    console.log('Query param:', params.searchid);
-    
-    try{
-        const connection=await mysql.createConnection(connectionparams);
+
+let connectionParams = GetDBSettings();
+
+export async function GET(request: NextRequest, { params }: { params: { searchid: string } }) {
+    let connection;
+
+    try {
+        console.log('Query param:', params.searchid);
         
-      
-        const query = `
-        SELECT p.*, SKU.*, MIN(pi.imageurl) AS imageurl
-        FROM Product p 
-        JOIN ProductImages pi ON p.productID = pi.productID 
-        JOIN SKU ON p.baseSKU = SKU.sku
-        WHERE p.title LIKE ?
-        GROUP BY p.productID;
-    `;
-        const values = [`%${params.searchid}%`];
+        connection = await mysql.createConnection(connectionParams);
 
-        const [result]=await connection.execute(query,values);
-        // if(result){
-        // const query = 'SELECT * FROM uom.Subcategories WHERE name like  ?';
-        // }
-        connection.end();
-        
-        return NextResponse.json(result);
+        // Call the stored procedure with the search parameter
+        const [result] = await connection.execute('CALL GetProductsByTitle(?)', [params.searchid]);
 
-
-    }
-    catch(error){
-
-        return NextResponse.json(error);
-
-
+        return NextResponse.json(result[0]); // Access the first result set
+    } catch (error) {
+        console.error('Database error:', error);
+        return NextResponse.json({ error: 'Failed to fetch product data' }, { status: 500 });
+    } finally {
+        if (connection) {
+            await connection.end();
+        }
     }
 }

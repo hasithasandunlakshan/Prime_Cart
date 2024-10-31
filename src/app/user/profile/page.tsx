@@ -14,7 +14,7 @@ const page = () =>{
         </div>
         
         <div>
-        <UpdateProfile/>
+        {/* <UpdateProfile/> */}
         </div>
       </div>  
    
