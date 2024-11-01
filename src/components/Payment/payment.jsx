@@ -6,26 +6,32 @@ const Checkout = ({ onSubmit }) => {
   const [cardNumber, setCardNumber] = useState("");
   const [expiry, setExpiry] = useState("");
   const [cvc, setCvc] = useState("");
+  const [loading, setLoading] = useState(false); // Loading state
 
   const [paymentMethod, setPaymentMethod] = useState("card");
 
   const handleSubmit = (event) => {
     event.preventDefault();
-
-    const expiryParts = expiry.split("-");
-    const month = expiryParts[1];
-    const year = expiryParts[0].slice(-2);
-
-    setName("");
-    setCardNumber("");
-    setExpiry("");
-    setCvc("");
-
-    // Call the parent onSubmit function if it exists
+    setLoading(true); 
     if (onSubmit) {
       console.log("payment")
+      
       onSubmit();
+      
+      const expiryParts = expiry.split("-");
+      const month = expiryParts[1];
+      const year = expiryParts[0].slice(-2);
+      setName("");
+      setCardNumber("");
+      setExpiry("");
+      setCvc("");
+      setLoading(false)
     }
+    
+
+
+
+    // Call the parent onSubmit function if it exists
   };
 
   return (
@@ -70,8 +76,8 @@ const Checkout = ({ onSubmit }) => {
           </>
         )}
 
-        <button onClick={handleSubmit} type="submit" className="w-full py-3 font-bold text-white bg-green-600 rounded-lg hover:bg-green-700">
-          Pay
+        <button   disabled={loading} onClick={handleSubmit} type="submit" className="w-full py-3 font-bold text-white bg-green-600 rounded-lg hover:bg-green-700">
+        {loading ? "Processing..." : "Pay"}
         </button>
       </form>
     </div>

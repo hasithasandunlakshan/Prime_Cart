@@ -45,21 +45,20 @@ export async function POST(request: NextRequest) {
         connection = await mysql.createConnection(connectionparams);
 
         const query = `
-            INSERT INTO UserAddress (name,userId, addrNo, addrStreet, addrLine1, addrLine2, addrTown, districtId, postalCode, contactNo, isMainCity)
-            VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?,?)`;
+            call addUserAddress(?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`;
 
         const [result] = await connection.execute<ResultSetHeader>(query, [
-            name,
             userId,
+            name,
             addrNo,
             addrStreet,
             addrLine1,
             addrLine2,
             addrTown,
+            isMainCity, // Make sure to include isMainCity here
             districtId,
             postalCode,
             contactNo,
-            isMainCity // Make sure to include isMainCity here
         ]);
 
         // Check if rows were affected by the insert

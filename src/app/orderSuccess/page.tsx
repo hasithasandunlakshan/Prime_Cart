@@ -1,9 +1,11 @@
 "use client"
 import { CartContext } from '@/hooks/useCart';
+import { useRouter } from 'next/navigation';
 import React, { useContext, useEffect } from 'react'
 
 export default function page() {
   const cartContext=useContext(CartContext);
+  const router =useRouter();
   
   useEffect(() => {
     // Clear the cart when the component mounts
@@ -27,11 +29,14 @@ export default function page() {
         <div className="text-center">
             <h3 className="text-base font-semibold text-center text-gray-900 md:text-2xl">Payment Done!</h3>
             <p className="my-2 text-gray-600">Thank you for completing your secure online payment.</p>
-            <p> Have a great day!  </p>
-            <div className="py-10 text-center">
-                <a href="#" className="px-12 py-3 font-semibold text-white bg-indigo-600 hover:bg-indigo-500">
-                    GO BACK 
-               </a>
+            <p  > Have a great day!  </p>
+            <p onClick={()=>router.push("/orders")} className='mt-5 text-blue-700 cursor-pointer'>View Your Order Details   </p>
+            <div className="flex items-start justify-center py-10 text-center align-middle">
+
+              
+                <p onClick={()=>router.push("/")}  className="px-10 py-2 font-semibold text-white bg-indigo-600 max-w-60 hover:bg-indigo-500">
+                   Go Back
+               </p>
             </div>
         </div>
     </div>

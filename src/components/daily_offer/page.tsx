@@ -17,7 +17,7 @@ const DailyOffer: React.FC = () => {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const response = await fetch(`http://localhost:3000/api/DailyOffer`);
+        const response = await fetch(`/api/DailyOffer`);
         const revenueData = await response.json();
         const offerList: Offer[] = revenueData[0];
         setOffers(offerList);

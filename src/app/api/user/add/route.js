@@ -7,27 +7,21 @@ export async function POST(request) {
     try {
         const connection = await mysql.createConnection(connectionParams);
         const body = await request.json();
+console.log("data",body)
+        const { firstName, lastName, email, password } = body;
 
-        const { firstName, lastName, email, password, isEmployee, empId } = body;
-
-        // Insert into UserCred table (userId will be auto-incremented)
-        const [userCredResult] = await connection.execute(
-            `INSERT INTO UserCred (email, password, isEmployee, empId) VALUES (?, ?, ?, ?)`,
-            [email, password, isEmployee || false, empId || null]
-        );
-
-        // Get the generated userId from UserCred
-        const userId = userCredResult.insertId;
-
-        // Insert into RegisteredUser table using the auto-generated userId
-        await connection.execute(
-            `INSERT INTO RegisteredUser (userId, firstName, lastName) VALUES (?, ?, ?)`,
-            [userId, firstName, lastName]
+        // Call the stored procedure and retrieve the result
+        const [rows] = await connection.execute(
+            `CALL registerUser(?, ?, ?, ?)`,
+            [email, password, firstName, lastName]
         );
 
         await connection.end();
 
-        return NextResponse.json({ message: "User created successfully", userId });
+        console.log("rows",rows)
+        
+
+        return NextResponse.json({ message: "User created successfully" });
     } catch (error) {
         return NextResponse.json({ error: error.message }, { status: 500 });
     }

@@ -6,26 +6,29 @@ export async function GET(request:NextRequest,{params}:{params:{id:string}}){
     try{
         const connection=await mysql.createConnection(connectionparams);
         let query1='';
-        let query2='';
-        let query3='';
-        query1 = `
-        SELECT 
-            c.*, 
-            s.imageUrl,
-            s.price,
-            p.title AS productName
-        FROM 
-            Cart c
-        JOIN 
-            SKU s ON c.sku = s.sku
-        JOIN 
-            Product p ON s.productId = p.productID
-        WHERE 
-            c.userId = ?;
-    `;
     
-        query2='select * from ProductImages where productId = ?';
-        query3='select sum(price*quantity) from  SKU  join Cart on Cart.sku=SKU.sku where Cart.userId=?';
+        let query3='';
+    //     query1 = `
+    //     SELECT 
+    //         c.*, 
+    //         s.imageUrl,
+    //         s.price,
+    //         p.title AS productName
+    //     FROM 
+    //         Cart c
+    //     JOIN 
+    //         SKU s ON c.sku = s.sku
+    //     JOIN 
+    //         Product p ON s.productId = p.productID
+    //     WHERE 
+    //         c.userId = ?;
+    // `;
+    
+    //     // query2='select * from ProductImages where productId = ?';
+    //     query3='select sum(price*quantity) from  SKU  join Cart on Cart.sku=SKU.sku where Cart.userId=?';
+    query1 = "call GetCartDetails(?)";
+    // query2 = "call GetProductImages(?)";
+    query3 = "call GetCartTotal(?)";
         let values=[params.id]
         console.log("id",params.id)
         const [result]=await connection.execute(query1,values);
@@ -62,28 +65,25 @@ export async function DELETE(request: NextRequest, { params }: { params: { id: s
 
     try {
         const { productSKU } = await request.json(); // SKU of the product to delete
+        const userId = params.id; // User ID from the URL params
         connection = await mysql.createConnection(connectionparams);
 
-        // Query to delete the product from the cart for the user
-        const deleteQuery = 'DELETE FROM Cart WHERE userId = ? AND sku = ?';
-        const values = [params.id, productSKU];
+        // Call the stored procedure to delete the product from the cart
+        const [result]: any = await connection.execute('CALL DeleteFromCart(?, ?)', [userId, productSKU]);
 
-        // Execute the query
-        const [result]: [mysql.ResultSetHeader, any] = await connection.execute(deleteQuery   , values);
-
-        console.log("Deleted product:", result);
-
-        // Check if any rows were affected (meaning a product was actually deleted)
+        // Check if the deletion was successful
         if (result.affectedRows > 0) {
             return NextResponse.json({ message: `Product with SKU ${productSKU} deleted from cart` });
         } else {
             return NextResponse.json({ message: "Product not found in cart" });
         }
-    } catch (error) {
-        // Close the connection if there's an error
-        if (connection) connection.end();
 
+    } catch (error) {
         console.error("Error deleting product:", error);
-        return NextResponse.json({ message: "Error deleting product from cart", error });
+        return NextResponse.json({ message: "Error deleting product from cart", error }, { status: 500 });
+    } finally {
+        if (connection) {
+            await connection.end();
+        }
     }
 }

@@ -45,7 +45,7 @@ export default function ProductCard({ product }: { product: Product }) {
       onClick={handleProductClick}
       className="relative flex flex-col w-full max-w-xs m-10 overflow-hidden bg-white border border-gray-100 rounded-lg shadow-md cursor-pointer"
     >
-      <div className="relative flex mx-3 mt-3 overflow-hidden h-60 rounded-xl">
+      <div className="relative flex items-center justify-center mx-3 mt-3 overflow-hidden align-middle h-60 rounded-xl">
         <img className="object-cover" src={product.imageUrl} alt={product.title} />
       </div>
       <div className="px-5 pb-5 mt-4">

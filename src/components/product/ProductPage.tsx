@@ -86,6 +86,8 @@ const ProductPage: React.FC<{ product: Product; images: ImagesDetails[]; skuData
       sku: selectedSku?.sku || product?.sku,
       quantity: quantity,
       price:selectedSku?.price,
+      imageUrl:selectedSku?.imageUrl,
+      availableStock:selectedSku?.availableStock,
     };
   
     try {
@@ -135,7 +137,7 @@ const ProductPage: React.FC<{ product: Product; images: ImagesDetails[]; skuData
   };
 
   return (
-    <div className="container flex flex-col items-center justify-center py-8 bg-gray-100">
+    <div className="container flex flex-col items-center justify-center min-h-screen py-8 bg-whie">
       <div className="max-w-6xl px-4 mx-auto sm:px-6 lg:px-8">
         <div className="flex flex-col -mx-4 md:flex-row">
           <div className="px-4 md:flex-1">
@@ -170,7 +172,18 @@ const ProductPage: React.FC<{ product: Product; images: ImagesDetails[]; skuData
               </div>
               <div>
                 <span className="font-bold text-gray-700">Availability:</span>
-                <span className="text-gray-600">{selectedSku?.availableStock || product.AvailableStock}</span>
+                <span
+  className={`text-base ${
+    (selectedSku?.availableStock ?? product.AvailableStock) > 0
+      ? 'text-green-600'
+      : 'text-red-600'
+  }`}
+>
+  {(selectedSku?.availableStock ?? product.AvailableStock) > 0
+    ? ` in stock`
+    : 'Out of stock'}
+</span>
+
               </div>
             </div>
 

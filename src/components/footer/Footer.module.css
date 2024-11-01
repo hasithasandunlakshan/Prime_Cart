@@ -1,0 +1,58 @@
+.footer {
+    background-color: #1c1c31;
+    color: #fff;
+    padding: 20px 0;
+    text-align: center;
+    width: 100%;
+    /* Optional shadow for separation */
+    box-shadow: 0 -2px 5px rgba(0, 0, 0, 0.1);
+  }
+
+.logoContainer {
+    margin-bottom: 20px;       /* Increased margin for better spacing */
+}
+
+.logo {
+    height: 50px;              /* Slightly larger logo */
+}
+
+.linksContainer {
+    display: flex;             /* Flex layout for links */
+    justify-content: center;   /* Center the links */
+    gap: 30px;                /* Increased gap for better spacing */
+    flex-wrap: wrap;          /* Allow wrapping on smaller screens */
+    margin-bottom: 20px;       /* Increased margin for better spacing */
+}
+
+.link {
+    color: #ffffff;            /* White text color for links */
+    text-decoration: none;      /* No underline */
+    transition: color 0.3s;    /* Smooth transition for hover effect */
+}
+
+.link:hover {
+    color: #fca311;            /* Change color on hover */
+}
+
+.socialContainer {
+    display: flex;             /* Flex layout for social icons */
+    justify-content: center;   /* Center the icons */
+    gap: 15px;                /* Increased gap for better spacing */
+    margin-bottom: 20px;       /* Increased margin for better spacing */
+}
+
+.icon {
+    color: #ffffff;            /* White text color for icons */
+    text-decoration: none;      /* No underline */
+    font-size: 24px;           /* Larger icon size */
+    transition: color 0.3s;    /* Smooth transition for hover effect */
+}
+
+.icon:hover {
+    color: #fca311;            /* Change color on hover */
+}
+
+.copyright {
+    font-size: 16px;           /* Slightly larger copyright text */
+    margin-top: 20px;          /* Increased margin for better spacing */
+}

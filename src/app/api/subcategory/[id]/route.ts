@@ -1,52 +1,28 @@
-import { NextResponse,NextRequest } from "next/server";
-import mysql from 'mysql2/promise'
+import { NextResponse, NextRequest } from "next/server";
+import mysql from 'mysql2/promise';
 import { GetDBSettings } from "@/sharedCode/common";
-let connectionparams=GetDBSettings();
-export async function GET(request:NextRequest,{params}:{params:{id:string}}){
-    const keyword=decodeURIComponent(params.id)
-    console.log('Query param:', keyword);
-    
-    try{
-        const connection=await mysql.createConnection(connectionparams);
-      
-        const query = `SELECT 
-    p.*, 
-    SKU.*, 
-    MIN(pi.imageurl) AS imageUrl  -- Get one image per product
-FROM 
-    Product p 
-JOIN 
-    SKU ON p.baseSKU = SKU.sku 
-JOIN 
-    ProductImages pi ON p.productID = pi.productID 
-JOIN 
-    ProductSubCategory pc ON pc.productID = p.productID 
-JOIN 
-    SubCategory s ON s.subCatId = pc.subCategoryId 
-WHERE 
-    s.title LIKE ? 
-GROUP BY 
-    p.productID, SKU.sku  -- Group by the relevant identifiers
-LIMIT 
-    0, 1000;
-`;
 
-        const values = [`%${keyword}%`];
+let connectionParams = GetDBSettings();
 
-        const [result]=await connection.execute(query,values);
-        if(result){
-        const query = 'SELECT * FROM defaultdb.SubCategories WHERE title like  ?';
-        }
-        connection.end();
+export async function GET(request: NextRequest, { params }: { params: { id: string } }) {
+    let connection;
+
+    try {
+        const keyword = decodeURIComponent(params.id);
+        console.log('Query param:', keyword);
         
-        return NextResponse.json(result);
+        connection = await mysql.createConnection(connectionParams);
 
+        // Call the stored procedure with the keyword parameter
+        const [result] = await connection.execute('CALL GetProductsWithImagesAndCategories(?)', [keyword]);
 
-    }
-    catch(error){
-
-        return NextResponse.json(error);
-
-
+        return NextResponse.json(result[0]); // Access the first result set
+    } catch (error) {
+        console.error('Database error:', error);
+        return NextResponse.json({ error: 'Failed to fetch product data' }, { status: 500 });
+    } finally {
+        if (connection) {
+            await connection.end();
+        }
     }
 }

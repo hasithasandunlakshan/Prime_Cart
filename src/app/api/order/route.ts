@@ -19,7 +19,7 @@ export async function POST(request: Request) {
 
         // Call the `placeOrder` stored procedure with the provided parameters
         const [result] = await connection.execute(
-            `CALL defaultdb.placeOrder(?, ?, ?, ?, ?, ?, ?)`,
+            `CALL placeOrder(?, ?, ?, ?, ?, ?, ?)`,
             [userId, deliveryMethod, deliveryFee, totalAmount, paymentMethod, estimatedDeliveryDate, addressId]
         );
 

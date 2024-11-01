@@ -63,15 +63,17 @@ export default function Categories() {
   return (
     <>
     
-
+<div className="flex flex-col items-center justify-center align-middle bg-white ">
+  
+        <h1 className="mt-20 mb-10 text-6xl font-bold">Product Categories</h1>
       <div className="container items-center align-top ">
-        <h1 className="mt-20 mb-10 text-5xl font-bold">Product Categories</h1>
         <div className="relative flex py-5 space-x-4 overflow-auto carousel">
           {Categories.map((category, key) => (
             <CategoryCard category={category} key={key} />
           ))}
         </div>
       </div>
+</div>
     </>
   );
 }
