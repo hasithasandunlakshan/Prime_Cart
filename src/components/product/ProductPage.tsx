@@ -172,7 +172,18 @@ const ProductPage: React.FC<{ product: Product; images: ImagesDetails[]; skuData
               </div>
               <div>
                 <span className="font-bold text-gray-700">Availability:</span>
-                <span className="text-gray-600">{selectedSku?.availableStock || product.AvailableStock}</span>
+                <span
+  className={`text-base ${
+    (selectedSku?.availableStock ?? product.AvailableStock) > 0
+      ? 'text-green-600'
+      : 'text-red-600'
+  }`}
+>
+  {(selectedSku?.availableStock ?? product.AvailableStock) > 0
+    ? ` in stock`
+    : 'Out of stock'}
+</span>
+
               </div>
             </div>
 

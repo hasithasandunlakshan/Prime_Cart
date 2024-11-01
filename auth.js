@@ -30,7 +30,7 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
         currentuser = rows[0][0];
         console.log("current user",rows)
         if (!currentuser) {
-          console.log("Invalid credentials");
+          console.log("This Email is Already Exists");
           toast({
             title: "You submitted the following values:",
             description: (

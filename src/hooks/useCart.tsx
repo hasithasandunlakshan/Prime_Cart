@@ -49,7 +49,7 @@ export const CartContextProvider: React.FC<{ children: ReactNode }> = ({ childre
     };
 
     fetchCartItems();
-  }, [products,]); // Only re-run when session user ID changes
+  }, [products,[]]); // Only re-run when session user ID changes
 
   // Function to add product to cart
   const addProduct = (product: any) => {

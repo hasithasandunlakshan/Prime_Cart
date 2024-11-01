@@ -72,8 +72,8 @@ const Payment: React.FC<PaymentProps> = () => {
     function calculateDeliveryDate(isMainCity: number, products: any[]): string {
       const deliveryDate = new Date();
       const daysToAdd = isMainCity === 1 ? 5 : 7;
-      const additionalDays = products.some(product => product.availableStock === 0) ? 3 : 0;
-  
+      const additionalDays = products.some(product => product.availableStock < 1) ? 3 : 0;
+  console.log("additonal days",additionalDays)
       deliveryDate.setDate(deliveryDate.getDate() + daysToAdd + additionalDays);
   
       const year = deliveryDate.getFullYear();
@@ -198,7 +198,7 @@ const Payment: React.FC<PaymentProps> = () => {
               <div className="flex gap-4 bg-white px-4 py-6 rounded-md shadow-[0_2px_12px_-3px_rgba(6,81,237,0.3)]">
               <div className="flex items-center gap-4 justify-normal">
                 <div className="w-20 h-20 max-sm:w-24 max-sm:h-12 shrink-0">
-                  <img src={product.imageUrl} className="object-contain w-full h-full" alt={product.productName} />
+                  <img src={product.imageUrl} className="object-contain w-full h-full" alt={product.availableStock} />
                 </div>
         
                 <div className="flex flex-col gap-4">

@@ -66,7 +66,7 @@ export function Registration() {
     } catch (error) {
       toast({
         variant: "destructive",
-        title: "invalid ",
+        title: "This Email is Already Exists",
         description: "There was a problem with your request.",
         action: <ToastAction altText="Try again">Try again</ToastAction>,
       })
